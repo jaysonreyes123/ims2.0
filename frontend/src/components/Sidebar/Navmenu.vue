@@ -6,7 +6,7 @@
       :class="`
       ${item.child ? 'item-has-children' : ''}
       ${activeSubmenu === i ? 'open' : ''}
-      ${this.$route.name === item.link ? 'menu-item-active' : ''}
+      ${this.$route.params.module === item.name ? 'menu-item-active' : ''}
       
       `"
       class="single-sidebar-menu"
@@ -308,7 +308,7 @@ export default {
 }
 .menu-item-active {
   .menu-link {
-    @apply bg-slate-800 dark:bg-slate-700;
+    @apply bg-red-500 dark:bg-slate-700;
     .icon-box,
     .menu-icon,
     .text-box {

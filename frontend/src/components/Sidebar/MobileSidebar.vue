@@ -1,25 +1,21 @@
 <template>
   <div
-    :class="`mobile-sidebar bg-white dark:bg-slate-800  ${
+    :class="`mobile-sidebar bg-white dark:bg-slate-800 w-[100px]  ${
       this.$store.themeSettingsStore.theme === 'bordered'
-        ? 'border border-gray-5002'
-        : 'shadow-base'
+        ? 'border border-gray-5002 '
+        : 'shadow-base '
     }   `"
   >
     <div class="logo-segment flex justify-between items-center px-4 py-6">
       <router-link :to="{ name: 'home' }">
-        <img
-      :src="authstore.fmslogo"
-      alt=""
-      v-if="!this.$store.themeSettingsStore.isDark"
-      style="max-width: 150px;max-height: 50px;"
-    />
-
-        <img
-          src="@/assets/images/logo/logo-white.svg"
+        <div class="flex justify-between space-x-4">
+          <img
+          width="150"
+          src="@/assets/images/logo/BAYAN911.jpg"
           alt=""
-          v-if="this.$store.themeSettingsStore.isDark"
+          v-if="!this.$store.themeSettingsStore.isDark"
         />
+        </div>
       </router-link>
       <span
         class="cursor-pointer text-slate-900 dark:text-white text-2xl"

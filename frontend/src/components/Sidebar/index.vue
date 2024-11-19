@@ -33,13 +33,14 @@
           "
         >
           <img
-            src="@/assets/images/logo/logo.svg"
+            width="150"
+            src="@/assets/images/logo/BAYAN911.jpg"
             alt=""
             v-if="!this.$store.themeSettingsStore.isDark && !this.$store.themeSettingsStore.semidark"
           />
 
           <img
-            src="@/assets/images/logo/logo-white.svg"
+            src="@/assets/images/logo/BAYAN911.jpg"
             alt=""
             v-if="this.$store.themeSettingsStore.isDark || this.$store.themeSettingsStore.semidark"
           />
@@ -52,7 +53,7 @@
           "
         >
           <img
-            src="@/assets/images/logo/logo-c.svg"
+            src="@/assets/images/logo/favicon.ico"
             alt=""
             v-if="!this.$store.themeSettingsStore.isDark && !this.$store.themeSettingsStore.semidark"
           />
@@ -97,8 +98,8 @@
           }
         "
       >
-        <Navmenu :items="menuItems" />
-        <Transition @enter="enterWidget" @leave="leaveWidget">
+        <Navmenu :items="topMenu" />
+        <!-- <Transition @enter="enterWidget" @leave="leaveWidget">
           <div
             class="bg-slate-900 mb-10 mt-24 p-4 relative text-center rounded-2xl text-white"
             v-if="!this.$store.themeSettingsStore.sidebarCollasp"
@@ -122,15 +123,16 @@
               </button>
             </div>
           </div>
-        </Transition>
+        </Transition> -->
       </SimpleBar>
     </div>
   </div>
 </template>
 <script>
-// import { Icon } from "@iconify/vue";
+import { Icon } from "@iconify/vue";
 import { defineComponent } from "vue";
-import { menuItems } from "../../constant/data";
+//import { menuItems } from "../../constant/data";
+import { topMenu } from "@/constant/menu";
 import Navmenu from "./Navmenu";
 import { gsap } from "gsap";
 import { SimpleBar } from "simplebar-vue3";
@@ -144,7 +146,7 @@ export default defineComponent({
   },
   data() {
     return {
-      menuItems,
+      topMenu,
       openClass: "w-[248px]",
       closeClass: "w-[72px] close_sidebar",
     };

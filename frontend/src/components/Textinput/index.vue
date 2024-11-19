@@ -16,6 +16,7 @@
     >
     <div class="relative" :class="horizontal ? 'flex-1' : ''">
       <input
+        :maxlength="maxlength"
         step=".1"
         :type="types"
         :name="name"
@@ -106,6 +107,9 @@ export default {
     placeholder: {
       type: String,
       default: "Search",
+    },
+    maxlength:{
+      type:String
     },
     label: {
       type: String,

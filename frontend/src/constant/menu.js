@@ -1,7 +1,7 @@
 export const topMenu = [
     {
       isHeadr: true,
-      title: "Menu",
+      title: "menu",
     },
     {
       title: "Dashboard",
@@ -10,28 +10,10 @@ export const topMenu = [
       name : "dashboard"
     },
     {
-      title: "Warning",
-      icon: "ph:warning-light",
-      link: "/app/warning", 
-      name: "warning"
-    },
-    {
-      title: "Historical",
-      icon: "healthicons:database-outline",
-      link: "/app/historical",
-      name:"database" 
-    },
-    {
-      title: "Monitoring",
-      icon: "eos-icons:monitoring",
-      link: "/app/monitoring", 
-      name:"monitoring"
-    }, 
-    {
-      title: "Sensors",
-      icon: "ri:sensor-line",
-      link: "/app/sensors", 
-      name:"sensor"
+      title: "Incident",
+      icon: "carbon:dashboard",
+      link: "/app/incidents", 
+      name : "incidents"
     },
  
     {

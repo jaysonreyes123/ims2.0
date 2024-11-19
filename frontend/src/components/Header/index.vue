@@ -5,22 +5,23 @@
         this.$store.themeSettingsStore.navbarColor
       }
       ${
-        this.$store.themeSettingsStore.menuLayout === 'horizontal' && window.width > 1280
-          ? 'py-1'
-          : 'md:py-6 py-3'
+        this.$store.themeSettingsStore.menuLayout === 'horizontal' && this.window.width > 1280
+          ? 'py-6'
+          : 'md:py-6 py-6'
       }
       `"
     >
       <div class="flex justify-between items-center h-full">
         <div
-          v-if="this.$store.themeSettingsStore.menuLayout === 'vertical'"
+          v-if="this.$store.themeSettingsStore.menuLayout === 'horizontal'"
           class="flex items-center md:space-x-4 space-x-2 rtl:space-x-reverse"
         >
           <button
             class="ltr:mr-5 rtl:ml-5 text-xl text-slate-900 dark:text-white"
-            v-if="this.$store.themeSettingsStore.sidebarCollasp && window.width > 1280"
+            v-if="this.$store.themeSettingsStore.sidebarCollasp && this.window.width > 1280"
             @click="this.$store.themeSettingsStore.sidebarCollasp = false"
           >
+          
             <Icon
               icon="akar-icons:arrow-right"
               v-if="!this.$store.themeSettingsStore.direction"
@@ -32,16 +33,16 @@
           </button>
           <MobileLogo v-if="window.width < 1280" />
           <handle-mobile-menu
-            v-if="window.width < 1280 && window.width > 768"
+            v-if="this.window.width < 1280"
           />
-          <SearchModal />
+        <!-- <SearchModal /> -->
         </div>
         <div
           v-if="this.$store.themeSettingsStore.menuLayout === 'horizontal'"
           class="flex items-center space-x-4 rtl:space-x-reverse"
         >
-          <Logo v-if="window.width > 1280" />
-          <!-- <MobileLogo v-else />
+          <!-- <Logo v-if="window.width > 1280" />
+          <MobileLogo v-else />
           <handle-mobile-menu v-if="window.width < 1280" /> -->
         </div>
         <Mainnav
@@ -55,7 +56,7 @@
           <SwitchDark />  
           <Notification v-if="window.width > 768" />
           <Profile  />
-          <handle-mobile-menu v-if="window.width < 768" />
+          <!-- <handle-mobile-menu v-if="window.width < 768" /> -->
         </div>
       </div>
     </div>

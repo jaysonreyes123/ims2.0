@@ -1,7 +1,8 @@
 <template>
   <router-link :to="{ name: 'home' }">
     <img
-      src="@/assets/images/logo/logo-c.svg"
+      width="30"
+      src="@/assets/images/logo/favicon.ico"
       alt=""
       v-if="!this.$store.themeSettingsStore.isDark"
     />

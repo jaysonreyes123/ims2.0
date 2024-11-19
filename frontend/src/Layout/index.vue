@@ -1,26 +1,25 @@
 <template>
   <main class="app-wrapper">
-    <Header :class="window.width > 1280 ? switchHeaderClass() : ''" />
+    <Header :class="this.window.width > 1280 ? switchHeaderClass() : ''" />
     <!-- end header -->
-
     <Sidebar
       v-if="
-        $store.themeSettingsStore.menuLayout === 'vertical' &&
-        $store.themeSettingsStore.sidebarHidden === false &&
-        window.width > 1280
+        this.$store.themeSettingsStore.menuLayout === 'horizontal' &&
+        this.$store.themeSettingsStore.sidebarHidden === false &&
+        this.window.width > 1280
       "
     />
     <!-- main sidebar end -->
     <Transition name="mobilemenu">
       <mobile-sidebar
-        v-if="this.window.width < 1280 && $store.themeSettingsStore.mobielSidebar"
+        v-if="this.window.width < 1280 && this.$store.themeSettingsStore.mobielSidebar"
       />
     </Transition>
     <Transition name="overlay-fade">
       <div
-        v-if="window.width < 1280 && $store.themeSettingsStore.mobielSidebar"
+        v-if="this.window.width < 1280 && this.$store.themeSettingsStore.mobielSidebar"
         class="overlay bg-slate-900 bg-opacity-70 backdrop-filter backdrop-blur-[3px] backdrop-brightness-10 fixed inset-0 z-[999]"
-        @click="$store.themeSettingsStore.mobielSidebar = false"
+        @click="this.$store.themeSettingsStore.mobielSidebar = false"
       ></div>
     </Transition>
     <!-- mobile sidebar -->
@@ -28,7 +27,7 @@
 
     <div
       class="content-wrapper transition-all duration-150"
-      :class="window.width > 1280 ? switchHeaderClass() : ''"
+      :class="this.window.width > 1280 ? switchHeaderClass() : ''"
     >
       <div
         class="page-content"
@@ -50,16 +49,16 @@
         </div>
       </div>
     </div>
-    
     <!-- end page content -->
-    <FooterMenu v-if="window.width < 768" />
+    <!-- <FooterMenu v-if="this.window.width < 768" /> -->
     <Footer
-      :class="window.width > 1280 ? switchHeaderClass() : ''"
-      v-if="window.width > 768"
+      :class="this.window.width > 1280 ? switchHeaderClass() : ''"
+      v-if="this.window.width > 768"
     />
      <alert_toast v-if="notifications_.length > 0" :key="notifications_.length" :data="notifications_" />
   </main>
 </template>
+
 <script setup>
 import axiosIns from "@/plugins/axios";
 import alert_toast from "@/views/dashboard/component/toast.vue";
@@ -123,7 +122,6 @@ onMounted(()=>{
 //   dashboard.notification = [];
 //  }
 // })
-
 </script>
 <script>
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -135,7 +133,6 @@ import window from "@/mixins/window";
 import MobileSidebar from "@/components/Sidebar/MobileSidebar.vue";
 import FooterMenu from "@/components/Footer/FooterMenu.vue";
 import { onMounted } from 'vue';
-
 export default {
   mixins: [window],
   components: {
@@ -149,12 +146,7 @@ export default {
   },
   methods: {
     switchHeaderClass() {
-      if (
-        $store.themeSettingsStore.menuLayout === "horizontal" ||
-        $store.themeSettingsStore.sidebarHidden
-      ) {
-        return "ltr:ml-0 rtl:mr-0";
-      } else if ($store.themeSettingsStore.sidebarCollasp) {
+      if (this.$store.themeSettingsStore.sidebarCollasp) {
         return "ltr:ml-[72px] rtl:mr-[72px]";
       } else {
         return "ltr:ml-[248px] rtl:mr-[248px]";
@@ -162,6 +154,8 @@ export default {
     },
   },
 };
+
+
 </script>
 <style lang="scss">
 .router-animation-enter-active {

@@ -1,6 +1,5 @@
 import auth from "@/middleware/auth";
 import guest from "@/middleware/guest";
-
 const routes = [
   {
     path: "/",
@@ -27,135 +26,151 @@ const routes = [
     },
     children: [ 
       {
-        path: "dashboard",
-        name: "dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
+        path: ":module",
+        name: "module",
+        component: () => import("@/views/module/index.vue"),
         meta: {
           hide: true,
         },
       },
-
       {
-        path: "warning",
-        name: "warning",
-        component: () => import("@/views/warning/index.vue"),
+        path: ":module/edit",
+        name: "modules",
+        component: () => import("@/views/module/save.vue"),
         meta: {
           hide: true,
         },
       },
+      // {
+      //   path: "dashboard",
+      //   name: "dashboard",
+      //   component: () => import("@/views/dashboard/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "historical",
-        name: "historical",
-        component: () => import("@/views/database/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "warning",
+      //   name: "warning",
+      //   component: () => import("@/views/warning/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
+
+      // {
+      //   path: "historical",
+      //   name: "historical",
+      //   component: () => import("@/views/database/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
  
-      {
-        path: "sensors",
-        name: "sensors",
-        component: () => import("@/views/sensor/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "sensors",
+      //   name: "sensors",
+      //   component: () => import("@/views/sensor/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "monitoring",
-        name: "monitoring",
-        component: () => import("@/views/monitoring/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "monitoring",
+      //   name: "monitoring",
+      //   component: () => import("@/views/monitoring/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 //maintenance
-      {
-        path: "stations",
-        name: "stations",
-        component: () => import("@/views/maintenance/station/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
-      {
-        path: "recipients",
-        name: "recipients",
-        component: () => import("@/views/maintenance/recipient/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "stations",
+      //   name: "stations",
+      //   component: () => import("@/views/maintenance/station/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
+      // {
+      //   path: "recipients",
+      //   name: "recipients",
+      //   component: () => import("@/views/maintenance/recipient/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "warnings",
-        name: "warnings",
-        component: () => import("@/views/maintenance/warning/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
-      {
-        path: "notification_content",
-        name: "notification content",
-        component: () => import("@/views/maintenance/notification/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
-      {
-        path: "users",
-        name: "users",
-        component: () => import("@/views/maintenance/user/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "warnings",
+      //   name: "warnings",
+      //   component: () => import("@/views/maintenance/warning/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
+      // {
+      //   path: "notification_content",
+      //   name: "notification content",
+      //   component: () => import("@/views/maintenance/notification/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
+      // {
+      //   path: "users",
+      //   name: "users",
+      //   component: () => import("@/views/maintenance/user/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "role",
-        name: "user role",
-        component: () => import("@/views/maintenance/role/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
-      {
-        path: "system",
-        name: "System",
-        component: () => import("@/views/maintenance/system/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "role",
+      //   name: "user role",
+      //   component: () => import("@/views/maintenance/role/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
+      // {
+      //   path: "system",
+      //   name: "System",
+      //   component: () => import("@/views/maintenance/system/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "email-template",
-        name: "Email Template",
-        component: () => import("@/views/maintenance/email_template/index.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "email-template",
+      //   name: "Email Template",
+      //   component: () => import("@/views/maintenance/email_template/index.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
       
-      {
-        path: "profile",
-        name: "profile",
-        component: () => import("@/views/profile/profile-details.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "profile",
+      //   name: "profile",
+      //   component: () => import("@/views/profile/profile-details.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
-      {
-        path: "activity-logs",
-        name: "activity logs",
-        component: () => import("@/views/profile/activity-logs.vue"),
-        meta: {
-          hide: true,
-        },
-      },
+      // {
+      //   path: "activity-logs",
+      //   name: "activity logs",
+      //   component: () => import("@/views/profile/activity-logs.vue"),
+      //   meta: {
+      //     hide: true,
+      //   },
+      // },
 
     ],
   },
