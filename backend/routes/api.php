@@ -9,7 +9,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post("login",[LoginController::class,'login']);
-
+Route::get("test",function(){
+    echo "Test";
+});
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user', [LoginController::class, 'details']);
