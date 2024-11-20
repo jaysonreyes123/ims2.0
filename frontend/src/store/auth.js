@@ -90,9 +90,9 @@ export const useAuthStore = defineStore('auth', {
             try {
                 this.isLoading = true;
                 let response = await this.axios.post('/login', data);    
-                let response2 =  await this.axios.get('/system/1'); 
-                this.fmslogo = response2.data.logo;
-                this.fmssite = response2.data.site;
+                // let response2 =  await this.axios.get('/system/1'); 
+                // this.fmslogo = response2.data.logo;
+                // this.fmssite = response2.data.site;
                 localStorage.setItem("_token", response.data.data.token); 
                 this.getuserDetails();   
             } catch (err) { 
@@ -126,14 +126,14 @@ export const useAuthStore = defineStore('auth', {
         },
         async getuserDetails(){
             try {  
-                let response = await this.axios.get('/user');       
+                let response = await this.axios.get('/user');     
                 this.user = response.data.data; 
                 this.authenticated = true;
                 this.isLoading = false;
                 toast.success("Login successfully", {
                     timeout: 1000,
                 });
-                this.router.push("/app/dashboard");
+                this.router.push("/app/incidents");
             } catch (err) { 
                 this.isLoading = false;
                 toast.error("Get User Details Error, please try again!", {

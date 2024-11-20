@@ -1,21 +1,21 @@
 <template>
     <div>
         <Breadcrumb/>
-        <div class="lg:grid lg:grid-cols-3 mb-2">
+        <div class="lg:grid lg:grid-cols-2 mb-2">
             <div class="flex">
-                    <InputGroup type="text" placeholder="Search" prependIcon="heroicons-outline:search" merged />
+                    <InputGroup class="w-4/5" type="text" placeholder="Search" prependIcon="heroicons-outline:search" merged />
                     <Button
-                        icon="heroicons-outline:plus"
+                        icon="heroicons-outline:adjustments-horizontal"
                         text="Filters"
-                        btnClass="btn-secondary ml-2 py-2"
+                        btnClass="btn-outline-dark ml-2 py-2"
                     />
              
             </div>
-            <div class="col-start-3">
+            <div>
                 <div class="lg:float-right">
                     <Button
                     icon="heroicons-outline:plus"
-                    text="Add new incidents"
+                    :text="`Add new ${this.$route.params.module}`"
                     btnClass="btn-danger mr-2 py-2"
                     />
                     <Button

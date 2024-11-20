@@ -107,11 +107,11 @@ import { useDashboardStore } from "@/store/dashboard";
 import { onMounted,getCurrentInstance } from "vue";
 const properties = getCurrentInstance().appContext.config.globalProperties
 const dashboard = useDashboardStore();
-dashboard.loadIncident();
+//dashboard.loadIncident();
 
 onMounted(()=>{
   properties.incident_event.listen(".incident-event",(e)=>{
-    dashboard.loadIncident();
+   // dashboard.loadIncident();
   })
 })
 
