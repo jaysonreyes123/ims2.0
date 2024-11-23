@@ -202,7 +202,7 @@ function dateChange(){
     // monitoring.loadChart();
     monitoring.loadTable1();
 }
-const host = window.location.hostname;
+const host = this.window.location.hostname;
 const port = host == "localhost" ? "8000" : "8082";
 function export_csv(){
     const id = monitoring.selectRow;
@@ -266,7 +266,7 @@ function search_value(sensor_id,value){
   
 }
 onMounted(()=>{
-        dashboard.loadNotification();
+     //   dashboard.loadNotification();
         monitoring.loading3 = true;
         monitoring.loading2 = true;
         monitoring.selectedTab = 0;
@@ -297,11 +297,11 @@ onMounted(()=>{
     // });
 
     properties.notification_event.listen('.notification-event',(e)=>{
-         dashboard.loadNotification();
+        // dashboard.loadNotification();
        })
 
     // selected row station has a value of true then reload
-    // window.single_event.listen('.single-chart-event',(e)=>{
+    // this.window.single_event.listen('.single-chart-event',(e)=>{
 
     //     if(monitoring.selectedTab == 0){
     //         if(e.rg[monitoring.selectRow] == true){

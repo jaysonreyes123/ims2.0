@@ -80,10 +80,10 @@ const openProject = () => {
 
 const width = ref(0);
 const handleResize = () => {
-  width.value = window.innerWidth;
+  width.value = this.window.innerWidth;
 };
 onMounted(() => {
-  window.addEventListener("resize", handleResize);
+  this.window.addEventListener("resize", handleResize);
   handleResize();
 });
 

@@ -2,7 +2,7 @@
   <div
       class="flex space-x-5 chat-height overflow-hidden relative rtl:space-x-reverse"
   >
-    <div class="flex-none min-w-[260px]" v-if="window.width > 1024">
+    <div class="flex-none min-w-[260px]" v-if="this.window.width > 1024">
       <Card bodyClass=" relative p-0 h-full overflow-hidden ">
         <div class="border-b border-slate-100 dark:border-slate-700 pb-4">
           <Myprofile/>
@@ -28,12 +28,12 @@
     </div>
     <Transition @enter="enterMobileSidebar" @leave="leaveMobileSidebar">
       <mobile-sidebar
-          v-if="window.width <= 1024 && this.mobileChatSidebar"
+          v-if="this.window.width <= 1024 && this.mobileChatSidebar"
       />
     </Transition>
     <Transition name="overlay-fade">
       <div
-          v-if="window.width <= 1024 && this.mobileChatSidebar"
+          v-if="this.window.width <= 1024 && this.mobileChatSidebar"
           class="overlay bg-slate-900 dark:bg-slate-900 dark:bg-opacity-60 bg-opacity-60 backdrop-filter backdrop-blur-sm absolute w-full flex-1 inset-0 z-[9] rounded-md"
           @click="this.mobileChatSidebar = false"
       ></div>
@@ -59,7 +59,7 @@
             v-if="
             this.openinfo &&
             this.activechat === true &&
-            window.width > 1280
+            this.window.width > 1280
           "
         >
           <Card bodyClass="p-0 h-full">

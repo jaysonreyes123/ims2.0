@@ -159,7 +159,7 @@
     <Card title="Multiple Radialbars">
       <apexchart
         type="radialBar"
-        :height="window.width > 768 ? 450 : 250"
+        :height="this.window.width > 768 ? 450 : 250"
         :options="
           this.$store.themeSettingsStore.isDark
             ? MultipleRadialbarsDark.chartOptions

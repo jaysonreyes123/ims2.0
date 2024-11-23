@@ -5,7 +5,7 @@
         <h6 class="flex-1 md:mb-0 mb-3">Invoice</h6>
         <div
           class="md:flex md:space-x-3 items-center flex-none rtl:space-x-reverse"
-          :class="window.width < 768 ? 'space-x-rb' : ''"
+          :class="this.window.width < 768 ? 'space-x-rb' : ''"
         >
           <InputGroup
             v-model="searchTerm"

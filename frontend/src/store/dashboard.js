@@ -64,19 +64,6 @@ export const useDashboardStore = defineStore("dashboard",{
                 console.log("error",err)
             }
         },
-        async loadNotification(){
-            try {
-           
-               let response = await this.axios.get("/alert_notification");
-               this.notification = response.data.data;
-          
-            } catch (err) {
-                // toast.error("Error encountered, please try again!", {
-                //     timeout: 3000,
-                // })
-                console.log("error",err)
-            }
-        },
         async loadChart1(index){
             try {
                 this.loading1 = true;

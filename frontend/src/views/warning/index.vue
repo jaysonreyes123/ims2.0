@@ -66,7 +66,7 @@ const warning = useWarningStore();
 const dashboard = useDashboardStore();
 const properties = getCurrentInstance().appContext.config.globalProperties
 onMounted(()=>{
-        dashboard.loadNotification();
+       // dashboard.loadNotification();
         warning.loadWarningTable();
    
    
@@ -91,7 +91,7 @@ onMounted(()=>{
    
 
     properties.notification_event.listen('.notification-event',(e)=>{
-        dashboard.loadNotification();
+       // dashboard.loadNotification();
    })
    properties.rgwl_event.listen('.rgwl-event',(e)=>{
         warning.loadMap();

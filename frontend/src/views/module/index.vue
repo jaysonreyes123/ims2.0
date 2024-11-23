@@ -13,11 +13,13 @@
             </div>
             <div>
                 <div class="lg:float-right">
-                    <Button
-                    icon="heroicons-outline:plus"
-                    :text="`Add new ${this.$route.params.module}`"
-                    btnClass="btn-danger mr-2 py-2"
-                    />
+                    <router-link :to="`${this.$route.params.module}/edit`">
+                        <Button
+                        icon="heroicons-outline:plus"
+                        :text="`Add new ${this.$route.params.module}`"
+                        btnClass="btn-danger mr-2 py-2"
+                        />
+                    </router-link>
                     <Button
                     icon="heroicons-outline:arrow-down-tray"
                     text="Import"
@@ -26,26 +28,48 @@
                 </div>
             </div>
         </div>
-        <Incident v-if="this.$route.params.module == 'incidents' " />
+        <component :is="Modules"></component>
     </div>
 </template>
 <script>
 import InputGroup from "@/components/InputGroup";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Incident from "./incident/index.vue";
+import Resources from "./resources/index.vue"
 import Textinput from "@/components/Textinput";
 import Button from '@/components/Button';
 import Icon from "@/components/Icon";
-import test from "../components/button";
 export default {
     components:{
         Breadcrumb,
-        Incident,
         Textinput,
         Button,
         Icon,
-        test,
-        InputGroup
+        InputGroup,
+        Incident,
+        Resources
+    },
+    data(){
+        return{
+            modules:""
+        }
+    },
+    computed:{
+        Modules(){
+            const module_  = this.$route.params.module;
+            switch (module_) {
+                case 'incidents':
+                    this.modules = Incident;
+                    break;
+                case 'resources':
+                    this.modules = Resources;
+                    break;
+            
+                default:
+                    break;
+            }
+            return this.modules;
+        }
     }
 }
 </script>

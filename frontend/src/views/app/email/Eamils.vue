@@ -2,7 +2,7 @@
   <ul
       v-if="emails"
       class="divide-y divide-slate-100 dark:divide-slate-700 -mx-6 -mb-6 flex-1 overflow-y-auto whitespace-nowrap"
-      :class="window.width < 1024 ? '  overflow-x-auto touch-auto' : ''"
+      :class="this.window.width < 1024 ? '  overflow-x-auto touch-auto' : ''"
   >
     <li
         class="flex px-7 space-x-6 group md:py-6 py-3 relative cursor-pointer hover:bg-slate-100 group items-center rtl:space-x-reverse"

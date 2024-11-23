@@ -23,8 +23,6 @@
       ></div>
     </Transition>
     <!-- mobile sidebar -->
-    
-
     <div
       class="content-wrapper transition-all duration-150"
       :class="this.window.width > 1280 ? switchHeaderClass() : ''"
@@ -35,7 +33,7 @@
       >
         <div
           :class="` transition-all duration-150 ${
-            $store.themeSettingsStore.cWidth === 'boxed'
+            this.$store.themeSettingsStore.cWidth === 'boxed'
               ? 'container mx-auto'
               : 'container-fluid'
           }`"
@@ -55,74 +53,10 @@
       :class="this.window.width > 1280 ? switchHeaderClass() : ''"
       v-if="this.window.width > 768"
     />
-     <alert_toast v-if="notifications_.length > 0" :key="notifications_.length" :data="notifications_" />
+     <!-- <alert_toast v-if="notifications_.length > 0" :key="notifications_.length" :data="notifications_" /> -->
   </main>
 </template>
 
-<script setup>
-import axiosIns from "@/plugins/axios";
-import alert_toast from "@/views/dashboard/component/toast.vue";
-import {useDashboardStore} from "@/store/dashboard";
-import { onMounted, ref,getCurrentInstance } from "vue";
-import { useRouter } from 'vue-router';
-import Swal from 'sweetalert2';
-const properties = getCurrentInstance().appContext.config.globalProperties
-var notifications_ = ref([]);
-const router = useRouter();
-function loadNotifications(){
-            axiosIns.get("/alert_notification")
-            .then((response) => {
-              notifications_.value = response.data.data;
-            })
-            .catch(error => {
-              const err = error.response.data;
-              if(err.status == 400 && err.message == 'Unauthorized.'){
-                    Swal.fire({
-                        title: 'You have been logged out',
-                        text: 'Your account has been logged in another device. Please click okay to login again.',
-                        icon: 'error',
-                        confirmButtonText: 'Okay',
-                        allowOutsideClick: false
-                    })
-                    .then(()=>{
-                        location.href="/";
-                    })
-                }
-            })
-}
-onMounted(()=>{
-  loadNotifications();
-  properties.notification_event.listen('.notification-event',(e)=>{
-     loadNotifications();
-  })
-})
-// const dashboard = useDashboardStore();
-// console.log(dashboard.notification)
-// const notification_event = getCurrentInstance().appContext.config.globalProperties.notification_event;
-
-      const alarm = [
-    {
-        name:"station1",
-        color:"#85eddf"
-    },
-    {
-        name:"station2",
-        color:"#e1fc2b"
-    }
-]
-// onMounted(()=>{
-//  const current_route = router.currentRoute._value.name;
-//  if(current_route != "dashboard"){
-//   dashboard.loadNotification();
-//     notification_event.listen('.notification-event',(e)=>{
-//     dashboard.loadNotification();
-//   })
-//  }
-//  else{
-//   dashboard.notification = [];
-//  }
-// })
-</script>
 <script>
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "../components/Footer";

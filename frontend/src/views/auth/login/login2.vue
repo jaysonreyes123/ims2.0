@@ -95,7 +95,6 @@ export default {
            this.wl_event.stopListening(".wl-event");
            this.single_event.stopListening(".single-chart-event");
            this.incident_event.stopListening(".incident-event");
-           this.notification_event.stopListening(".notification-event");
   }
 };
 </script>

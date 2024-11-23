@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     print() {
-      window.print();
+      this.window.print();
     },
   },
 };

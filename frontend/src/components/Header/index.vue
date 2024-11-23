@@ -31,7 +31,7 @@
               v-if="this.$store.themeSettingsStore.direction"
             />
           </button>
-          <MobileLogo v-if="window.width < 1280" />
+          <MobileLogo v-if="this.window.width < 1280" />
           <handle-mobile-menu
             v-if="this.window.width < 1280"
           />
@@ -41,22 +41,22 @@
           v-if="this.$store.themeSettingsStore.menuLayout === 'horizontal'"
           class="flex items-center space-x-4 rtl:space-x-reverse"
         >
-          <!-- <Logo v-if="window.width > 1280" />
+          <!-- <Logo v-if="this.window.width > 1280" />
           <MobileLogo v-else />
-          <handle-mobile-menu v-if="window.width < 1280" /> -->
+          <handle-mobile-menu v-if="this.window.width < 1280" /> -->
         </div>
         <Mainnav
           v-if="
-            this.$store.themeSettingsStore.menuLayout === 'horizontal' && window.width > 1280
+            this.$store.themeSettingsStore.menuLayout === 'horizontal' && this.window.width > 1280
           "
         />
         <div
           class="nav-tools flex items-center lg:space-x-5 space-x-3 rtl:space-x-reverse"
         > 
           <SwitchDark />  
-          <Notification v-if="window.width > 768" />
+          <Notification v-if="this.window.width > 768" />
           <Profile  />
-          <!-- <handle-mobile-menu v-if="window.width < 768" /> -->
+          <!-- <handle-mobile-menu v-if="this.window.width < 768" /> -->
         </div>
       </div>
     </div>

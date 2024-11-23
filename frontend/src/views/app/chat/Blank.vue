@@ -8,11 +8,11 @@
     </h4>
 
     <p class="text-sm text-slate-500 lg:pt-0 pt-4">
-      <span v-if="window.width > 1024">
+      <span v-if="this.window.width > 1024">
         don't worry, just take a deep breath & say "Hello"</span
       >
       <span
-        v-if="window.width <= 1024"
+        v-if="this.window.width <= 1024"
         class="btn btn-dark cursor-pointer"
         @click="open"
         >Start Conversation</span

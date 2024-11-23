@@ -1,6 +1,6 @@
 <template>
   <div class="md:flex space-x-4 items-center rtl:space-x-reverse">
-    <Tooltip placement="top" arrow v-if="window.width < 1280">
+    <Tooltip placement="top" arrow v-if="this.window.width < 1280">
       <template #button>
         <div
           @click="this.mobileEmailSidebar = true"
@@ -94,7 +94,7 @@
       </template>
       <span> Delete All</span>
     </Tooltip>
-    <div class="flex" v-if="window.width > 768">
+    <div class="flex" v-if="this.window.width > 768">
       <input
         type="text"
         v-model="this.search"

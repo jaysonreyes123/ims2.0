@@ -198,10 +198,10 @@ import user1 from "@/assets/images/users/user-1.jpg";
 
 const width = ref(0);
 const handleResize = () => {
-  width.value = window.innerWidth;
+  width.value = this.window.innerWidth;
 };
 onMounted(() => {
-  window.addEventListener("resize", handleResize);
+  this.window.addEventListener("resize", handleResize);
   handleResize();
 });
 const newMessage = ref("");

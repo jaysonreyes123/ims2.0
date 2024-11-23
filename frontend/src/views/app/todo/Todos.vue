@@ -2,7 +2,7 @@
   <ul
     class="divide-y divide-slate-100 dark:divide-slate-700 -mb-6 h-full"
     v-if="todos"
-    :class="window.width < 1024 ? 'whitespace-nowrap  overflow-x-auto ' : ''"
+    :class="this.window.width < 1024 ? 'whitespace-nowrap  overflow-x-auto ' : ''"
   >
     <li
       class="flex items-center px-6 space-x-4 py-6 hover:-translate-y-1 hover:shadow-todo transition-all duration-200 rtl:space-x-reverse"

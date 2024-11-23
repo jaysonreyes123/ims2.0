@@ -80,7 +80,7 @@
           </template>
           <apexchart
             type="radialBar"
-            :height="window.width > 768 ? 350 : 250"
+            :height="this.window.width > 768 ? 350 : 250"
             :options="
               this.$store.themeSettingsStore.isDark
                 ? MultipleRadialbarsDark.chartOptions

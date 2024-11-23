@@ -8,7 +8,7 @@
                 :zoom="4"
                 @mb-click="clickMap"
                 >
-                <MapboxMarker :lng-lat="coordinates" />
+                <MapboxMarker :lng-lat="coordinates_()" />
         </MapboxMap>
     </div>
 
@@ -18,10 +18,16 @@
   import Card from "@/components/Card";
   import 'mapbox-gl/dist/mapbox-gl.css';
   export default { 
+      props:{
+        set_coordinates:{
+            type:String,
+            default:""
+        }
+      },
       components:{
           MapboxMap,
           MapboxMarker,
-          Card
+          Card,
       },
       data(){
         return{
@@ -34,6 +40,13 @@
             const {lng,lat} = event.lngLat;
             this.coordinates=[lng,lat];
             this.$emit("updateCoordinate",event.lngLat)
+        },
+        coordinates_(){     
+            if( this.set_coordinates == ""  || this.set_coordinates == null ){
+                return [0,0];
+            }   
+            const set_coordinates_ = this.set_coordinates.split(',');
+            return set_coordinates_;
         }
       }
   }

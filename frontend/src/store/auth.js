@@ -105,6 +105,7 @@ export const useAuthStore = defineStore('auth', {
         async logout() {  
             try {  
                 let response = await this.axios.get('/logout'); 
+                console.log(response)
                 if(response.status === '200' || response.status === 200){
                     localStorage.removeItem('_token');
                     this.user = {};
@@ -112,16 +113,22 @@ export const useAuthStore = defineStore('auth', {
                     this.router.push("/");
                     const pinia = getActivePinia();
                     pinia._s.forEach((store) => store.$reset());
-                }else{
+                }
+                else{
                     toast.error("Logout Error, please try again!", {
                         timeout: 3000,
                     }); 
                 }
             } catch (err) {  
                 console.error(err);
-                toast.error("Logout Error, please try again!", {
-                    timeout: 3000,
-                });
+                if(err.response.status == 401 || err.response.status == '401'){
+                    this.router.push("/");
+                }
+                else{
+                    toast.error("Logout Error, please try again!", {
+                        timeout: 3000,
+                    });
+                }
             }   
         },
         async getuserDetails(){
@@ -133,7 +140,7 @@ export const useAuthStore = defineStore('auth', {
                 toast.success("Login successfully", {
                     timeout: 1000,
                 });
-                this.router.push("/app/incidents");
+                this.router.push("/app/dashboard");
             } catch (err) { 
                 this.isLoading = false;
                 toast.error("Get User Details Error, please try again!", {

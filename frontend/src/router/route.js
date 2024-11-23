@@ -26,17 +26,25 @@ const routes = [
     },
     children: [ 
       {
-        path: ":module",
-        name: "module",
+        path: "module/:module",
+        name: "list",
         component: () => import("@/views/module/index.vue"),
         meta: {
           hide: true,
         },
       },
       {
-        path: ":module/edit",
-        name: "modules",
+        path: "module/:module/edit/:id?",
+        name: "edit",
         component: () => import("@/views/module/save.vue"),
+        meta: {
+          hide: true,
+        },
+      },
+      {
+        path: "module/:module/detail/:id",
+        name: "detail",
+        component: () => import("@/views/module/detail.vue"),
         meta: {
           hide: true,
         },

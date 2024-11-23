@@ -1,25 +1,57 @@
 <template>
     <div>
+        <Loading v-model:active="IncidentStore.loading"/>
         <Block blockname="Incident Details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
-                <Textinput label="Incident ID(auto generate)" name="incident_id" placeholder="Incident ID(auto generate)" v-model="IncidentStore.form.incident_id" />
-                <Textinput label="Incident Type" placeholder="Incident Type" v-model="IncidentStore.form.incident_type" />
+                <Textinput label="Incident ID(auto generate)" name="id" placeholder="Incident ID(auto generate)" v-model="IncidentStore.form.incident_no" />
+                <!-- <Textinput label="Incident Type" placeholder="Incident Type" v-model="IncidentStore.form.incident_type" /> -->
+                <div class="fromGroup relative">
+                    <label for="" class="inline-block input-label">Incident Type</label>
+                    <Select :required="true" placeholder="Select an option" :options="IncidentStore.getIncidentType" :reduce="label => label.value"  v-model="IncidentStore.form.incident_type" >
+                        <template #search="{attributes, events}">
+                            <input
+                            class="vs__search"
+                            :required="!IncidentStore.form.incident_type"
+                            v-bind="attributes"
+                            v-on="events"
+                            />
+                        </template>
+                    </Select>
+                </div>
             </div>
             <div class="lg:grid lg:grid-cols-2 gap-12">
                 <!-- time -->
                 <div class="fromGroup relative">
                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">Time of Incident</label>
-                    <VueDatePicker v-model="IncidentStore.form.time_of_incident"  time-picker></VueDatePicker>
+                    <!-- <VueDatePicker placeholder="Time of incident" v-model="IncidentStore.form.time_of_incident"  time-picker></VueDatePicker> -->
+                    <flat-pickr
+                        v-model="IncidentStore.form.time_of_incident"
+                        class="form-control"
+                        placeholder="HH:mm"
+                        :config="{ enableTime: true, noCalendar: true, dateFormat: 'H:i:00',time_24hr:true,minuteIncrement:1 }"
+                    />
                 </div>
                 <!-- date -->
                 <div class="fromGroup relative">
                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">Date of Incident</label>
-                    <VueDatePicker name="test" v-model="IncidentStore.form.date_of_incident"  :enable-time-picker="false"></VueDatePicker>
+                    <!-- <VueDatePicker placeholder="Date of incident" v-model="IncidentStore.form.date_of_incident" :enable-time-picker="false"></VueDatePicker> -->
+                    <flat-pickr
+                        v-model="IncidentStore.form.date_of_incident"
+                        class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        :config="{ dateFormat:'Y-m-d' }"
+                    />
                 </div>
             </div>
             <div class="lg:grid lg:grid-cols-2 gap-12">
-                <Textinput label="Incident Status" placeholder="Incident Status" v-model="IncidentStore.form.incident_status" />
-                <Textinput label="Incident Priority" placeholder="Incident Priority" v-model="IncidentStore.form.incident_priority" />
+                <div class="fromGroup relative">
+                    <label for="" class="inline-block input-label">Incident Status</label>
+                    <Select placeholder="Incident Status" :options="IncidentStore.getIncidentStatus" :reduce="label => label.value"  v-model="IncidentStore.form.incident_status" />
+                </div>
+                <div class="fromGroup relative">
+                    <label for="" class="inline-block input-label">Incident Priority</label>
+                    <Select placeholder="Incident Priority" :options="IncidentStore.getIncidentPriority" :reduce="label => label.value"  v-model="IncidentStore.form.incident_priority" />
+                </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
                 <Textarea label="Notes/Remarks" placeholder="Notes/Remarks" v-model="IncidentStore.form.remarks" />
@@ -35,18 +67,18 @@
                     <Textinput label="Coordinates" :isReadonly="true" placeholder="Coordinates" v-model="IncidentStore.form.coordinates" />
                 </div>
                 <div>
-                    <Map @updateCoordinate="updateCoordinates" />
+                    <Map :set_coordinates="IncidentStore.form.coordinates" @updateCoordinate="updateCoordinates" />
                 </div>
             </div>
         </Block>
 
         <Block blockname="Caller details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
-                <Textinput label="First name" placeholder="First name" />
-                <Textinput label="Last name" placeholder="Last name" />
+                <Textinput label="First name" placeholder="First name" v-model="IncidentStore.form.caller_firstname" />
+                <Textinput label="Last name" placeholder="Last name" v-model="IncidentStore.form.caller_lastname" />
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
-                <Textinput @input="acceptNumber" maxlength="11" placeholder="Contact no." label="Contact no." v-model="IncidentStore.form.phone" />
+                <Textinput @input="acceptNumber" maxlength="11" placeholder="Contact no." label="Contact no." v-model="IncidentStore.form.caller_contact" />
             </div>
         </Block>
 
@@ -81,9 +113,11 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { useIncidentStore } from "@/store/incident";
 import Select from "vue-select";
+import { ref } from "vue";
 const IncidentStore = useIncidentStore();
 const status = ["Active","Inactive"]
-
+const date = ref();
+const time = ref();
 export default{
     components:{
         Block,
@@ -98,8 +132,15 @@ export default{
     data(){
         return{
             status,
-            IncidentStore
+            IncidentStore,
+            date,
+            time
         }    
+    },
+    mounted(){
+        IncidentStore.get_incident_type();
+        IncidentStore.get_incident_status();
+        IncidentStore.get_incident_priority();
     },
     methods:{
         updateCoordinates(event){
@@ -107,7 +148,14 @@ export default{
             IncidentStore.form.coordinates = lng+","+lat;
         },
         acceptNumber(event){
-            IncidentStore.form.phone = IncidentStore.form.phone.replace(/[^\d]/g, "");
+            IncidentStore.form.caller_contact = IncidentStore.form.caller_contact.replace(/[^\d]/g, "");
+        },
+        updateDateFormat(datevalue){
+            date.value = datevalue;
+            IncidentStore.form.date_of_incident = datevalue.toISOString().substring(0, 10);
+        },
+        updateTimeFormat(){
+
         }
     }
 }
