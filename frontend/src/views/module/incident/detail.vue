@@ -28,11 +28,11 @@
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
                       <label for="" class="inline-block input-label">Incident Status :</label>
-                      {{ IncidentStore.form.incident_status }}
+                      {{ getSingleIncidentStatus }}
                   </div>
                   <div class="fromGroup relative">
                       <label for="" class="inline-block input-label">Incident Priority :</label>
-                      {{ IncidentStore.form.incident_priority }}
+                      {{ getSingleIncidentPriority }}
                   </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
@@ -131,9 +131,19 @@ export default {
   computed:{
     getSingleIncidentTypes(){
         var incident_type = IncidentStore.getSingleIncidentType;
-        var incident_type_ = incident_type(IncidentStore.form.incident_type);
+        var incident_type_ = incident_type(IncidentStore.form.incident_type_picklist);
         return incident_type_ === undefined ?  "" : incident_type_.name;
-    }
+    },
+    getSingleIncidentStatus(){
+        var incident_status = IncidentStore.getSingleIncidentStatus;
+        var incident_status_ = incident_status(IncidentStore.form.incident_status_picklist);
+        return incident_status_ === undefined ?  "" : incident_status_.name;
+    },
+    getSingleIncidentPriority(){
+        var incident_priority = IncidentStore.getSingleIncidentPriority;
+        var incident_priority_ = incident_priority(IncidentStore.form.incident_priority_picklist);
+        return incident_priority_ === undefined ?  "" : incident_priority_.name;
+    },
   },  
   data(){
     return{

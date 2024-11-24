@@ -26,8 +26,9 @@
           </TabList>
         </Card>
       <TabPanels>
-        <TabPanel :unmount="true" v-for="(item,i) in buttons" :key="i">
+        <TabPanel v-for="(item,i) in buttons" :key="i">
             <component v-if="item.title == 'Details' " :is="Details()"></component>
+            <component v-if="item.title == 'Updates' " :is="Updates()"></component>
         </TabPanel>
       </TabPanels>
   </TabGroup>
@@ -38,11 +39,11 @@
 import Incident from "./incident/detail.vue"
 import Resource from "./resources/detail.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
+import Update from "./update.vue";
 import Card from "@/components/Card";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import Icon from "@/components/Icon";
 import { ref } from "vue";
-const modules_page = ref();
 const buttons = [
   {
     title: "Details",
@@ -55,7 +56,6 @@ const buttons = [
 ];
 export default {
     components:{
-        Incident,
         Breadcrumb,
         Card,
         TabGroup,
@@ -64,25 +64,31 @@ export default {
         TabPanel,
         TabPanels,
         Icon,
-        Resource
+        Resource,
+        Incident,
+        Update,
+      
     },
 
     methods:{
       Details(){
-            const modules = this.$route.params.module;
+          const modules=this.$route.params.module
             var modules_ = "";
             switch (modules) {
                 case 'incidents':
-                  modules_ = Incident;
+                  modules_ = 'Incident';
                     break;
                 case 'resources':
-                  modules_ = Resource;
+                  modules_ = 'Resource';
                     break;
                 default:
                     break;
             }
             return modules_;
-        }
+        },
+        Updates(){
+            return 'Update'
+        },
     },
     computed:{
       

@@ -78,7 +78,7 @@ export default {
                     modules__ = "Incident";
                     break;
                 case 'resources':
-                    modules__ = "Resource";
+                    modules__ = "Resources";
                     break;
             
                 default:

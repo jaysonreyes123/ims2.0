@@ -59,16 +59,21 @@ export default {
             const module_  = this.$route.params.module;
             switch (module_) {
                 case 'incidents':
-                    this.modules = Incident;
+                    this.modules = 'Incident';
                     break;
                 case 'resources':
-                    this.modules = Resources;
+                    this.modules = 'Resources';
                     break;
             
                 default:
                     break;
             }
             return this.modules;
+        }
+    },
+    methods:{
+        changePage(data){
+            console.log(data)
         }
     }
 }

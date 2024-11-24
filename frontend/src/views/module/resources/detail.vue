@@ -91,22 +91,22 @@ export default {
   computed:{
     getResourceType(){
         const type  = ResourcesStore.getSingleResourceType;
-        const type_ = type(ResourcesStore.form.resources_type);
+        const type_ = type(ResourcesStore.form.resources_type_picklist);
         return type_ === undefined ?  "" : type_.name;
     },
     getResourceStatus(){
         const status  = ResourcesStore.getSingleResourceStatus;
-        const status_ = status(ResourcesStore.form.resources_status);
+        const status_ = status(ResourcesStore.form.resources_status_picklist);
         return status_ === undefined ?  "" : status_.name;
     },
     getResourceDispatch(){
         const dispatch  = ResourcesStore.getSingleResourceDispatch;
-        const dispatch_ = dispatch(ResourcesStore.form.dispatch);
+        const dispatch_ = dispatch(ResourcesStore.form.dispatch_picklist);
         return dispatch_ === undefined ?  "" : dispatch_.name;
     },
     getResourceCondition(){
         const condition  = ResourcesStore.getSingleResourceCondition;
-        const condition_ = condition(ResourcesStore.form.condition);
+        const condition_ = condition(ResourcesStore.form.condition_picklist);
         return condition_ === undefined ?  "" : condition.name;
     },
   },

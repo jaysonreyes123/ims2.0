@@ -4,8 +4,8 @@
       class="relative lg:h-[32px] lg:w-[32px] lg:bg-gray-500-f7 bg-slate-50 text-slate-900 lg:dark:bg-slate-900 dark:text-white cursor-pointer rounded-full text-[20px] flex flex-col items-center justify-center"
       ><Icon icon="heroicons-outline:bell" class="animate-tada" />
       <span
-      v-if="dashboard.incident.length > 0"  class="absolute lg:right-0 lg:top-0 -top-2 -right-2 h-4 w-4 bg-red-500 text-[8px] font-semibold flex flex-col items-center justify-center rounded-full text-white z-[99]"
-        >{{ dashboard.incident.length }}</span
+      class="absolute lg:right-0 lg:top-0 -top-2 -right-2 h-4 w-4 bg-red-500 text-[8px] font-semibold flex flex-col items-center justify-center rounded-full text-white z-[99]"
+        >0</span
       >
     </span>
     <template v-slot:menus>
@@ -101,19 +101,6 @@ import Icon from "@/components/Icon";
 import { MenuItem } from "@headlessui/vue";
 import { notifications } from "../../../constant/data";
 import Badge from "@/components/Badge";
-import rainfall from "@/assets/images/svg/rainfall.svg";
-import waterlevel from "@/assets/images/svg/waterlevel.svg";
-import { useDashboardStore } from "@/store/dashboard";
-import { onMounted,getCurrentInstance } from "vue";
-const properties = getCurrentInstance().appContext.config.globalProperties
-const dashboard = useDashboardStore();
-//dashboard.loadIncident();
-
-onMounted(()=>{
-  properties.incident_event.listen(".incident-event",(e)=>{
-   // dashboard.loadIncident();
-  })
-})
 
 </script>
 <style lang=""></style>

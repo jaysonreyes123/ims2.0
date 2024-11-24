@@ -1,21 +1,14 @@
 
 <template>
-    
     <div>
-      <Loading v-model:active="incidentstore.loading"/>
       <vue-good-table
-      
-        v-if="!incidentstore.loading"
+        :isLoading.sync="listStore.loading"
         :columns="columns"
-        :total_rows="incidentstore.incidentList.length"
         styleClass=" vgt-table  lesspadding2 centered "
-        :rows="incidentstore.incidentList"
+        :rows="listStore.list"
         :pagination-options="{
           enabled: true,
           perPage: perpage,
-        }"
-        :sort-options="{
-          enabled: true,
         }"
         :select-options="{
           enabled: true,
@@ -64,14 +57,12 @@
         <template #pagination-bottom="props">
           <div class="py-4 px-3 flex justify-center">
             <Pagination
-              :total="incidentstore.incidentList.length"
-              :current="current"
-              :per-page="perpage"
+              :total="listStore.total"
+              :current="listStore.current"
+              :per-page="listStore.per_page"
               :pageRange="pageRange"
-              @page-changed="current = $event"
-              :pageChanged="props.pageChanged"
+              :pageChanged="changePage"
               :perPageChanged="props.perPageChanged"
-            >
               >
             </Pagination>
           </div>
@@ -84,10 +75,9 @@
   import Icon from "@/components/Icon";
   import Tooltip from "@/components/Tooltip";
   import Pagination from "@/components/Pagination";
-  import { advancedTable } from "../../../constant/basic-tablle-data";
-  import { useIncidentStore } from "@/store/incident";
   import Swal from 'sweetalert2';
-  const incidentstore = useIncidentStore();
+  import { useListStore } from "@/store/list";
+  const listStore = useListStore();
   export default {
     components: {
       Pagination,
@@ -95,10 +85,17 @@
       Tooltip,
       Swal
     },
-    mounted(){
-      incidentstore.list();
+    created(){
+      listStore.List(this.modules);
     },  
     methods:{
+      changePage(event){
+        if(listStore.current != event.currentPage){
+          listStore.current = event.currentPage;
+          listStore.List(this.modules);
+        }
+        
+      },
       del(id){
         Swal.fire({
           title: "Do you want to delete this "+this.$route.params.module+" ?", 
@@ -109,7 +106,7 @@
           confirmButtonText: "Yes, delete it!", 
         }).then((result) => { 
             if (result.isConfirmed) {
-                incidentstore.del(id);
+                listStore.Delete(this.modules,id);
             } 
         });
 
@@ -117,17 +114,8 @@
     },
     data() {
       return {
-
-        incidentstore,
-        advancedTable,
-        current: 1,
-        perpage: 10,
-        pageRange: 5,
-        searchTerm: "",
-        serverParams:{
-          page:1,
-          perPage:10
-        },
+        modules:this.$route.params.module,
+        listStore,
         columns: [
           {
             label: "No.",
@@ -135,7 +123,7 @@
           },
           {
             label: "Incident type",
-            field: "incident_type",
+            field: "incident_type.name",
           },
           {
             label: "Incident status",

@@ -12,11 +12,11 @@ export const useIncidentStore = defineStore("incident",{
             loading:true,
             form:{
                 incident_no:"",
-                incident_type:"",
+                incident_type_picklist:"",
                 time_of_incident:null,
                 date_of_incident:null,
-                incident_status:"",
-                incident_priority:"",
+                incident_status_picklist:"",
+                incident_priority_picklist:"",
                 remarks:"",
                 location:"",
                 street_name:"",
@@ -64,7 +64,7 @@ export const useIncidentStore = defineStore("incident",{
                 }
             })
         },
-        getSingleIncidentStatus(state){
+        getSingleIncidentPriority(state){
             return (incident_priority_id) => state.incidentPriority.find((incident_priority) => incident_priority.id === incident_priority_id)
         },
     },
@@ -166,6 +166,16 @@ export const useIncidentStore = defineStore("incident",{
             try {
                 const response = await this.axios.get("incident_priority");
                 this.incidentPriority = response.data.data;
+            } catch (error) {
+                
+            }
+        },
+        async generate_id(modules){
+            try {   
+                this.loading = true;
+                const response = await this.axios.get('generate/id/'+modules);
+                this.form.incident_no =  response.data;
+                this.loading = false;
             } catch (error) {
                 
             }

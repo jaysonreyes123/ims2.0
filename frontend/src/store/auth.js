@@ -140,7 +140,7 @@ export const useAuthStore = defineStore('auth', {
                 toast.success("Login successfully", {
                     timeout: 1000,
                 });
-                this.router.push("/app/dashboard");
+                this.router.push("/app/module/incidents");
             } catch (err) { 
                 this.isLoading = false;
                 toast.error("Get User Details Error, please try again!", {

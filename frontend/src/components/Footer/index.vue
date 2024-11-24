@@ -5,7 +5,7 @@
     >
       <div class="grid md:grid-cols-2 grid-cols-1 md:gap-5">
         <div class="text-center ltr:md:text-start rtl:md:text-right text-sm">
-          COPYRIGHT &copy; 2022 FMS v1.0.0  
+          COPYRIGHT &copy; 2022 IMS
         </div>
         <div class="ltr:md:text-right rtl:md:text-end text-center text-sm">
           Made by

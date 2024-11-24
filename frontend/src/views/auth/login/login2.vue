@@ -90,12 +90,6 @@ export default {
     Social,
     Signin,
   },
-  created(){
-           this.rg_event.stopListening(".rg-event");
-           this.wl_event.stopListening(".wl-event");
-           this.single_event.stopListening(".single-chart-event");
-           this.incident_event.stopListening(".incident-event");
-  }
 };
 </script>
 <style lang="scss"></style>

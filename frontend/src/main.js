@@ -24,16 +24,10 @@ import axiosIns from "./plugins/axios";
 import Vue3ColorPicker from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 import ColorInput from 'vue-color-input'
-
 import "vue-select/dist/vue-select.css";
-
 import echo from "./plugins/pusher";
-
-
 const pinia = createPinia()
-
 import window from "./mixins/window";
- 
 // vue use
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
@@ -55,25 +49,13 @@ const app = createApp(App)
     .use(ColorInput)
 
 app.component('Loading',Loading);
-
 app.config.globalProperties.$store = {}; 
-app.config.globalProperties.window = window;
-app.config.globalProperties.rg_event = echo.channel('rg-event');
-app.config.globalProperties.wl_event = echo.channel('wl-event');
-app.config.globalProperties.single_event = echo.channel('single-chart-event');
-app.config.globalProperties.incident_event = echo.channel('incident-event');
-app.config.globalProperties.rgwl_event = echo.channel('rgwl-event');
-
-
 pinia.use(({ store }) => {
     store.router = markRaw(router);
     store.axios = axiosIns;
-    store.type = ["REG20000","REG20001"];
 });
 pinia.use(piniaPluginPersistedState)
-
 app.mount("#app");
-
 import {useThemeSettingsStore} from "@/store/themeSettings";
 const themeSettingsStore = useThemeSettingsStore()
 

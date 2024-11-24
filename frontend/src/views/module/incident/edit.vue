@@ -3,20 +3,11 @@
         <Loading v-model:active="IncidentStore.loading"/>
         <Block blockname="Incident Details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
-                <Textinput label="Incident ID(auto generate)" name="id" placeholder="Incident ID(auto generate)" v-model="IncidentStore.form.incident_no" />
+                <Textinput :isReadonly="true" label="Incident ID(auto generate)" name="id" placeholder="Incident ID(auto generate)" v-model="IncidentStore.form.incident_no" />
                 <!-- <Textinput label="Incident Type" placeholder="Incident Type" v-model="IncidentStore.form.incident_type" /> -->
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Type</label>
-                    <Select :required="true" placeholder="Select an option" :options="IncidentStore.getIncidentType" :reduce="label => label.value"  v-model="IncidentStore.form.incident_type" >
-                        <template #search="{attributes, events}">
-                            <input
-                            class="vs__search"
-                            :required="!IncidentStore.form.incident_type"
-                            v-bind="attributes"
-                            v-on="events"
-                            />
-                        </template>
-                    </Select>
+                    <Select :required="true" placeholder="Select an option" :options="IncidentStore.getIncidentType" :reduce="label => label.value"  v-model="IncidentStore.form.incident_type_picklist" />
                 </div>
             </div>
             <div class="lg:grid lg:grid-cols-2 gap-12">
@@ -46,11 +37,11 @@
             <div class="lg:grid lg:grid-cols-2 gap-12">
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Status</label>
-                    <Select placeholder="Incident Status" :options="IncidentStore.getIncidentStatus" :reduce="label => label.value"  v-model="IncidentStore.form.incident_status" />
+                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentStatus" :reduce="label => label.value"  v-model="IncidentStore.form.incident_status_picklist" />
                 </div>
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Priority</label>
-                    <Select placeholder="Incident Priority" :options="IncidentStore.getIncidentPriority" :reduce="label => label.value"  v-model="IncidentStore.form.incident_priority" />
+                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentPriority" :reduce="label => label.value"  v-model="IncidentStore.form.incident_priority_picklist" />
                 </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
@@ -141,6 +132,9 @@ export default{
         IncidentStore.get_incident_type();
         IncidentStore.get_incident_status();
         IncidentStore.get_incident_priority();
+        if(this.$route.params.id == ""){
+            IncidentStore.generate_id(this.$route.params.module);
+        }
     },
     methods:{
         updateCoordinates(event){

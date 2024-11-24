@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\Generate;
+use App\Http\Controllers\ActivityLogsController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ResourceController;
@@ -22,4 +24,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("resources_condition",[ResourceController::class,'resources_condition']);
     Route::get("resources_dispatch",[ResourceController::class,'resources_dispatch']);
     Route::get("resources_status",[ResourceController::class,'resources_status']);
+
+    //activity logs
+    Route::get("activity_logs/{module}/{module_id}",[ActivityLogsController::class,'activity_logs']);
+
+
+    //generate id
+    Route::get("generate/id/{module}",function($module){
+        return Generate::id($module);
+    });
 });

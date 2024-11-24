@@ -4,8 +4,8 @@
     <!-- end header -->
     <Sidebar
       v-if="
-        this.$store.themeSettingsStore.menuLayout === 'horizontal' &&
-        this.$store.themeSettingsStore.sidebarHidden === false &&
+        $store.themeSettingsStore.menuLayout === 'horizontal' &&
+        $store.themeSettingsStore.sidebarHidden === false &&
         this.window.width > 1280
       "
     />
@@ -33,7 +33,7 @@
       >
         <div
           :class="` transition-all duration-150 ${
-            this.$store.themeSettingsStore.cWidth === 'boxed'
+            $store.themeSettingsStore.cWidth === 'boxed'
               ? 'container mx-auto'
               : 'container-fluid'
           }`"
@@ -48,7 +48,7 @@
       </div>
     </div>
     <!-- end page content -->
-    <!-- <FooterMenu v-if="this.window.width < 768" /> -->
+    <!-- <FooterMenu v-if="this.this.window.width < 768" /> -->
     <Footer
       :class="this.window.width > 1280 ? switchHeaderClass() : ''"
       v-if="this.window.width > 768"
@@ -57,6 +57,37 @@
   </main>
 </template>
 
+<!-- <script setup>
+import axiosIns from "@/plugins/axios";
+import alert_toast from "@/views/dashboard/component/toast.vue";
+import {useDashboardStore} from "@/store/dashboard";
+import { onMounted, ref,getCurrentInstance } from "vue";
+import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+const properties = getCurrentInstance().appContext.config.globalProperties
+      const alarm = [
+    {
+        name:"station1",
+        color:"#85eddf"
+    },
+    {
+        name:"station2",
+        color:"#e1fc2b"
+    }
+]
+// onMounted(()=>{
+//  const current_route = router.currentRoute._value.name;
+//  if(current_route != "dashboard"){
+//   dashboard.loadNotification();
+//     notification_event.listen('.notification-event',(e)=>{
+//     dashboard.loadNotification();
+//   })
+//  }
+//  else{
+//   dashboard.notification = [];
+//  }
+// })
+</script> -->
 <script>
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "../components/Footer";

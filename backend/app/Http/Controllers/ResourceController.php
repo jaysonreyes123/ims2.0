@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
+use App\Helpers\ActivityLogs;
 use App\Http\Resources\ResourceResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Resource;
@@ -20,10 +21,10 @@ class ResourceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : JsonResponse
+    public function index()
     {
         //
-        return $this->success(ResourceResources::collection(Resource::where('deleted',0)->get()));
+        return ResourceResources::collection(Resource::with('resources_type')->where('deleted',0)->paginate(10));
     }
 
     /**
@@ -53,6 +54,7 @@ class ResourceController extends Controller
             }
         }
         $model->save();
+        ActivityLogs::log($model->id,'resources','create');
         return $this->success(new ResourceResources($model),class_basename($model).ResponseConstants::STORE);
     }
 
@@ -79,6 +81,7 @@ class ResourceController extends Controller
     public function update(Request $request, Resource $resource) : JsonResponse
     {
         //
+        $original = $resource->replicate();
         foreach($request->all() as $key => $value){
             if($key == 'assigned_team'){
                 $resource->$key = json_encode($value);
@@ -91,6 +94,7 @@ class ResourceController extends Controller
             }
         }
         $resource->save();
+        ActivityLogs::log($resource->id,'resources','update',$original,$resource);
         return $this->success(new ResourceResources($resource),class_basename($resource).ResponseConstants::UPDATE);
     }
 

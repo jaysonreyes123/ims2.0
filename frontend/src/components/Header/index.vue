@@ -53,7 +53,7 @@
         <div
           class="nav-tools flex items-center lg:space-x-5 space-x-3 rtl:space-x-reverse"
         > 
-          <SwitchDark />  
+          <!-- <SwitchDark />   -->
           <Notification v-if="this.window.width > 768" />
           <Profile  />
           <!-- <handle-mobile-menu v-if="this.window.width < 768" /> -->

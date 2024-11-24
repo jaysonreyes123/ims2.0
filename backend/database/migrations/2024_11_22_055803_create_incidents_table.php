@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('incident_no')->nullable();
 
-            $table->unsignedBigInteger('incident_type')->nullable();
-            $table->foreign('incident_type')->references('id')->on('incident_types')->onDelete('cascade');
+            $table->unsignedBigInteger('incident_type_picklist')->nullable();
+            $table->foreign('incident_type_picklist')->references('id')->on('incident_types')->onDelete('cascade');
 
             $table->time('time_of_incident')->nullable();
             $table->date('date_of_incident')->nullable();
 
-            $table->unsignedBigInteger('incident_status')->nullable();
-            $table->foreign('incident_status')->references('id')->on('incident_statuses')->onDelete('cascade');
+            $table->unsignedBigInteger('incident_status_picklist')->nullable();
+            $table->foreign('incident_status_picklist')->references('id')->on('incident_statuses')->onDelete('cascade');
 
-            $table->unsignedBigInteger('incident_priority')->nullable();
-            $table->foreign('incident_priority')->references('id')->on('incident_priorities')->onDelete('cascade');
+            $table->unsignedBigInteger('incident_priority_picklist')->nullable();
+            $table->foreign('incident_priority_picklist')->references('id')->on('incident_priorities')->onDelete('cascade');
             
             $table->text('remarks')->nullable();
 

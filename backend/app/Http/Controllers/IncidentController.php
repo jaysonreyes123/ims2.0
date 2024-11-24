@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
+use App\Helpers\ActivityLogs;
 use App\Http\Resources\IncidentResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Incident;
@@ -19,10 +20,10 @@ class IncidentController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index() : JsonResponse
+    public function index()
     {
         //
-       return $this->success(IncidentResources::collection(Incident::where('deleted',0)->get()));
+       return  IncidentResources::collection(Incident::with(['incident_type'])->where('deleted',0)->paginate(10));
     }
 
     /**
@@ -59,6 +60,7 @@ class IncidentController extends Controller
             }
         }
         $model->save();
+        ActivityLogs::log($model->id,'incidents','create');
         return $this->success(new IncidentResources($model),class_basename($model).ResponseConstants::STORE);
     }
 
@@ -82,10 +84,10 @@ class IncidentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Incident $incident): JsonResponse
+    public function update(Request $request, Incident $incident) 
     {
         //
-        
+        $original_incident = $incident->replicate();
         foreach($request->all() as $key => $value){
             if($key == 'assigned_team'){
                 $incident->$key = json_encode($value);
@@ -103,6 +105,7 @@ class IncidentController extends Controller
             }
         }
         $incident->save();
+        ActivityLogs::log($incident->id,'incidents','update',$original_incident,$incident);
         return $this->success(new IncidentResources($incident),class_basename($incident).ResponseConstants::UPDATE);
     }
 

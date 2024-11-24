@@ -15,19 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('resources_name')->nullable();
 
-            $table->unsignedBigInteger('resources_type')->nullable();
-            $table->foreign('resources_type')->references('id')->on('resources_types')->onDelete('cascade');
+            $table->unsignedBigInteger('resources_type_picklist')->nullable();
+            $table->foreign('resources_type_picklist')->references('id')->on('resources_types')->onDelete('cascade');
 
-            $table->unsignedBigInteger('resources_status')->nullable();
-            $table->foreign('resources_status')->references('id')->on('resources_statuses')->onDelete('cascade');
+            $table->unsignedBigInteger('resources_status_picklist')->nullable();
+            $table->foreign('resources_status_picklist')->references('id')->on('resources_statuses')->onDelete('cascade');
 
             $table->string('coordinates')->nullable();
 
-            $table->unsignedBigInteger('dispatch')->nullable();
-            $table->foreign('dispatch')->references('id')->on('resources_dispatchers')->onDelete('cascade');
+            $table->unsignedBigInteger('dispatch_picklist')->nullable();
+            $table->foreign('dispatch_picklist')->references('id')->on('resources_dispatchers')->onDelete('cascade');
 
-            $table->unsignedBigInteger('condition')->nullable();
-            $table->foreign('condition')->references('id')->on('resources_conditions')->onDelete('cascade');
+            $table->unsignedBigInteger('condition_picklist')->nullable();
+            $table->foreign('condition_picklist')->references('id')->on('resources_conditions')->onDelete('cascade');
 
             $table->integer('quantity')->default(1);
             $table->string('contact_info')->nullable();

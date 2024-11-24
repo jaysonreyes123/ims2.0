@@ -4,6 +4,8 @@ const toast = useToast();
 export const useSystemStore = defineStore('system',{
     state:()=>{
         return{
+            loading:false,
+            logs:[],
             systemForm:{
                 logo:"",
                 site:""
@@ -14,6 +16,17 @@ export const useSystemStore = defineStore('system',{
 
     },
     actions:{
+        async activity_logs(modules,id){
+            try {
+                this.log = [];
+                this.loading = true;
+                const response = await this.axios.get('activity_logs/'+modules+"/"+id);
+                this.logs = response.data.data;
+                this.loading = false;
+            } catch (error) {
+                
+            }
+        },
         async save(){
             try {
                 if(this.systemForm.site == ""){
