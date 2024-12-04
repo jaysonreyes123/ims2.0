@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('incident_priorities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('label');
             $table->timestamps();
         });
     }

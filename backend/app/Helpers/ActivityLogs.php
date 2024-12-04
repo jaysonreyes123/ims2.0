@@ -14,7 +14,7 @@ class ActivityLogs{
                 if($key != "updated_at"){
                     $old_value = self::check_picklist($key,$old_model);
                     $new_value = self::check_picklist($key,$new_model);
-                    $label = self::serialize_label($key);
+                    $label = $key;
                     $description.= $label." changed <br>";
                     $description.="<b>From</b>: ".$old_value." <br> <b>To</b>: ".$new_value."<br> <br>";
                 }   
@@ -41,7 +41,7 @@ class ActivityLogs{
         $parse_label = explode("_",$label);
         if(end($parse_label) == "picklist"){
             $new_label = str_replace("_picklist","",$label);
-            return $model->$new_label->name ?? "";
+            return $model->$new_label->label ?? "";
         }
         return $model->$label;
     }

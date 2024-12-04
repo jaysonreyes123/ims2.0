@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('resources_conditions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('label');
             $table->timestamps();
         });
     }

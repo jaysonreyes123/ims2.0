@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             ResourcesStatusSeeder::class,
             ResourcesDispatchSeeder::class,
             ResourcesConditionSeeder::class,
-
+            CallerTypeSeeder::class,
+            ResponderTypeSeeder::class,
+            PrePlanClassificaionSeeder::class,
         ]);
     }
 }

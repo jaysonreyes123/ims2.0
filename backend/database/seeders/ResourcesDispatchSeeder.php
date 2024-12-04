@@ -17,23 +17,23 @@ class ResourcesDispatchSeeder extends Seeder
         DB::table('resources_dispatchers')->insert([
             [
                 "id" => 1,
-                "name" => "Makati Fire Dept"
+                "label" => "Makati Fire Dept"
             ],
             [
                 "id" => 2,
-                "name" => "Makati Rescue Team"
+                "label" => "Makati Rescue Team"
             ],
             [
                 "id" => 3,
-                "name" => "Pending"
+                "label" => "Pending"
             ],
             [
                 "id" => 4,
-                "name" => "No"
+                "label" => "No"
             ],
             [
                 "id" => 5,
-                "name" => "Yes"
+                "label" => "Yes"
             ],
         ]);
     }

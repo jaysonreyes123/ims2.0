@@ -127,7 +127,7 @@
           },
           {
             label: "Incident status",
-            field: "incident_status",
+            field: "incident_status.name",
           },
           {
             label: "Created time",

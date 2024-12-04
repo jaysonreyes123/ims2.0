@@ -18,7 +18,7 @@
                 >
                   <span class="font-bold">{{ item.users_.name }}</span> - {{item.action}}
                 </h2>
-                <p class="text-xs dark:text-slate-400" v-html="item.description"></p>
+                <p class="text-xs dark:text-slate-400" v-html="item.description.replace('agency_name ','test')"></p>
               </div>
             </li>
           </ul>
@@ -27,10 +27,14 @@
 </template>
 
 <script>
+import Card from "@/components/Card";
+import { contacts_field } from "./fields/contacts";
+import { incidents_field } from "./fields/incidents";
+import { resources_field } from "./fields/resources";
+import { agency_fields } from './fields/agency';
+
 import { useSystemStore } from '@/store/system';
 const SystemStore = useSystemStore();
-import Card from "@/components/Card";
-import { trackingParcel } from '@/constant/data';
 export default {
     components:{
         Card
@@ -40,13 +44,43 @@ export default {
             modules:this.$route.params.module,
             module_id:this.$route.params.id,
             SystemStore,
-            trackingParcel
         }
     },
     mounted(){
         SystemStore.activity_logs(this.modules,this.module_id);
-    }
-
+    },
+    computed:{
+        fields_computed(){
+            let fields__;
+            const modules__ = this.$route.params.module;
+            switch (modules__) {
+                case 'incidents':
+                    fields__ = incidents_field;
+                    break;
+                case 'resources':
+                    fields__ = resources_field;
+                    break;
+                case 'contacts':
+                    fields__ = contacts_field;
+                    break;
+                case 'agencies':
+                    fields__ = agency_fields;
+                    break;
+                default:
+                    break;
+            }
+        return fields__;
+        },
+        fields(){
+          const fields_ = [];
+            this.fields_computed.map(item=>{
+                item.fields.map(item2=>{
+                  fields_[item2.name] = item2.label;
+                })
+            });
+           return fields_;
+        }
+      }
 }
 </script>
 

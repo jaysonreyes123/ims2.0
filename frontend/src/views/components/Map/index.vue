@@ -9,14 +9,20 @@
                 @mb-click="clickMap"
                 >
                 <MapboxMarker :lng-lat="coordinates_()" />
+                <MapboxGeocoder 
+                countries="PH"
+                @mb-result="geolocate"
+                :marker="false"
+                />
         </MapboxMap>
     </div>
 
   </template>
   <script>
-  import { MapboxMap, MapboxMarker } from '@studiometa/vue-mapbox-gl';
+  import { MapboxMap, MapboxMarker,MapboxGeocoder } from '@studiometa/vue-mapbox-gl';
   import Card from "@/components/Card";
   import 'mapbox-gl/dist/mapbox-gl.css';
+  import '@mapbox/mapbox-gl-geocoder/lib/mapbox-gl-geocoder.css';
   export default { 
       props:{
         set_coordinates:{
@@ -27,6 +33,7 @@
       components:{
           MapboxMap,
           MapboxMarker,
+          MapboxGeocoder,
           Card,
       },
       data(){
@@ -36,6 +43,11 @@
         }
       },
       methods:{
+        geolocate(event){
+            const coordinates = event.result.geometry.coordinates;
+            this.coordinates=coordinates;
+            this.$emit("updateCoordinate",{lng:coordinates[0],lat:coordinates[1]})
+        }, 
         clickMap(event){
             const {lng,lat} = event.lngLat;
             this.coordinates=[lng,lat];

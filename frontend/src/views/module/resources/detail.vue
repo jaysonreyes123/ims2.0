@@ -6,56 +6,56 @@
 
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Resource Name :</label>
-                  {{ ResourcesStore.form.resources_name }}
+                  <label for="">Resource Name</label>
+                  <span>{{ ResourcesStore.form.resources_name }}</span>
               </div>
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Resource Type :</label>
-                  {{ getResourceType }}
-              </div>
-            </div>
-
-            <div class="lg:grid lg:grid-cols-2 gap-12">
-              <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Quantity :</label>
-                  {{ ResourcesStore.form.quantity }}
-              </div>
-              <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Status :</label>
-                  {{ getResourceStatus }}
+                  <label for="">Resource Type</label>
+                  <span>{{ find_picklist_value('resources_types_picklist',ResourcesStore.form.resources_types_picklist) }}</span>
               </div>
             </div>
 
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Contact info :</label>
-                  {{ ResourcesStore.form.contact_info }}
+                  <label for="">Quantity</label>
+                  <span>{{ ResourcesStore.form.quantity }}</span>
               </div>
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Owner :</label>
-                  {{ ResourcesStore.form.owner }}
-              </div>
-            </div>
-
-            <div class="lg:grid lg:grid-cols-2 gap-12">
-              <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Date Acquired :</label>
-                  {{ ResourcesStore.form.date_acquired }}
-              </div>
-              <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Dispatch :</label>
-                  {{ getResourceDispatch }}
+                  <label for="">Status</label>
+                  <span>{{ find_picklist_value('resources_statuses_picklist',ResourcesStore.form.resources_statuses_picklist) }}</span>
               </div>
             </div>
 
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Remarks :</label>
-                  {{ ResourcesStore.form.remarks }}
+                  <label for="">Contact info</label>
+                  <span>{{ ResourcesStore.form.contact_info }}</span>
               </div>
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Condition :</label>
-                  {{ getResourceCondition }}
+                  <label for="">Owner</label>
+                  <span>{{ ResourcesStore.form.owner }}</span>
+              </div>
+            </div>
+
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                  <label for="">Date Acquired</label>
+                  <span>{{ ResourcesStore.form.date_acquired }}</span>
+              </div>
+              <div class="fromGroup relative">
+                  <label for="">Dispatch</label>
+                  <span>{{ find_picklist_value('dispatchers_picklist',ResourcesStore.form.dispatchers_picklist) }}</span>
+              </div>
+            </div>
+
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                  <label for="">Remarks</label>
+                  <span>{{ ResourcesStore.form.remarks }}</span>
+              </div>
+              <div class="fromGroup relative">
+                  <label for="">Condition</label>
+                  <span>{{ find_picklist_value('conditions_picklist',ResourcesStore.form.conditions_picklist) }}</span>
               </div>
             </div>
 
@@ -64,8 +64,8 @@
               <div class="lg:grid lg:grid-cols-2 gap-12">
                   <div>
                     <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Coordinates :</label>
-                      {{ ResourcesStore.form.coordinates }}
+                      <label for="">Coordinates</label>
+                      <span>{{ ResourcesStore.form.coordinates }}</span>
                     </div>
                   </div>
                   <div>
@@ -88,27 +88,17 @@ export default {
     Map,
     Card,
   },
-  computed:{
-    getResourceType(){
-        const type  = ResourcesStore.getSingleResourceType;
-        const type_ = type(ResourcesStore.form.resources_type_picklist);
-        return type_ === undefined ?  "" : type_.name;
-    },
-    getResourceStatus(){
-        const status  = ResourcesStore.getSingleResourceStatus;
-        const status_ = status(ResourcesStore.form.resources_status_picklist);
-        return status_ === undefined ?  "" : status_.name;
-    },
-    getResourceDispatch(){
-        const dispatch  = ResourcesStore.getSingleResourceDispatch;
-        const dispatch_ = dispatch(ResourcesStore.form.dispatch_picklist);
-        return dispatch_ === undefined ?  "" : dispatch_.name;
-    },
-    getResourceCondition(){
-        const condition  = ResourcesStore.getSingleResourceCondition;
-        const condition_ = condition(ResourcesStore.form.condition_picklist);
-        return condition_ === undefined ?  "" : condition.name;
-    },
+  methods:{
+    find_picklist_value(name,value){
+      var label = "";
+      if(ResourcesStore[name] !== undefined){
+        const option = ResourcesStore[name].find(item => item.id == value )
+        if(option !== undefined){
+          label = option.label;
+        } 
+      }
+      return label;
+    }
   },
   mounted(){
     const id = this.$route.params.id;
@@ -128,6 +118,19 @@ label{
   font-weight: bold;
 }
 .fromGroup{
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  display: flex;
+
+}
+.fromGroup label{
+  overflow-wrap:break-word;
+  width: 200px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-transform: capitalize;
+}
+.fromGroup span{
+  font-size: 0.875rem;
 }
 </style>

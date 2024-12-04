@@ -17,23 +17,23 @@ class ResourcesConditionSeeder extends Seeder
         DB::table('resources_conditions')->insert([
             [
                 "id" => 1,
-                "name" => "Excellent"
+                "label" => "Excellent"
             ],
             [
                 "id" => 2,
-                "name" => "Fair"
+                "label" => "Fair"
             ],
             [
                 "id" => 3,
-                "name" => "Good"
+                "label" => "Good"
             ],
             [
                 "id" => 4,
-                "name" => "New"
+                "label" => "New"
             ],
             [
                 "id" => 5,
-                "name" => "Poor"
+                "label" => "Poor"
             ],
         ]);
     }

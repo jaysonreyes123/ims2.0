@@ -17,7 +17,7 @@ class ResourcesTypeSeeder extends Seeder
         DB::table('resources_types')->insert([
             [
                 "id" => 1,
-                "name" => "test status"
+                "label" => "test status"
             ],
         ]);
     }

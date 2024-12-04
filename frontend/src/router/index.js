@@ -21,7 +21,11 @@ router.beforeEach((to, from, next) => {
   for (let i = 0; i < wordslength; i++) {
     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
   }
-  document.title = "IMS | "+to.params.module+" - "+  words;
+  var modules = "";
+  if(to.params.module != undefined){
+    modules = to.params.module+" - ";
+  }
+  document.title = "IMS | "+modules+  words;
 
   /** Navigate to next if middleware is not applied */
   if (!to.meta.middleware) {

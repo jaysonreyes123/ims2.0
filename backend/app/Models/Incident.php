@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Incident extends Model
 {
 
-    public function incident_type(){
-        return $this->hasOne(IncidentType::class,'id','incident_type_picklist');
+    public function incident_types(){
+        return $this->hasOne(IncidentType::class,'id','incident_types_picklist');
     }
 
-    public function incident_status(){
-        return $this->hasOne(IncidentStatus::class,'id','incident_status_picklist');
+    public function incident_statuses(){
+        return $this->hasOne(IncidentStatus::class,'id','incident_statuses_picklist');
     }
-    public function incident_priority(){
-        return $this->hasOne(IncidentPriority::class,'id','incident_priority_picklist');
+    public function incident_priorities(){
+        return $this->hasOne(IncidentPriority::class,'id','incident_priorities_picklist');
     }
 
 }

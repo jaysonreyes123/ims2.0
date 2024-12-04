@@ -6,72 +6,24 @@ export const useResourcesStore = defineStore("resources",{
         return{
             loading:false,
             ResourceList:[],
-            ResourceType:[],
-            ResourceCondition:[],
-            ResourceDispatch:[],
-            ResourceStatus:[],
+            resources_types_picklist:[],
+            conditions_picklist:[],
+            dispatchers_picklist:[],
+            resources_statuses_picklist:[],
             id:"",
             form:{
                 resources_name:"",
-                resources_type_picklist:"",
-                resources_status_picklist:"",
+                resources_types_picklist:"",
+                resources_statuses_picklist:"",
                 coordinates:"",
-                dispatch_picklist:"",
-                condition_picklist:"",
+                dispatchers_picklist:"",
+                conditions_picklist:"",
                 quantity:1,
                 contact_info:"",
                 date_acquired:"",
                 remarks:""
             }
         }
-    },
-    getters:{
-        getResourceType(state){
-            return state.ResourceType.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getResourceStatus(state){
-            return state.ResourceStatus.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getResourceCondition(state){
-            return state.ResourceCondition.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getResourceDispatch(state){
-            return state.ResourceDispatch.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-
-        getSingleResourceType(state){
-            return (id) => state.ResourceType.find((value) => value.id == id );
-        },
-        getSingleResourceStatus(state){
-            return (id) => state.ResourceStatus.find((value) => value.id == id );
-        },
-        getSingleResourceDispatch(state){
-            return (id) => state.ResourceDispatch.find((value) => value.id == id );
-        },
-        getSingleResourceCondition(state){
-            return (id) => state.ResourceCondition.find((value) => value.id == id );
-        },
- 
     },
     actions:{
         clearField(){
@@ -145,7 +97,7 @@ export const useResourcesStore = defineStore("resources",{
         async get_resources_type(){
             try {
                 const response = await this.axios.get("resources_type");
-                this.ResourceType = response.data.data;
+                this.resources_types_picklist = response.data.data;
             } catch (error) {
                 
             }
@@ -153,7 +105,7 @@ export const useResourcesStore = defineStore("resources",{
         async get_resources_status(){
             try {
                 const response = await this.axios.get("resources_status");
-                this.ResourceStatus = response.data.data;
+                this.resources_statuses_picklist = response.data.data;
             } catch (error) {
                 
             }
@@ -161,7 +113,7 @@ export const useResourcesStore = defineStore("resources",{
         async get_resources_condition(){
             try {
                 const response = await this.axios.get("resources_condition");
-                this.ResourceCondition = response.data.data;
+                this.conditions_picklist = response.data.data;
             } catch (error) {
                 
             }
@@ -169,7 +121,7 @@ export const useResourcesStore = defineStore("resources",{
         async get_resources_dispatch(){
             try {
                 const response = await this.axios.get("resources_dispatch");
-                this.ResourceDispatch = response.data.data;
+                this.dispatchers_picklist = response.data.data;
             } catch (error) {
                 
             }

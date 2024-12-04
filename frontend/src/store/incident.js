@@ -5,18 +5,18 @@ export const useIncidentStore = defineStore("incident",{
     state:()=>{
         return{
             incidentList:[],
-            incidentType:[],
-            incidentStatus:[],
-            incidentPriority:[],
+            incident_types_picklist:[],
+            incident_statuses_picklist:[],
+            incident_priorities_picklist:[],
             id:0,
             loading:true,
             form:{
                 incident_no:"",
-                incident_type_picklist:"",
+                incident_types_picklist:"",
+                incident_statuses_picklist:"",
+                incident_priorities_picklist:"",
                 time_of_incident:null,
                 date_of_incident:null,
-                incident_status_picklist:"",
-                incident_priority_picklist:"",
                 remarks:"",
                 location:"",
                 street_name:"",
@@ -30,43 +30,6 @@ export const useIncidentStore = defineStore("incident",{
                 caller_lastname:""
             }
         }
-    },
-    getters:{
-        getIncidentType(state){
-            return state.incidentType.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getSingleIncidentType(state){
-            return (incident_type_id) => state.incidentType.find((incident_type) => incident_type.id === incident_type_id)
-        },
-
-        getIncidentStatus(state){
-            return state.incidentStatus.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getSingleIncidentStatus(state){
-            return (incident_status_id) => state.incidentStatus.find((incident_status) => incident_status.id === incident_status_id)
-        },
-
-        getIncidentPriority(state){
-            return state.incidentPriority.map(item=>{
-                return{
-                    label:item.name,
-                    value:item.id
-                }
-            })
-        },
-        getSingleIncidentPriority(state){
-            return (incident_priority_id) => state.incidentPriority.find((incident_priority) => incident_priority.id === incident_priority_id)
-        },
     },
     actions:{
         clearField(){
@@ -97,15 +60,6 @@ export const useIncidentStore = defineStore("incident",{
                 if(item == "assigned_team"){
                     this.form[item] = JSON.parse(data[item]); 
                 }
-                // else if(item == "time_of_incident"){
-                //     if(data[item] != null){
-                //         const parse_time = data[item].split(":");
-                //         this.form[item] = {hours:parseInt(parse_time[0]),minutes:parseInt(parse_time[1]),seconds:parseInt(parse_time[2])}
-                //     }
-                //     else{
-                //         this.form[item] = "";
-                //     }
-                // }
                 else{
                     this.form[item] = response.data.data[item]; 
                 }   
@@ -149,7 +103,7 @@ export const useIncidentStore = defineStore("incident",{
         async get_incident_type(){
             try {
                 const response = await this.axios.get("incident_type");
-                this.incidentType = response.data.data;
+                this.incident_types_picklist = response.data.data;
             } catch (error) {
                 
             }
@@ -157,7 +111,7 @@ export const useIncidentStore = defineStore("incident",{
         async get_incident_status(){
             try {
                 const response = await this.axios.get("incident_status");
-                this.incidentStatus = response.data.data;
+                this.incident_statuses_picklist = response.data.data;
             } catch (error) {
                 
             }
@@ -165,7 +119,7 @@ export const useIncidentStore = defineStore("incident",{
         async get_incident_priority(){
             try {
                 const response = await this.axios.get("incident_priority");
-                this.incidentPriority = response.data.data;
+                this.incident_priorities_picklist = response.data.data;
             } catch (error) {
                 
             }

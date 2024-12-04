@@ -41,5 +41,9 @@ class LoginController extends Controller
         $user = User::find(Auth::id());
         return $this->success($user, '');
     }
+    public function get_assigned_to() : JsonResponse {
+        $model = User::where('id','<>',Auth::id())->get();
+        return $this->success($model);
+    }
     
 }

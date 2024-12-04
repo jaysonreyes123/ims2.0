@@ -15,19 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string('resources_name')->nullable();
 
-            $table->unsignedBigInteger('resources_type_picklist')->nullable();
-            $table->foreign('resources_type_picklist')->references('id')->on('resources_types')->onDelete('cascade');
+            $table->unsignedBigInteger('resources_types_picklist')->nullable();
+            $table->foreign('resources_types_picklist')->references('id')->on('resources_types')->onDelete('cascade');
 
-            $table->unsignedBigInteger('resources_status_picklist')->nullable();
-            $table->foreign('resources_status_picklist')->references('id')->on('resources_statuses')->onDelete('cascade');
+            $table->unsignedBigInteger('resources_statuses_picklist')->nullable();
+            $table->foreign('resources_statuses_picklist')->references('id')->on('resources_statuses')->onDelete('cascade');
 
             $table->string('coordinates')->nullable();
 
-            $table->unsignedBigInteger('dispatch_picklist')->nullable();
-            $table->foreign('dispatch_picklist')->references('id')->on('resources_dispatchers')->onDelete('cascade');
+            $table->unsignedBigInteger('dispatchers_picklist')->nullable();
+            $table->foreign('dispatchers_picklist')->references('id')->on('resources_dispatchers')->onDelete('cascade');
 
-            $table->unsignedBigInteger('condition_picklist')->nullable();
-            $table->foreign('condition_picklist')->references('id')->on('resources_conditions')->onDelete('cascade');
+            $table->unsignedBigInteger('conditions_picklist')->nullable();
+            $table->foreign('conditions_picklist')->references('id')->on('resources_conditions')->onDelete('cascade');
 
             $table->integer('quantity')->default(1);
             $table->string('contact_info')->nullable();
@@ -35,6 +35,7 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->string('owner')->nullable();
             $table->integer('deleted')->default(0);
+            $table->string('source')->default('crm');
             $table->timestamps();
         });
     }

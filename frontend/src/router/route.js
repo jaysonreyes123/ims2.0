@@ -49,6 +49,14 @@ const routes = [
           hide: true,
         },
       },
+      {
+        path: "/map/incident_map",
+        name: "Monitoring",
+        component: () => import("@/views/module/map/incident_map.vue"),
+        meta: {
+          hide: true,
+        },
+      },
       // {
       //   path: "dashboard",
       //   name: "dashboard",

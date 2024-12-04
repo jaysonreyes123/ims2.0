@@ -24,6 +24,53 @@ export const topMenu = [
       name : "resources",
       breadcrum:true
     },
+    {
+      title: "Pre Plan",
+      icon: "carbon:dashboard",
+      link: "/app/module/pre-plans", 
+      name : "pre-plans",
+      breadcrum:true
+    },
+    {
+      title:"Contacts",
+      icon: "ic:baseline-people",
+      link: "#",
+      name:"contacts",
+      child:[
+        {
+          childtitle: "Contacts",
+          childlink: "/app/module/contacts",
+          childicon: "solar:station-bold-duotone",
+          name:"contacts"
+        },
+        {
+          childtitle: "Agencies",
+          childlink: "/app/module/agencies",
+          childicon: "solar:station-bold-duotone",
+          name:"agencies"
+        },
+        {
+          childtitle: "Responder",
+          childlink: "/app/module/responders",
+          childicon: "solar:station-bold-duotone",
+          name:"responders"
+        },
+      ]
+    },
+    {
+      title:"Monitoring",
+      icon: "fluent:settings-32-regular",
+      link: "#",
+      name:"monitoring",
+      child:[
+        {
+          childtitle: "Incident map",
+          childlink: "/map/incident_map",
+          childicon: "solar:station-bold-duotone",
+          name:"incident map"
+        },
+      ]
+    }
  
     // {
     //   title: "Maintenance",

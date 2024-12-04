@@ -12,6 +12,7 @@
           :preview="preview"
           :placeholder="placeholder"
           :label="label"
+          :accept="accept"
         />
         <div
           class="w-full h-[40px] file-control flex items-center"
@@ -99,6 +100,10 @@ export default {
     name: {
       type: String,
       default: "name",
+    },
+    accept: {
+      type: String,
+      default: "",
     },
     multiple: {
       type: Boolean,

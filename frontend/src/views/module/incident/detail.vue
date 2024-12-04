@@ -5,40 +5,42 @@
         <Block blockname="Incident Details">
           <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Incident No :</label>
-                  {{ IncidentStore.form.incident_no }}
+                  <label>Incident No</label>
+                  <span>{{ IncidentStore.form.incident_no }}</span>
               </div>
               <div class="fromGroup relative">
-                  <label for="" class="inline-block input-label">Incident Type :</label>
-                  {{ getSingleIncidentTypes }}
-              </div>
-            </div>
-            <div class="lg:grid lg:grid-cols-2 gap-12">
-              <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Time of Incident :</label>
-                      <span class="ml-1" v-if="IncidentStore.form.time_of_incident != ''">
-                        {{ IncidentStore.form.time_of_incident }}
-                      </span>
-              </div>
-              <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Date of Incident :</label>
-                      {{ IncidentStore.form.date_of_incident }}
+                  <!-- <label for="" class="inline-block input-label">Incident Type :</label> -->
+                  <label>Incident Type</label>
+                  <span>  {{ find_picklist_value('incident_types_picklist',IncidentStore.form.incident_types_picklist) }} </span>
               </div>
             </div>
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Incident Status :</label>
-                      {{ getSingleIncidentStatus }}
+                      <!-- <label for="" class="inline-block input-label">Time of Incident :</label> -->
+                      <label>Time of Incident</label>
+                        <span v-if="IncidentStore.form.time_of_incident != ''">
+                          {{ IncidentStore.form.time_of_incident }}
+                        </span>
+              </div>
+              <div class="fromGroup relative">
+                      <label>Date of Incident</label>
+                      <span>{{ IncidentStore.form.date_of_incident }}</span>
+              </div>
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                      <label>Incident Status</label>
+                      <span>{{ find_picklist_value('incident_statuses_picklist',IncidentStore.form.incident_statuses_picklist) }}</span>
                   </div>
                   <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Incident Priority :</label>
-                      {{ getSingleIncidentPriority }}
+                      <label>Incident Priority</label>
+                      <span>{{ find_picklist_value('incident_priorities_picklist',IncidentStore.form.incident_priorities_picklist) }}</span>
                   </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
               <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Notes/Remarks :</label>
-                      {{ IncidentStore.form.remarks }}
+                      <label for="">Notes/Remarks</label>
+                      <span>{{ IncidentStore.form.remarks }}</span>
               </div>
             </div>
         </Block>
@@ -46,22 +48,22 @@
               <div class="lg:grid lg:grid-cols-2 gap-12">
                   <div>
                     <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Location :</label>
-                      {{ IncidentStore.form.location }}
+                      <label for="">Location</label>
+                        <span>{{ IncidentStore.form.location }}</span>
                     </div>
                     <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Street name :</label>
-                      {{ IncidentStore.form.street_name }}
-                    </div>
-
-                    <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Nearest landmark :</label>
-                      {{ IncidentStore.form.nearest_landmark }}
+                      <label for="">Street name</label>
+                        <span>{{ IncidentStore.form.street_name }}</span>
                     </div>
 
                     <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Coordinates :</label>
-                      {{ IncidentStore.form.coordinates }}
+                      <label for="">Nearest landmark</label>
+                        <span>{{ IncidentStore.form.nearest_landmark }}</span>
+                    </div>
+
+                    <div class="fromGroup relative">
+                      <label for="">Coordinates</label>
+                        <span>{{ IncidentStore.form.coordinates }}</span>
                     </div>
                   </div>
                   <div>
@@ -73,18 +75,18 @@
           <Block blockname="Caller Details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">First Name :</label>
-                      {{ IncidentStore.form.caller_firstname }}
+                      <label for="">First Name</label>
+                      <span>{{ IncidentStore.form.caller_firstname }}</span>
                   </div>
                   <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Last Name :</label>
-                      {{ IncidentStore.form.caller_lastname }}
+                      <label for="">Last Name</label>
+                      <span>{{ IncidentStore.form.caller_lastname }}</span>
                   </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
                 <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Contact no. :</label>
-                      {{ IncidentStore.form.caller_contact }}
+                      <label for="">Contact no</label>
+                      <span>{{ IncidentStore.form.caller_contact }}</span>
                   </div> 
             </div>
           </Block>
@@ -92,18 +94,18 @@
           <Block blockname="Responder Details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Responder Team :</label>
-                      {{ IncidentStore.form.response_team }}
+                      <label for="" >Responder Team</label>
+                      <span>{{ IncidentStore.form.response_team }}</span>
                   </div>
                   <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Assigned By :</label>
-                      {{ IncidentStore.form.assigned_by }}
+                      <label for="" >Assigned By</label>
+                      <span>{{ IncidentStore.form.assigned_by }}</span>
                   </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">
                 <div class="fromGroup relative">
-                      <label for="" class="inline-block input-label">Assigned Team :</label>
-                      {{ IncidentStore.form.assigned_team }}
+                      <label for="" >Assigned Team</label>
+                      <span>{{ IncidentStore.form.assigned_team }}</span>
                   </div> 
             </div>
           </Block>
@@ -128,22 +130,17 @@ export default {
     IncidentStore.id = id;
     IncidentStore.getItem();
   },
-  computed:{
-    getSingleIncidentTypes(){
-        var incident_type = IncidentStore.getSingleIncidentType;
-        var incident_type_ = incident_type(IncidentStore.form.incident_type_picklist);
-        return incident_type_ === undefined ?  "" : incident_type_.name;
-    },
-    getSingleIncidentStatus(){
-        var incident_status = IncidentStore.getSingleIncidentStatus;
-        var incident_status_ = incident_status(IncidentStore.form.incident_status_picklist);
-        return incident_status_ === undefined ?  "" : incident_status_.name;
-    },
-    getSingleIncidentPriority(){
-        var incident_priority = IncidentStore.getSingleIncidentPriority;
-        var incident_priority_ = incident_priority(IncidentStore.form.incident_priority_picklist);
-        return incident_priority_ === undefined ?  "" : incident_priority_.name;
-    },
+  methods:{
+    find_picklist_value(name,value){
+      var label = "";
+      if(IncidentStore[name] !== undefined){
+        const option = IncidentStore[name].find(item => item.id == value )
+        if(option !== undefined){
+          label = option.label;
+        } 
+      }
+      return label;
+    }
   },  
   data(){
     return{
@@ -158,6 +155,19 @@ label{
   font-weight: bold;
 }
 .fromGroup{
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  display: flex;
+
+}
+.fromGroup label{
+  overflow-wrap:break-word;
+  width: 200px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-transform: capitalize;
+}
+.fromGroup span{
+  font-size: 0.875rem;
 }
 </style>

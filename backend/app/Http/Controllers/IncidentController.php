@@ -23,7 +23,7 @@ class IncidentController extends Controller
     public function index()
     {
         //
-       return  IncidentResources::collection(Incident::with(['incident_type'])->where('deleted',0)->paginate(10));
+       return  IncidentResources::collection(Incident::with(['incident_types','incident_statuses'])->where('deleted',0)->paginate(10));
     }
 
     /**
@@ -52,9 +52,9 @@ class IncidentController extends Controller
             //         $model->$key = $value['hours'].":".$value['minutes'].":".$value['seconds'];
             //     }
             // }
-            // else if($key == "date_of_incident"){
-            //     $model->$key = Carbon::parse($value)->format("Y-m-d");
-            // }
+            else if($key == "date_of_incident"){
+                $model->$key = $value == "" ? null : Carbon::parse($value)->format("Y-m-d");
+            }
             else{
                 $model->$key = $value;
             }

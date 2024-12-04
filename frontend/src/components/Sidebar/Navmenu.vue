@@ -1,28 +1,29 @@
 <template>
   <ul>
     <li
+
       v-for="(item, i) in items"
       :key="i"
       :class="`
       ${item.child ? 'item-has-children' : ''}
       ${activeSubmenu === i ? 'open' : ''}
       ${this.$route.params.module === item.name ? 'menu-item-active' : ''}
-      
+      ${this.$route.name == item.title ? 'menu-item-active' : ''}
       `"
       class="single-sidebar-menu"
     >
       <!-- ?? single menu with no childred !!  -->
-
       <router-link
         :to="`${item.link}`"
         class="menu-link"
         v-if="!item.child && !item.isHeadr"
+
       >
         <span class="menu-icon flex-grow-0 " v-if="item.icon">
           <Icon :icon="item.icon"
         /></span>
         <div class="text-box flex-grow items-center" v-if="item.title">
-          {{ item.title }}
+          {{ item.title }} 
         </div>
         <span class="menu-badge" v-if="item.badge">{{ item.badge }}</span>
       </router-link>
@@ -42,8 +43,8 @@
       >
         <div class="flex-1 flex items-start">
           <span class="menu-icon" v-show="item.icon">
-            <Icon :icon="item.icon"
-          /></span>
+            <Icon :icon="item.icon"/>
+          </span>
           <div class="text-box" v-if="item.title">{{ item.title }}</div>
         </div>
         <div class="flex-0">

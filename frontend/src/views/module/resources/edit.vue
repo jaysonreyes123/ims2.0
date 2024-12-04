@@ -6,7 +6,7 @@
                 <Textinput label="Resource Name" placeholder="Reource Name" v-model="ResourceStore.form.resources_name" />
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Resource Type</label>
-                    <Select placeholder="Select an option" :options="ResourceStore.getResourceType" :reduce="label => label.value"  v-model="ResourceStore.form.resources_type_picklist" />
+                    <Select placeholder="Select an option" :options="ResourceStore.getResourceType" :reduce="label => label.value"  v-model="ResourceStore.form.resources_types_picklist" />
                 </div>
                 <!-- <Textinput label="Resource Type" placeholder="Resource Type" v-model="ResourceStore.form.resources_type" /> -->
             </div>
@@ -15,7 +15,7 @@
                 <Textinput label="Quantity" placeholder="Quantity" v-model="ResourceStore.form.quantity" />
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Resource Status</label>
-                    <Select placeholder="Select an option" :options="ResourceStore.getResourceStatus" :reduce="label => label.value"  v-model="ResourceStore.form.resources_status_picklist" />
+                    <Select placeholder="Select an option" :options="ResourceStore.getResourceStatus" :reduce="label => label.value"  v-model="ResourceStore.form.resources_statuses_picklist" />
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                 </div>
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Dispatch</label>
-                    <Select placeholder="Select an option" :options="ResourceStore.getResourceDispatch" :reduce="label => label.value"  v-model="ResourceStore.form.dispatch_picklist" />
+                    <Select placeholder="Select an option" :options="ResourceStore.getResourceDispatch" :reduce="label => label.value"  v-model="ResourceStore.form.dispatchers_picklist" />
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
                 <Textarea label="Remarks" placeholder="Remarks" v-model="ResourceStore.form.remarks" />
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Condition</label>
-                    <Select placeholder="Select an option" :options="ResourceStore.getResourceCondition" :reduce="label => label.value"  v-model="ResourceStore.form.condition_picklist" />
+                    <Select placeholder="Select an option" :options="ResourceStore.getResourceCondition" :reduce="label => label.value"  v-model="ResourceStore.form.conditions_picklist" />
                 </div>
             </div>
         </Block>

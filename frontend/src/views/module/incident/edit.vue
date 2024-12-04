@@ -7,7 +7,7 @@
                 <!-- <Textinput label="Incident Type" placeholder="Incident Type" v-model="IncidentStore.form.incident_type" /> -->
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Type</label>
-                    <Select :required="true" placeholder="Select an option" :options="IncidentStore.getIncidentType" :reduce="label => label.value"  v-model="IncidentStore.form.incident_type_picklist" />
+                    <Select :required="true" placeholder="Select an option" :options="IncidentStore.getIncidentType" :reduce="label => label.value"  v-model="IncidentStore.form.incident_types_picklist" />
                 </div>
             </div>
             <div class="lg:grid lg:grid-cols-2 gap-12">
@@ -37,11 +37,11 @@
             <div class="lg:grid lg:grid-cols-2 gap-12">
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Status</label>
-                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentStatus" :reduce="label => label.value"  v-model="IncidentStore.form.incident_status_picklist" />
+                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentStatus" :reduce="label => label.value"  v-model="IncidentStore.form.incident_statuses_picklist" />
                 </div>
                 <div class="fromGroup relative">
                     <label for="" class="inline-block input-label">Incident Priority</label>
-                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentPriority" :reduce="label => label.value"  v-model="IncidentStore.form.incident_priority_picklist" />
+                    <Select placeholder="Select an option" :options="IncidentStore.getIncidentPriority" :reduce="label => label.value"  v-model="IncidentStore.form.incident_priorities_picklist" />
                 </div>
             </div>
             <div class="lg:grid lg:grid-cols-1 gap-12">

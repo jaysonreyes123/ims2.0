@@ -50,6 +50,7 @@ const app = createApp(App)
 
 app.component('Loading',Loading);
 app.config.globalProperties.$store = {}; 
+app.config.globalProperties.$axios = axiosIns;
 pinia.use(({ store }) => {
     store.router = markRaw(router);
     store.axios = axiosIns;

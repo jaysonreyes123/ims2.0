@@ -24,7 +24,7 @@ class ResourceController extends Controller
     public function index()
     {
         //
-        return ResourceResources::collection(Resource::with('resources_type')->where('deleted',0)->paginate(10));
+        return ResourceResources::collection(Resource::with('resources_types')->where('deleted',0)->paginate(10));
     }
 
     /**
@@ -47,7 +47,7 @@ class ResourceController extends Controller
                 $model->$key = json_encode($value);
             }
             else if($key == "date_acquired"){
-                $model->$key = Carbon::parse($value)->format("Y-m-d");
+                $model->$key = $value == "" ? null : Carbon::parse($value)->format("Y-m-d");
             }
             else{
                 $model->$key = $value;

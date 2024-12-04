@@ -1,0 +1,100 @@
+export const resources_field = [
+    {
+        block_name:"Resources Information",
+        fields:[
+            {
+                label:"Resource Name",
+                name:"resources_name",
+                type:"text",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Resource Type",
+                name:"resources_types_picklist",
+                type:"picklist",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Quantity",
+                name:"quantity",
+                type:"number",
+                default:1,
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Resource Status",
+                name:"resources_statuses_picklist",
+                type:"picklist",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Contact Info",
+                name:"contact_info",
+                type:"text",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Owner",
+                name:"owner",
+                type:"text",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Date Acquired",
+                name:"date_acquired",
+                type:"date",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Dispatch",
+                name:"dispatchers_picklist",
+                type:"picklist",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Remarks",
+                name:"remarks",
+                type:"textarea",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Condition",
+                name:"conditions_picklist",
+                type:"picklist",
+                default:"",
+                required:false,
+                readonly:false
+            },
+        ]
+    },
+    {
+        block_name:"Location Details",
+        fields:[
+            {
+                label:"Coordinates",
+                name:"coordinates",
+                type:"text",
+                default:"",
+                required:false,
+                readonly:true
+            },
+        ]
+    }
+]

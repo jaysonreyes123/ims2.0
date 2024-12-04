@@ -17,31 +17,31 @@ class ResourcesStatusSeeder extends Seeder
         DB::table('resources_statuses')->insert([
             [
                 "id" => 1,
-                "name" => "Allocated"
+                "label" => "Allocated"
             ],
             [
                 "id" => 2,
-                "name" => "Available"
+                "label" => "Available"
             ],
             [
                 "id" => 3,
-                "name" => "Deployed"
+                "label" => "Deployed"
             ],
             [
                 "id" => 4,
-                "name" => "In Service"
+                "label" => "In Service"
             ],
             [
                 "id" => 5,
-                "name" => "In Transit"
+                "label" => "In Transit"
             ],
             [
                 "id" => 6,
-                "name" => "In Use"
+                "label" => "In Use"
             ],
             [
                 "id" => 7,
-                "name" => "Out of Service"
+                "label" => "Out of Service"
             ],
         ]);
     }

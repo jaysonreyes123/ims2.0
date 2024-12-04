@@ -38,6 +38,10 @@
 <script>
 import Incident from "./incident/detail.vue"
 import Resource from "./resources/detail.vue";
+import Contact from "./contacts/detail.vue";
+import Agency from "./agency/detail.vue";
+import Responder from "./responder/detail.vue";
+import PrePlan from "./preplan/detail.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Update from "./update.vue";
 import Card from "@/components/Card";
@@ -67,6 +71,10 @@ export default {
         Resource,
         Incident,
         Update,
+        Contact,
+        Agency,
+        Responder,
+        PrePlan
       
     },
 
@@ -80,6 +88,18 @@ export default {
                     break;
                 case 'resources':
                   modules_ = 'Resource';
+                    break;
+                case 'contacts':
+                  modules_ = 'Contact';
+                    break;
+                case 'agencies':
+                  modules_ = 'Agency';
+                    break;
+                case 'responders':
+                  modules_ = 'Responder';
+                    break;
+                case 'pre-plans':
+                  modules_ = 'PrePlan';
                     break;
                 default:
                     break;

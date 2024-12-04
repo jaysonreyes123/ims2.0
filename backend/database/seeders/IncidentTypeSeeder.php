@@ -17,11 +17,11 @@ class IncidentTypeSeeder extends Seeder
         DB::table('incident_types')->insert([
             [
                 'id' => 1,
-                'name' => 'Animal Accident'
+                'label' => 'Animal Accident'
             ],
             [
                 'id' => 2,
-                'name' => 'Assualt'
+                'label' => 'Assualt'
             ],
         ]);
     }
