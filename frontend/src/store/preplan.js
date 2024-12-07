@@ -7,7 +7,19 @@ export const usePreplanStore = defineStore("preplan",{
             loading:false,
             id:"",
             pre_plan_classifications_picklist:[],
-            form:{}
+            form:{
+                pre_plan_name:"",
+                incident_type:"",
+                pre_plan_classifications_picklist:"",
+                initial_assessment:"",
+                response_action:"",
+                classification:"",
+                incident_manager:"",
+                incident_responder:"",
+                support_staff:"",
+                tools_and_equipment:"",
+                personnel:""
+            }
         }
     },
     actions:{

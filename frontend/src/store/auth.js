@@ -133,7 +133,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async getuserDetails(){
             try {  
-                let response = await this.axios.get('/user');     
+                let response = await this.axios.get('/user_details');     
                 this.user = response.data.data; 
                 this.authenticated = true;
                 this.isLoading = false;

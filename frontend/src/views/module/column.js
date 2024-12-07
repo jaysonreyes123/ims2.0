@@ -1,3 +1,19 @@
+export const user_column = 
+[
+    {
+      label: "Name",
+      field: "name",
+    },
+    {
+      label: "Email",
+      field: "email",
+    },
+    {
+      label: "Action",
+      field: "action",
+    },
+];
+
 export const  incident_column = 
 [
     {

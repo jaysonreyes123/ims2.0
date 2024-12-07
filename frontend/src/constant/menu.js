@@ -59,7 +59,7 @@ export const topMenu = [
     },
     {
       title:"Monitoring",
-      icon: "fluent:settings-32-regular",
+      icon: "heroicons:computer-desktop",
       link: "#",
       name:"monitoring",
       child:[
@@ -68,6 +68,20 @@ export const topMenu = [
           childlink: "/map/incident_map",
           childicon: "solar:station-bold-duotone",
           name:"incident map"
+        },
+      ]
+    },
+    {
+      title:"Settings",
+      icon: "fluent:settings-32-regular",
+      link: "#",
+      name:"monitoring",
+      child:[
+        {
+          childtitle: "Users",
+          childlink: "/app/module/users",
+          childicon: "solar:station-bold-duotone",
+          name:"users"
         },
       ]
     }

@@ -26,7 +26,7 @@
       <div class="divide-y divide-slate-100 dark:divide-slate-800 overflow-y-auto h-96">
         <MenuItem
           v-slot="{ active }"
-          v-for="(item, i) in dashboard.incident"
+          v-for="(item, i) in notifications"
           :key="i"
         >
           <div

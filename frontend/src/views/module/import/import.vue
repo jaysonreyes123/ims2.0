@@ -96,6 +96,10 @@ import { useListStore } from '@/store/list';
 import { incidents_field } from '../fields/incidents';
 import { resources_field } from '../fields/resources';
 import { contacts_field } from '../fields/contacts';
+import { agency_fields } from '../fields/agency';
+import { responder_fields } from '../fields/responder';
+import { preplan_fields } from '../fields/preplan';
+
 const ImportStore = useImportStore();
 const ListStore = useListStore();
 const header = ref(false);
@@ -295,6 +299,15 @@ export default {
             break;
           case 'contacts':
             module_fields = contacts_field;
+            break;
+          case 'agencies':
+            module_fields = agency_fields;
+            break;
+          case 'responders':
+            module_fields = responder_fields;
+            break;
+          case 'pre-plans':
+            module_fields = preplan_fields;
             break;
           default:
             break;

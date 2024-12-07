@@ -55,6 +55,9 @@
                                 <Textarea :placeholder="`Enter ${field.label}`" v-model="form[field.name]" />
                             </div>
                         </div>
+                        <div v-else-if="field.type == 'checkbox'">
+                            <Switch :label="field.label" v-model="form[field.name]" :active="form[field.name]" class="mb-5" />
+                        </div>
                         <div v-else>
                             <div class="fromGroup relative">
                                 <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
@@ -80,6 +83,7 @@
   import Map from "../components/Map";
   import Textarea from "@/components/Textarea"
   import Breadcrumb from "../components/Breadcrumb.vue";
+  import Switch from '@/components/Switch';
 
   import { contacts_field } from "./fields/contacts";
   import { incidents_field } from "./fields/incidents";
@@ -87,6 +91,7 @@
   import { agency_fields } from './fields/agency';
   import { responder_fields } from './fields/responder';
   import { preplan_fields } from './fields/preplan';
+  import { user_fields } from './fields/user';
 
   import { useIncidentStore } from "@/store/incident";
   import { useResourcesStore } from "@/store/resources";
@@ -105,7 +110,8 @@
           Select,
           Textarea,
           Map,
-          Breadcrumb
+          Breadcrumb,
+          Switch
       },
       data(){
           return{
@@ -125,7 +131,8 @@
             this.ModuleStore.getItem();
         }
         else{
-            this.ModuleStore.clearField();
+            //this.ModuleStore.clearField();
+            this.clearField();
         }
       },
       mounted(){
@@ -136,6 +143,13 @@
         this.load_picklist();
       },
       methods:{
+        clearField(){
+            this.fields_computed.map(item=>{
+                item.fields.map(item2=>{
+                    this.ModuleStore.form[item2.name] = item2.default;
+                })
+            });
+        },
         saveForm(){
            this.ModuleStore.form = this.form;
            var error = "";
@@ -152,7 +166,8 @@
             });
             return false;
            }
-           this.ModuleStore.save();
+           console.log(this.ModuleStore.form)
+           //this.ModuleStore.save();
         },
         updateCoordinates(event){
             const {lng,lat} = event;
@@ -246,6 +261,9 @@
                 case 'pre-plans':
                     fields__ = preplan_fields;
                     break;
+                case 'users':
+                    fields__ = user_fields;
+                    break;
                 default:
                     break;
             }
@@ -283,6 +301,9 @@
                     break;
                 case 'pre-plans':
                     module_store = usePreplanStore();
+                    break;
+                case 'users':
+                    module_store = user_store;
                     break;
                 default:
                     break;

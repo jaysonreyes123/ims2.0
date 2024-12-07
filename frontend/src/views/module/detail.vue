@@ -42,12 +42,12 @@ import Contact from "./contacts/detail.vue";
 import Agency from "./agency/detail.vue";
 import Responder from "./responder/detail.vue";
 import PrePlan from "./preplan/detail.vue";
+import User from "./users/detail.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Update from "./update.vue";
 import Card from "@/components/Card";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import Icon from "@/components/Icon";
-import { ref } from "vue";
 const buttons = [
   {
     title: "Details",
@@ -74,7 +74,8 @@ export default {
         Contact,
         Agency,
         Responder,
-        PrePlan
+        PrePlan,
+        User
       
     },
 
@@ -101,6 +102,8 @@ export default {
                 case 'pre-plans':
                   modules_ = 'PrePlan';
                     break;
+                case 'users':
+                  modules_ = 'User';
                 default:
                     break;
             }

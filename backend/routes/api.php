@@ -11,16 +11,18 @@ use App\Http\Controllers\MapController;
 use App\Http\Controllers\PrePlanController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ResponderController;
+use App\Http\Controllers\UserController;
 use App\Models\ResponderType;
 use Illuminate\Support\Facades\Route;
 
 Route::post("login",[LoginController::class,'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('user', [LoginController::class, 'details']);
+    Route::get('user_details', [LoginController::class, 'details']);
     Route::get("logout",[LoginController::class,'logout']);
     
     //user
-    Route::get("get_assigned_to",[LoginController::class,'get_assigned_to']);
+    Route::apiResource("users",UserController::class);
+    Route::get("get_assigned_to",[UserController::class,'get_assigned_to']);
 
     //incident
     Route::apiResource('incidents',IncidentController::class);

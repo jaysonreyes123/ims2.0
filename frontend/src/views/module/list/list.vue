@@ -70,21 +70,17 @@
     </div>
 </template>
 <script>
-import Incident from "../incident/index.vue";
-import Resources from "../resources/index.vue"
 import Card from "@/components/Card";
 import Pagination from "@/components/Pagination";
 import Tooltip from "@/components/Tooltip";
 import Swal from 'sweetalert2';
 import Icon from "@/components/Icon";
 import { useListStore } from "@/store/list";
-import { incident_column, resources_column, contacts_column,agencies_column,responder_column,preplan_column } from "../column";
+import { incident_column, resources_column, contacts_column,agencies_column,responder_column,preplan_column,user_column } from "../column";
 
 const listStore = useListStore();
 export default {
     components:{
-        Incident,
-        Resources,
         Card,
         Pagination,
         Swal,
@@ -92,7 +88,6 @@ export default {
         Icon
     },
     created(){
-        console.log(this.$route)
         this.$watch(
             ()=>this.$route.params.module,
             (modules) => {
@@ -115,34 +110,6 @@ export default {
             contacts_column,
             preplan_column
         }
-    },
-    computed:{
-        Modules(){
-            const module_  = this.$route.params.module;
-            switch (module_) {
-                case 'incidents':
-                    this.modules = 'Incident';
-                    break;
-                case 'resources':
-                    this.modules = 'Resources';
-                    break;
-                case 'contacts':
-                    this.modules = 'Contacts';
-                    break;
-                case 'agencies':
-                    this.modules = 'Agency';
-                    break;
-                case 'responders':
-                    this.modules = 'Responder';
-                    break;
-                case 'pre-plans':
-                    this.modules = 'PrePlan';
-                    break;
-                default:
-                    break;
-            }
-            return this.modules;
-        },
     },
     methods:{
         changePage(event){
@@ -168,6 +135,9 @@ export default {
                     break;
                 case 'pre-plans':
                     this.columns = preplan_column;
+                    break;
+                case 'users':
+                    this.columns = user_column;
                     break;
                 default:
                     break;

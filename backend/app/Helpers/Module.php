@@ -8,6 +8,7 @@ use App\Models\Incident;
 use App\Models\PrePlan;
 use App\Models\Resource;
 use App\Models\Responder;
+use App\Models\User;
 
 class Module{
     public static function check_duplicate($module){
@@ -30,6 +31,9 @@ class Module{
                 break;
             case 'pre-plans':
                 $model =  PrePlan::query() ;
+                break;
+            case 'users':
+                $model =  User::query() ;
                 break;
             default:
                 # code...
@@ -57,6 +61,9 @@ class Module{
                 break;
             case 'pre-plans':
                 $model = new PrePlan() ;
+                break;
+            case 'users':
+                $model = new User() ;
                 break;
             default:
 
