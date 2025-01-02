@@ -12,8 +12,8 @@ export const preplan_fields = [
             },
             {
                 label:"Incident Type",
-                name:"incident_type",
-                type:"text",
+                name:"incident_types_picklist",
+                type:"picklist",
                 default:"",
                 required:false,
                 readonly:false

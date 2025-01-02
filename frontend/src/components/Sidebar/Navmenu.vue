@@ -1,7 +1,6 @@
-<template>
+<template v-if="!loading_menu">
   <ul>
     <li
-
       v-for="(item, i) in items"
       :key="i"
       :class="`
@@ -9,99 +8,110 @@
       ${activeSubmenu === i ? 'open' : ''}
       ${this.$route.params.module === item.name ? 'menu-item-active' : ''}
       ${this.$route.name == item.title ? 'menu-item-active' : ''}
+      ${this.$route.name == item.name ? 'menu-item-active' : ''}
       `"
-      class="single-sidebar-menu"
+      
     >
+
       <!-- ?? single menu with no childred !!  -->
-      <router-link
-        :to="`${item.link}`"
-        class="menu-link"
-        v-if="!item.child && !item.isHeadr"
-
-      >
-        <span class="menu-icon flex-grow-0 " v-if="item.icon">
-          <Icon :icon="item.icon"
-        /></span>
-        <div class="text-box flex-grow items-center" v-if="item.title">
-          {{ item.title }} 
-        </div>
-        <span class="menu-badge" v-if="item.badge">{{ item.badge }}</span>
-      </router-link>
-
-      <!-- ?? only for menulabel ??  -->
-      <div v-else-if="item.isHeadr && !item.child" class="menulabel">
-        {{ item.title }}
-      </div>
-      <!-- !!sub menu parent li !! -->
-      <div
-        class="menu-link"
-        v-else
-        :class="
-          activeSubmenu === i ? 'parent_active not-collapsed' : 'collapsed'
-        "
-        @click="toggleSubmenu(i)"
-      >
-        <div class="flex-1 flex items-start">
-          <span class="menu-icon" v-show="item.icon">
-            <Icon :icon="item.icon"/>
-          </span>
-          <div class="text-box" v-if="item.title">{{ item.title }}</div>
-        </div>
-        <div class="flex-0">
-          <div
-            class="menu-arrow transform transition-all duration-300"
-            :class="
-              activeSubmenu === i
-                ? ' ltr:rotate-90 rtl:rotate-90'
-                : 'rtl:rotate-180'
-            "
+    <div
+      class="single-sidebar-menu"
+      v-if="auth_store.user.user_privileges[item.name] || item.child || item.name == 'dashboard' "
+    >
+        <router-link
+          :to="`${item.link}`"
+          class="menu-link"
+          v-if="!item.child && !item.isHeadr"
           >
-            <Icon icon="heroicons-outline:chevron-right" />
+          <span class="menu-icon flex-grow-0 " v-if="item.icon">
+            <Icon :icon="item.icon"
+          /></span>
+          <div class="text-box flex-grow items-center" v-if="item.title">
+            {{ item.title }} 
+          </div>
+          <span class="menu-badge" v-if="item.badge">{{ item.badge }}</span>
+        </router-link>
+
+        <!-- ?? only for menulabel ??  -->
+        <div v-else-if="item.isHeadr && !item.child" class="menulabel">
+          {{ item.title }}
+        </div>
+        <!-- !!sub menu parent li !! -->
+        <div
+          class="menu-link"
+          v-else
+          :class="
+            activeSubmenu === i ? 'parent_active not-collapsed' : 'collapsed'
+          "
+          @click="toggleSubmenu(i)"
+           v-if="item.child.filter(filter => filter.visible == true ).length > 0"
+        >
+          <div class="flex-1 flex items-start"> 
+            <span class="menu-icon" v-show="item.icon">
+              <Icon :icon="item.icon"/>
+            </span>
+            <div class="text-box" v-if="item.title">{{ item.title }}</div>
+          </div>
+          <div class="flex-0">
+            <div
+              class="menu-arrow transform transition-all duration-300"
+              :class="
+                activeSubmenu === i
+                  ? ' ltr:rotate-90 rtl:rotate-90'
+                  : 'rtl:rotate-180'
+              "
+            >
+              <Icon icon="heroicons-outline:chevron-right" />
+            </div>
           </div>
         </div>
-      </div>
-      <Transition
-        enter-active-class="submenu_enter-active"
-        leave-active-class="submenu_leave-active"
-        @before-enter="beforeEnter"
-        @enter="enter"
-        @after-enter="afterEnter"
-        @before-leave="beforeLeave"
-        @leave="leave"
-        @after-leave="afterLeave"
-      >
-        <!-- !! SubMenu !! -->
-        <ul calss="sub-menu " v-if="i === activeSubmenu">
-          <li
-            v-for="(ci, index) in item.child"
-            :key="index"
-            class="block ltr:pl-4 rtl:pr-4 ltr:pr-1 rtl:-l-1 mb-4 first:mt-4"
-          >
-            <router-link :to="ci.childlink" v-slot="{ isActive }">
-              <span
-                class="text-sm flex space-x-3 rtl:space-x-reverse items-center transition-all duration-150"
-                :class="
-                  isActive
-                    ? ' text-slate-900 dark:text-white font-medium'
-                    : 'text-slate-600 dark:text-slate-300'
-                "
-              >
-                <span
-                  class="h-2 w-2 rounded-full border border-slate-600 dark:border-slate-300 inline-block flex-none"
-                  :class="
-                    isActive
-                      ? ' bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20'
-                      : ''
-                  "
-                ></span>
-                <span class="flex-1">
-                  {{ ci.childtitle }}
-                </span>
-              </span>
-            </router-link>
-          </li>
-        </ul>
-      </Transition>
+        <Transition
+          enter-active-class="submenu_enter-active"
+          leave-active-class="submenu_leave-active"
+          @before-enter="beforeEnter"
+          @enter="enter"
+          @after-enter="afterEnter"
+          @before-leave="beforeLeave"
+          @leave="leave"
+          @after-leave="afterLeave"
+        >
+          <!-- !! SubMenu !! -->
+          <ul calss="sub-menu " v-if="i === activeSubmenu">
+            <li
+              v-for="(ci, index) in item.child"
+              :key="index"
+              class="block ltr:pl-4 rtl:pr-4 ltr:pr-1 rtl:-l-1 mb-4 first:mt-4"
+            >
+            <div v-if="auth_store.user.user_privileges[ci.name]">
+                <router-link :to="ci.childlink" v-slot="{ isActive }">
+                  <span
+                    class="text-sm flex space-x-3 rtl:space-x-reverse items-center transition-all duration-150"
+                    :class="
+                      isActive
+                        ? ' text-slate-900 dark:text-white font-medium'
+                        : 'text-slate-600 dark:text-slate-300'
+                    "
+                  >
+                    <span
+                      class="h-2 w-2 rounded-full border border-slate-600 dark:border-slate-300 inline-block flex-none"
+                      :class="
+                        isActive
+                          ? ' bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20'
+                          : ''
+                      "
+                    ></span>
+                    <span class="flex-1">
+                      {{ ci.childtitle }}
+                    </span>
+                  </span>
+                </router-link>
+            </div>
+              
+            </li>
+          </ul>
+        </Transition>
+    </div>
+      
     </li>
     <!-- <li class="single-sidebar-menu">
       <a
@@ -118,6 +128,9 @@
 <script>
 import { useRouter } from "vue-router";
 import Icon from "../Icon";
+import { useAuthStore } from "@/store/auth";
+import { ref } from "vue";
+const auth_store = useAuthStore();
 export default {
   components: {
     Icon,
@@ -126,6 +139,8 @@ export default {
   data() {
     return {
       activeSubmenu: null,
+      auth_store,
+      menu_item:[]
     };
   },
 
@@ -145,8 +160,33 @@ export default {
     items: { type: Array, required: true },
     childrenLinks: { type: Array, default: null },
   },
-
+  mounted(){
+    this.menu_item_func();
+  },
   methods: {
+    menu_item_func(){
+      const user_privileges = auth_store.user.user_privileges;
+      this.items.map(item1 => {
+        if(!item1.child){
+          if(user_privileges[item1.name]){
+            item1.visible = true;
+          }
+          else{
+            item1.visible = false;
+          }
+        }
+        else{
+          item1.child.map(item2=>{
+            if(user_privileges[item2.name]){
+              item2.visible = true;
+            }
+            else{
+              item2.visible = false;
+            }
+          })
+        }
+      })
+    },
     beforeEnter(element) {
       requestAnimationFrame(() => {
         if (!element.style.height) {

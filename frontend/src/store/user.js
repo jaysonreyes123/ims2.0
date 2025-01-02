@@ -1,15 +1,27 @@
 import { defineStore } from "pinia";
+import Swal from 'sweetalert2';
+import { user_fields } from "@/views/module/fields/user";
 export const useUserStore = defineStore('users',{
     state:()=>{
         return{
             assigned_to:[],
+            roles_picklist:[],
             id:"",
             form:{
                 name:"",
                 email:"",
                 password:"",
-                incident:true,
-                resources:true
+                roles_picklist:"",
+                user_privileges:{
+                    incidents:false,
+                    resources:true,
+                    preplans:true,
+                    contacts:true,
+                    agencies:true,
+                    responders:true,
+                    incident_map:true,
+                    users:true
+                }
             }
         }
     },
@@ -23,7 +35,7 @@ export const useUserStore = defineStore('users',{
             })
         },
         get_single_assigned_to_picklist: (state) => (user_id)=> {
-            if(user_id == undefined){
+            if(user_id == undefined || user_id == ""){
 
             }
             else{
@@ -36,11 +48,19 @@ export const useUserStore = defineStore('users',{
     actions:{
         clearField(){
             this.loading = true;
-            const keys = Object.keys(this.form);
-            keys.map(item=>{
-                this.form[item] = this.form[item];
-            })
-            this.id = "";
+            this.form.user_privileges = {}
+            this.form.id = "";
+            user_fields.map(item=>{
+                item.fields.map(item2=>{
+                    const split_name = item2.name.split(".");
+                    if(split_name.length == 1){
+                        this.form[item2.name] = item2.default;
+                    }
+                    else{
+                        this.form['user_privileges'][split_name[1]] = item2.default;
+                    }
+                })
+            });
             this.loading = false;
         },
         async list(){
@@ -61,6 +81,7 @@ export const useUserStore = defineStore('users',{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            console.log(this.form)
             this.loading = false;
         },
         async save(){
@@ -71,6 +92,7 @@ export const useUserStore = defineStore('users',{
                     this.id = response.data.data.id;
                 }
                 else{
+                    this.form["id"] = this.id;
                     await this.axios.put("users/"+this.id,this.form);
                 }   
                 this.loading = false;
@@ -82,7 +104,21 @@ export const useUserStore = defineStore('users',{
                     }
                 });
             } catch (error) {
-                
+                const error_details = error.response;
+                console.log(error)
+                if(error_details.status == 422){
+                   const errors = Object.values(error_details.data.errors);
+                   var error_value = "";
+                    errors.map((item,index)=>{
+                        error_value=`<p class="text-red-500">${item[index]}</p>`;
+                    })
+                    Swal.fire({
+                        icon: "error",
+                        title: "Something wrong",
+                        html:error_value,
+                    });
+                    this.loading = false;
+                }
             }
         },
         async del(id){
@@ -104,7 +140,15 @@ export const useUserStore = defineStore('users',{
             } catch (error) {
                 
             }
-        }
+        },
+        async get_role(){
+            try {
+                const response = await this.axios.get("get_role");
+                this.roles_picklist = response.data.data;
+            } catch (error) {
+                
+            }
+        }, 
     },
     persist:true
 })

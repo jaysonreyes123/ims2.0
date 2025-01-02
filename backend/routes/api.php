@@ -3,7 +3,9 @@
 use App\Helpers\Generate;
 use App\Http\Controllers\ActivityLogsController;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\CallLogsController;
 use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\LoginController;
@@ -16,13 +18,19 @@ use App\Models\ResponderType;
 use Illuminate\Support\Facades\Route;
 
 Route::post("login",[LoginController::class,'login']);
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user_details', [LoginController::class, 'details']);
     Route::get("logout",[LoginController::class,'logout']);
+
+    //dashboard
+    Route::get("dashboard/incident_by_type",[DashboardController::class,'incident_by_type']); 
+    Route::get("dashboard/incident_by_status",[DashboardController::class,'incident_by_status']); 
     
     //user
     Route::apiResource("users",UserController::class);
     Route::get("get_assigned_to",[UserController::class,'get_assigned_to']);
+    Route::get("get_role",[UserController::class,'get_role']);
 
     //incident
     Route::apiResource('incidents',IncidentController::class);
@@ -44,7 +52,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("barangay",[ContactsController::class,'get_barangay']);
 
     //pre plan
-    Route::apiResource('pre-plans',PrePlanController::class);
+    Route::apiResource('preplans',PrePlanController::class);
     Route::get("get_preplan_classification",[PrePlanController::class,'get_preplan_classification']);
 
 
@@ -70,4 +78,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //map api
     Route::get("map/{module}",[MapController::class,'index']);
+
+     // call logs
+     Route::apiResource('call_logs',CallLogsController::class);
 });

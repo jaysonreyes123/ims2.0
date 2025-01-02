@@ -306,7 +306,7 @@ export default {
           case 'responders':
             module_fields = responder_fields;
             break;
-          case 'pre-plans':
+          case 'preplans':
             module_fields = preplan_fields;
             break;
           default:

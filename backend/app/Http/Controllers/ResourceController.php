@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\ResourceResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Resource;
@@ -21,10 +22,13 @@ class ResourceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return ResourceResources::collection(Resource::with('resources_types')->where('deleted',0)->paginate(10));
+        
+       $model = Resource::query();
+       $list = Module::list_view($model,['resources_types'],$request->filter);
+       return  ResourceResources::collection($list);
     }
 
     /**

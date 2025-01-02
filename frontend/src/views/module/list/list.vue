@@ -8,7 +8,11 @@
             :rows="listStore.list"
             :pagination-options="{
                 enabled: true,
+                perPage:15
             }"
+            v-on:cell-click="onRowClick"
+            :row-style-class="rowStyleClassFn"
+            max-height="600px"
             :select-options="{
                 enabled: true,
                 selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
@@ -76,7 +80,10 @@ import Tooltip from "@/components/Tooltip";
 import Swal from 'sweetalert2';
 import Icon from "@/components/Icon";
 import { useListStore } from "@/store/list";
-import { incident_column, resources_column, contacts_column,agencies_column,responder_column,preplan_column,user_column } from "../column";
+import { 
+    columns
+} 
+from "../column";
 
 const listStore = useListStore();
 export default {
@@ -91,6 +98,7 @@ export default {
         this.$watch(
             ()=>this.$route.params.module,
             (modules) => {
+                listStore.filter_data = [];
                 listStore.List(modules);
                 this.Columns(modules);
             }
@@ -105,43 +113,52 @@ export default {
             modules:"",
             listStore,
             columns:[],
-            incident_column,
-            resources_column,
-            contacts_column,
-            preplan_column
         }
     },
     methods:{
+        rowStyleClassFn(row){
+            return 'VGT-row';
+        },
+        onRowClick(row) {
+            if(row.column.field != 'action'){
+                const id = row.row.id;
+                this.$router.push({name:'detail',params:{id:id}});
+            }
+        },
         changePage(event){
             listStore.current = event;
             listStore.List(this.$route.params.module);
         },
         Columns(modules){
-            switch (modules) {
-                case 'incidents':
-                    this.columns = incident_column;
-                    break;
-                case 'resources':
-                    this.columns = resources_column;
-                    break;
-                case 'contacts':
-                    this.columns = contacts_column;
-                    break;
-                case 'agencies':
-                    this.columns = agencies_column;
-                    break;
-                case 'responders':
-                    this.columns = responder_column;
-                    break;
-                case 'pre-plans':
-                    this.columns = preplan_column;
-                    break;
-                case 'users':
-                    this.columns = user_column;
-                    break;
-                default:
-                    break;
-            }
+            this.columns = columns[modules];
+            // switch (modules) {
+            //     case 'incidents':
+            //         this.columns = incident_column;
+            //         break;
+            //     case 'resources':
+            //         this.columns = resources_column;
+            //         break;
+            //     case 'contacts':
+            //         this.columns = contacts_column;
+            //         break;
+            //     case 'agencies':
+            //         this.columns = agencies_column;
+            //         break;
+            //     case 'responders':
+            //         this.columns = responder_column;
+            //         break;
+            //     case 'preplans':
+            //         this.columns = preplan_column;
+            //         break;
+            //     case 'call_logs':
+            //         this.columns = call_logs_column;
+            //         break;
+            //     case 'users':
+            //         this.columns = user_column;
+            //         break;
+            //     default:
+            //         break;
+            // }
         },
         del(id){
         Swal.fire({
@@ -165,5 +182,11 @@ export default {
 <style lang="scss" scoped>
   .action-btn {
     @apply h-6 w-6 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 rounded;
+  }
+</style>
+<style>
+  .VGT-row:hover{
+    background: rgb(241, 241, 241);
+    cursor: pointer;
   }
 </style>

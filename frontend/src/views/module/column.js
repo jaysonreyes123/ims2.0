@@ -1,123 +1,125 @@
-export const user_column = 
-[
-    {
-      label: "Name",
-      field: "name",
-    },
-    {
-      label: "Email",
-      field: "email",
-    },
-    {
-      label: "Action",
-      field: "action",
-    },
-];
-
-export const  incident_column = 
-[
+export const columns = {
+  incidents:[
     {
       label: "No.",
       field: "incident_no",
+      name:"incident_no"
+    },
+    {
+      label: "Date of incident",
+      field: "date_of_incident",
+      name: "date_of_incident"
     },
     {
       label: "Incident type",
       field: "incident_types.label",
+      name: "incident_types_picklist"
     },
     {
       label: "Incident status",
       field: "incident_statuses.label",
-    },
-    {
-      label: "Created time",
-      field: "created_at",
-    },
-
-    {
-      label: "SLA status",
-      field: "quantity",
-    },
-
-    {
-      label: "Dispatch to",
-      field: "amount",
-    },
-
-    {
-      label: "User",
-      field: "status",
+      name: "incident_statuses_picklist"
     },
     {
       label: "Action",
       field: "action",
     },
-  ];
-
-
-export const resources_column = 
-[
+  ],
+  resources:[
     {
       label: "Resources Name",
       field: "resources_name",
+      name: "resources_name",
     },
     {
       label: "Resources Type",
       field: "resources_types.label",
+      name: "resources_types_picklist",
     },
     {
       label: "Action",
       field: "action",
     },
-];
-
-export const contacts_column = 
-[
+  ],
+  preplans:[
+    {
+      label: "Pre Plan Name",
+      field: "pre_plan_name",
+      name: "pre_plan_name",
+    },
+    {
+      label: "Action",
+      field: "action",
+    },
+  ],
+  contacts:[
     {
       label: "First Name",
       field: "firstname",
+      name: "firstname",
     },
     {
       label: "Last Name",
       field: "lastname",
+      name: "lastname",
     },
     {
       label: "Action",
       field: "action",
     },
-];
-
-export const agencies_column = 
-[
+  ],
+  agencies:[
     {
       label: "Agency Name",
       field: "agency_name",
+      name: "agency_name",
     },
     {
       label: "Action",
       field: "action",
     },
-];
-
-export const responder_column = 
-[
+  ],
+  responders:[
     {
       label: "Firstname",
       field: "firstname",
+      name: "firstname",
     },
     {
       label: "Action",
       field: "action",
     },
-];
-
-export const preplan_column = 
-[
+  ] ,
+  call_logs:[
     {
-      label: "Pre Plan Name",
-      field: "pre_plan_name",
+      label: "Date and Time",
+      field: "date_and_time",
+      name: "date_and_time",
     },
     {
       label: "Action",
       field: "action",
     },
-];
+  ],
+  users:[
+    {
+      label: "Name",
+      field: "name",
+      name: "name",
+    },
+    {
+      label: "Email",
+      field: "email",
+      name: "email",
+    },
+    {
+      label: "Role",
+      field: "roles.label",
+      name:  "roles_picklist"
+    },
+    {
+      label: "Action",
+      field: "action",
+    },
+  ]
+}

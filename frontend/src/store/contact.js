@@ -48,6 +48,7 @@ export const useContactsStore = defineStore("contacts",{
         },
         async getItem(){
             this.loading = true;
+            console.log("Test");
             const response = await this.axios.get('contacts/'+this.id);
             const keys = Object.keys(this.form);
             const data = response.data.data;

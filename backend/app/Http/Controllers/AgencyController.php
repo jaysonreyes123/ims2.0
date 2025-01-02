@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\AgencyResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Agency;
@@ -16,10 +17,12 @@ class AgencyController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index()
+    public function index(Request $request)
     {
         //
-        return AgencyResources::collection(Agency::where('deleted',0)->paginate(10));
+        $model = Agency::query();
+        $list = Module::list_view($model,['roles'],$request->filter);
+        return  AgencyResources::collection($list);
     }
 
     /**

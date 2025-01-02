@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="auth.login(authForm)" class="space-y-4">
+  <form @submit.prevent="auth.login(authForm)" class="space-y-4 mt-5">
     <Textinput label="Email" type="email" placeholder="Type your email" name="emil" v-model="authForm.email"
       classInput="h-[48px]" />
     <Textinput label="Password" type="password" placeholder="Type your password" name="password"

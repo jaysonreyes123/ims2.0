@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\IncidentResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Incident;
@@ -20,10 +21,12 @@ class IncidentController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index()
+    public function index(Request $request)
     {
         //
-       return  IncidentResources::collection(Incident::with(['incident_types','incident_statuses'])->where('deleted',0)->paginate(10));
+       $model = Incident::query();
+       $list = Module::list_view($model,['incident_types','incident_statuses'],$request->filter);
+       return  IncidentResources::collection($list);
     }
 
     /**

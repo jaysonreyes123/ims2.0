@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('pre_plans', function (Blueprint $table) {
             $table->id();
             $table->string('pre_plan_name')->nullable();
-            $table->string('incident_type')->nullable();
+            
+            $table->unsignedBigInteger('incident_types_picklist')->nullable();
+            $table->foreign('incident_types_picklist')->references('id')->on('incident_types')->onDelete('cascade');
 
             $table->unsignedBigInteger('pre_plan_classifications_picklist')->nullable();
             $table->foreign('pre_plan_classifications_picklist')->references('id')->on('pre_plan_classifications')->onDelete('cascade');

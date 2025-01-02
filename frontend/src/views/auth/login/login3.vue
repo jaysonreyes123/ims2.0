@@ -1,6 +1,6 @@
 <template>
   <div
-    class="loginwrapper bg-cover bg-no-repeat bg-center"
+    class="loginwrapper bg-cover bg-no-repeat "
     :style="{
       backgroundImage:
         'url(' + loginBg + ')',
@@ -8,27 +8,30 @@
   >
     <div class="lg-inner-column">
       <div class="left-columns lg:w-1/2 lg:block hidden">
-        <div class="logo-box-3">
+        <!-- <div class="logo-box-3">
           <router-link to="/" class="">
             <img :src="logoWhite" alt="" />
           </router-link>
-        </div>
+        </div> -->
       </div>
       <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
-        <div class="auth-box-3">
-          <div class="mobile-logo text-center mb-6 lg:hidden block">
+        <div class="auth-box-3 h-4/6">
+          <!-- <div class="mobile-logo text-center mb-6 lg:hidden block">
             <router-link to="/"
               ><img :src="logo" alt="" class="mx-auto"
             /></router-link>
-          </div>
+          </div> -->
+          <br>
+          <br>
+          <br>
           <div class="text-center 2xl:mb-10 mb-5">
             <h4 class="font-medium">Sign In</h4>
             <div class="text-slate-500 dark:text-slate-400 text-base">
-              Sign in to your account to start using Dashcode
+              Sign in to your account to start using IMS
             </div>
           </div>
           <Signin />
-          <div
+          <!-- <div
             className=" relative border-b-[#9AA2AF] border-opacity-[16%] border-b pt-6"
           >
             <div
@@ -36,11 +39,11 @@
             >
               Or continue with
             </div>
-          </div>
-          <div class="max-w-[242px] mx-auto mt-8 w-full">
+          </div> -->
+          <!-- <div class="max-w-[242px] mx-auto mt-8 w-full">
             <Social />
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             class="mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-6 uppercase text-sm text-center"
           >
             Already registered?
@@ -50,12 +53,12 @@
             >
               Sign In</router-link
             >
-          </div>
+          </div> -->
         </div>
       </div>
-      <div class="auth-footer3 text-white py-5 px-5 text-xl w-full">
+      <!-- <div class="auth-footer3 text-white py-5 px-5 text-xl w-full">
         Unlock your Project performance
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -63,7 +66,7 @@
 import Signin from "../common/Signin";
 import Social from "../common/Social";
 // Image Import
-import loginBg from "@/assets/images/all-img/page-bg.png"
+import loginBg from "@/assets/images/all-img/bg3.png"
 import logoWhite from "@/assets/images/logo/logo-white.svg"
 import logo from "@/assets/images/logo/logo.svg"
 

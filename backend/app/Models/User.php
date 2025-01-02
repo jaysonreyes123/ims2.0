@@ -46,4 +46,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function roles(){
+        return $this->hasOne(Role::class,'id','roles_picklist');
+    }
+    public function user_privileges(){
+        return $this->hasOne(UserPrivileges::class,'user_id','id');
+    }
 }

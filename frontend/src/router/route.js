@@ -4,18 +4,23 @@ const routes = [
   {
     path: "/",
     name: "login",
-    component: () => import("@/views/auth/login/login2.vue"),
+    component: () => import("@/views/auth/login/login3.vue"),
   }, 
   {
     path: "/forgot-password",
     name: "forgot-password",
-    component: () => import("@/views/auth/forgot-password2.vue"),
+    component: () => import("@/views/auth/forgot-password3.vue"),
   }, 
   {
     path: "/reset-password/:token",
     name: "/reset-password",
     component: () => import("@/views/auth/reset-password.vue"),
   }, 
+  {
+    path: "/app/module/:module/print/:id",
+    name: "print",
+    component: () => import("@/views/module/incident/print.vue"),
+  },
   {
     path: "/app",
     name: "home",
@@ -25,6 +30,11 @@ const routes = [
       middleware: [auth],
     },
     children: [ 
+      {
+        path: "dashboard",
+        name: "dashboard",
+        component: () => import("@/views/module/dashboard/index.vue"),
+      },
       {
         path: "module/:module",
         name: "list",
@@ -50,9 +60,9 @@ const routes = [
         },
       },
       {
-        path: "/map/incident_map",
+        path: "/map/:module",
         name: "Monitoring",
-        component: () => import("@/views/module/map/incident_map.vue"),
+        component: () => import("@/views/module/map/index.vue"),
         meta: {
           hide: true,
         },

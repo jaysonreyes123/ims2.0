@@ -21,7 +21,7 @@
             iconPosition="left"
           />
       </router-link>
-      <router-link class="ml-3" :to=" {name:'edit',params:{module:modules,id:id}} " v-if="modules == 'incidents' ">
+      <router-link target="_blank" class="ml-3" :to=" {name:'print',params:{module:modules,id:id}} " v-if="modules == 'incidents' ">
         <Button
             icon="heroicons-outline:printer"
             text="Print"
@@ -37,12 +37,15 @@
 import Icon from "@/components/Icon";
 import { useIncidentStore } from "@/store/incident";
 import { useResourcesStore } from "@/store/resources";
+import { useCallLogsStore } from "@/store/call_logs";
 import Button from "@/components/Button";
 const IncidentStore = useIncidentStore();
 const ResourceStore = useResourcesStore();
+const CallLogStore = useCallLogsStore();
 const pre_name = {
   'incidents' : 'incident_no',
-  'resources' : 'resources_name'
+  'resources' : 'resources_name',
+  'call_logs' : 'date_and_time'
 };
 export default {
   components:{
@@ -71,6 +74,9 @@ export default {
             break;
           case 'resources':
             name = ResourceStore.form[pre_name[modules]]
+            break;
+          case 'call_logs':
+            name = CallLogStore.form[pre_name[modules]]
             break;
           default:
             break;

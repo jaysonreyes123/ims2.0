@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Agency;
+use App\Models\CallLog;
 use App\Models\Contact;
 use App\Models\Incident;
 use App\Models\PrePlan;
@@ -29,8 +30,11 @@ class Module{
             case 'responders':
                 $model =  Responder::query() ;
                 break;
-            case 'pre-plans':
+            case 'preplans':
                 $model =  PrePlan::query() ;
+                break;
+            case 'call_logs':
+                $model =  CallLog::query() ;
                 break;
             case 'users':
                 $model =  User::query() ;
@@ -59,7 +63,7 @@ class Module{
             case 'responders':
                 $model = new Responder() ;
                 break;
-            case 'pre-plans':
+            case 'preplans':
                 $model = new PrePlan() ;
                 break;
             case 'users':
@@ -71,5 +75,26 @@ class Module{
                 break;
         }
         return $model;
+    }
+    public  static function row_count(){
+        return 15;
+    }
+    public static function list_view($module,$relation = [],$filters){
+       if(!empty($relation)){
+        $model = $module->with($relation);
+       }
+       else{
+        $model = $module;
+       }
+        if(isset($filters)){
+            foreach($filters as $filter){
+                if($filter['value'] != ""){
+                    $model = $model->where($filter['field'],'like',$filter['value']."%");
+                }
+            }
+        }
+       $model = $model->where('deleted',0);
+       $model = $model->paginate(self::row_count());
+       return $model;
     }
 }

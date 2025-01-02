@@ -38,7 +38,7 @@ class LoginController extends Controller
     }
     public function details(): JsonResponse
     {
-        $user = User::find(Auth::id());
+        $user = User::with('user_privileges')->find(Auth::id());
         return $this->success($user, '');
     }
     

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="loginwrapper bg-cover bg-no-repeat bg-center"
+    class="loginwrapper bg-cover bg-no-repeat"
     :style="{
       backgroundImage:
         'url(' + pageBg+ ')',
@@ -8,7 +8,7 @@
   >
     <div class="lg-inner-column">
       <div class="left-columns lg:w-1/2 lg:block hidden">
-        <div class="logo-box-3">
+        <!-- <div class="logo-box-3">
           <router-link to="/" class="">
             <img
               :src="logoWhite"
@@ -16,7 +16,7 @@
               class="mb-10"
             />
           </router-link>
-        </div>
+        </div> -->
       </div>
       <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
         <div class="auth-box-3">
@@ -28,7 +28,7 @@
           <div class="text-center 2xl:mb-10 mb-5">
             <h4 class="font-medium mb-4">Forgot Your Password?</h4>
             <div class="text-slate-500 dark:text-slate-400 text-base">
-              Reset Password with Dashcode.
+              Reset Password with IMS.
             </div>
           </div>
           <div
@@ -52,9 +52,9 @@
           </div>
         </div>
       </div>
-      <div class="auth-footer3 text-white py-5 px-5 text-xl w-full">
+      <!-- <div class="auth-footer3 text-white py-5 px-5 text-xl w-full">
         Unlock your Project performance
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -62,7 +62,7 @@
 import ForgotPass from "./common/forgot";
 
 // Image Import
-import pageBg from "@/assets/images/all-img/page-bg.png"
+import pageBg from "@/assets/images/all-img/bg3.png"
 import logoWhite from "@/assets/images/logo/logo-white.svg"
 import logo from "@/assets/images/logo/logo.svg"
 

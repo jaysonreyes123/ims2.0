@@ -2,7 +2,7 @@
     <div>
         <Breadcrumb mode='edit' />
         <Loading v-model:active="ModuleStore.loading"/>
-      <form @submit.prevent="saveForm">
+      <form @submit.prevent="saveForm" v-if="!ModuleStore.loading">
         <div v-for="(block,index) in fields_computed" :key="index" >
             <Block v-if="block.block_name == 'Location Details'" :title="block.block_name"  >
                 <div class="lg:grid lg:grid-cols-2 gap-12">
@@ -56,7 +56,12 @@
                             </div>
                         </div>
                         <div v-else-if="field.type == 'checkbox'">
-                            <Switch :label="field.label" v-model="form[field.name]" :active="form[field.name]" class="mb-5" />
+                            <div v-if="this.$route.params.module == 'users'">
+                                <Switch :label="field.label" v-model="form.user_privileges[split_name(field.name)] " :active="form.user_privileges[split_name(field.name)] == 1 ? true: false " class="mb-5" />
+                            </div>
+                            <div v-else>
+                                <Switch :label="field.label" v-model="form[field.name]" :active="form[field.name]" class="mb-5" />
+                            </div>
                         </div>
                         <div v-else>
                             <div class="fromGroup relative">
@@ -92,6 +97,7 @@
   import { responder_fields } from './fields/responder';
   import { preplan_fields } from './fields/preplan';
   import { user_fields } from './fields/user';
+  import { call_logs_field } from './fields/call_logs';
 
   import { useIncidentStore } from "@/store/incident";
   import { useResourcesStore } from "@/store/resources";
@@ -99,6 +105,8 @@
   import { useAgencyStore } from '@/store/agency';
   import { useResponderStore } from '@/store/responder';
   import { usePreplanStore } from '@/store/preplan';
+  import { useCallLogsStore } from '@/store/call_logs';
+
 
   import { useUserStore } from '@/store/user';
   const user_store = useUserStore();
@@ -124,7 +132,8 @@
           }
       },
       created(){
-        this.form = this.ModuleStore.form;
+        this.form = this.ModuleStore.form; 
+        this.ModuleStore.loading = false;    
         if(this.$route.params.id != "" && this.$route.params.id != undefined ){
             //get data for editing
             this.ModuleStore.id = this.$route.params.id;
@@ -137,16 +146,30 @@
       },
       mounted(){
         //auto generate incident no
-        if(this.form.id === undefined && this.$route.params.module == 'incidents'){
+        if((this.$route.params.id  === undefined || this.$route.params.id == '' ) && this.$route.params.module == 'incidents'){
             useIncidentStore().generate_id(this.$route.params.module);
         }
         this.load_picklist();
       },
+      unmounted(){
+        
+      },
       methods:{
+        split_name(name){
+            const split_name = name.split(".");
+            return split_name[1];
+        },
         clearField(){
             this.fields_computed.map(item=>{
                 item.fields.map(item2=>{
-                    this.ModuleStore.form[item2.name] = item2.default;
+                    this.ModuleStore.id = "";
+                    const split_name = item2.name.split(".");
+                    if(split_name.length == 1){
+                        this.form[item2.name] = item2.default;
+                    }
+                    else{
+                        this.form[split_name[0]][split_name[1]] = item2.default;
+                    }
                 })
             });
         },
@@ -164,10 +187,11 @@
                 title: "Something wrong",
                 html:error,
             });
-            return false;
+                return false;
            }
            console.log(this.ModuleStore.form)
-           //this.ModuleStore.save();
+           //console.log(this.ModuleStore.form)
+           this.ModuleStore.save();
         },
         updateCoordinates(event){
             const {lng,lat} = event;
@@ -176,10 +200,6 @@
         load_picklist(){
             const modules = this.$route.params.module;
             //load assigned to
-            if(user_store.assigned_to.length == 0){
-                user_store.get_assigned_to();
-            }
-
             if(modules == 'incidents'){
                 if(this.ModuleStore.incident_statuses_picklist.length == 0){
                     this.ModuleStore.get_incident_status();
@@ -231,11 +251,25 @@
                 } 
             }
 
-            else if(modules == 'pre-plans'){
+            else if(modules == 'preplans'){
                 if(this.ModuleStore.pre_plan_classifications_picklist.length == 0){
                     this.ModuleStore.get_preplan_classification();
                 } 
+                if(this.ModuleStore.incident_types_picklist.length == 0){
+                    this.ModuleStore.get_incident_type();
+                }
             }
+
+            else if(modules == 'users'){
+                if(this.ModuleStore.roles_picklist.length == 0){
+                    this.ModuleStore.get_role();
+                } 
+            }
+
+            if(user_store.assigned_to.length == 0){
+                    user_store.get_assigned_to();
+            }
+    
         },
       },
       computed:{
@@ -258,8 +292,11 @@
                 case 'responders':
                     fields__ = responder_fields;
                     break;
-                case 'pre-plans':
+                case 'preplans':
                     fields__ = preplan_fields;
+                    break;
+                case 'call_logs':
+                    fields__ = call_logs_field;
                     break;
                 case 'users':
                     fields__ = user_fields;
@@ -299,8 +336,11 @@
                 case 'responders':
                     module_store = useResponderStore();
                     break;
-                case 'pre-plans':
+                case 'preplans':
                     module_store = usePreplanStore();
+                    break;
+                case 'call_logs':
+                    module_store = useCallLogsStore();
                     break;
                 case 'users':
                     module_store = user_store;

@@ -1,35 +1,35 @@
 export const topMenu = [
     {
-      isHeadr: true,
-      title: "menu",
-    },
-    {
       title: "Dashboard",
       icon: "carbon:dashboard",
       link: "/app/dashboard", 
       name : "dashboard",
-      breadcrum:false
+      breadcrum:false,
+      visible:true
     },
     {
       title: "Incident",
       icon: "carbon:dashboard",
       link: "/app/module/incidents", 
       name : "incidents",
-      breadcrum:true
+      breadcrum:true,
+      visible:true
     },
     {
       title: "Resources",
       icon: "carbon:dashboard",
       link: "/app/module/resources", 
       name : "resources",
-      breadcrum:true
+      breadcrum:true,
+      visible:true
     },
     {
       title: "Pre Plan",
       icon: "carbon:dashboard",
-      link: "/app/module/pre-plans", 
-      name : "pre-plans",
-      breadcrum:true
+      link: "/app/module/preplans", 
+      name : "preplans",
+      breadcrum:true,
+      visible:true
     },
     {
       title:"Contacts",
@@ -41,19 +41,22 @@ export const topMenu = [
           childtitle: "Contacts",
           childlink: "/app/module/contacts",
           childicon: "solar:station-bold-duotone",
-          name:"contacts"
+          name:"contacts",
+          visible:false
         },
         {
           childtitle: "Agencies",
           childlink: "/app/module/agencies",
           childicon: "solar:station-bold-duotone",
-          name:"agencies"
+          name:"agencies",
+          visible:true
         },
         {
           childtitle: "Responder",
           childlink: "/app/module/responders",
           childicon: "solar:station-bold-duotone",
-          name:"responders"
+          name:"responders",
+          visible:true
         },
       ]
     },
@@ -64,10 +67,25 @@ export const topMenu = [
       name:"monitoring",
       child:[
         {
-          childtitle: "Incident map",
+          childtitle: "Incident Map",
           childlink: "/map/incident_map",
           childicon: "solar:station-bold-duotone",
-          name:"incident map"
+          name:"incident_map",
+          visible:true
+        },
+        {
+          childtitle: "Heat Map",
+          childlink: "/map/heat_map",
+          childicon: "solar:station-bold-duotone",
+          name:"heat_map",
+          visible:true
+        },
+        {
+          childtitle: "Call Logs",
+          childlink: "/app/module/call_logs",
+          childicon: "solar:station-bold-duotone",
+          name:"call_logs",
+          visible:true
         },
       ]
     },
@@ -75,13 +93,14 @@ export const topMenu = [
       title:"Settings",
       icon: "fluent:settings-32-regular",
       link: "#",
-      name:"monitoring",
+      name:"settings",
       child:[
         {
           childtitle: "Users",
           childlink: "/app/module/users",
           childicon: "solar:station-bold-duotone",
-          name:"users"
+          name:"users",
+          visible:true
         },
       ]
     }

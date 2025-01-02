@@ -10,6 +10,13 @@ export const useListStore = defineStore('list',{
             total:0,
             current:1,
             per_page:0,
+            filter_data:[],
+            fields:[
+                {
+                    field:"",
+                    value:""
+                },
+            ]
         }
     },
     actions:{
@@ -17,7 +24,11 @@ export const useListStore = defineStore('list',{
             try {
                 this.loading = true;
                 this.list = [];
-                const response = await this.axios.get(modules+"?page="+this.current);
+                const response = await this.axios.get(modules+"?page="+this.current,{
+                    params:{
+                        filter:this.filter_data
+                    }
+                });
                 const data = response.data;
                 this.list = data.data;
                 this.total = data.meta.total;

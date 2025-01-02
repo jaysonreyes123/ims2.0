@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\ResponderResource;
 use App\Http\Traits\HttpResponses;
 use App\Models\Responder;
@@ -18,10 +19,12 @@ class ResponderController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index()
+    public function index(Request $request)
     {
         //
-        return ResponderResource::collection(Responder::where('deleted',0)->paginate(10));
+        $model = Responder::query();
+        $list = Module::list_view($model,[],$request->filter);
+        return  ResponderResource::collection($list);
     }
 
     /**

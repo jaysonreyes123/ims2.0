@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResources;
 use App\Http\Traits\HttpResponses;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserPrivileges;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +21,12 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index()
+    public function index(Request $request)
     {
         //
-        return UserResources::collection(User::where('deleted',0)->paginate(10));
+        $model = User::query();
+        $list = Module::list_view($model,['roles'],$request->filter);
+        return  UserResources::collection($list);
     }
 
     /**
@@ -34,14 +40,25 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         //
         $model = new User();
         foreach($request->all() as $key => $value){
-            $model->$key = $value;
+            if($key != 'user_privileges' && $key != 'id'){
+                $model->$key = $value;
+            }
         }
-        $model->save();
+        if($model->save()){
+           $user_privileges_model = new UserPrivileges();
+           foreach($request->user_privileges as $key => $value){
+            if($key != 'id'){
+                $user_privileges_model->$key = $value;
+            }   
+           }
+           $user_privileges_model->user_id = $model->id;
+           $user_privileges_model->save();
+        }
         ActivityLogs::log($model->id,'users','create');
         return $this->success(new UserResources($model),class_basename($model).ResponseConstants::STORE);
     }
@@ -49,10 +66,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(String $id)
     {
         //
-        return $this->success(new UserResources($user));
+        $model = User::with('user_privileges')->where('id',$id)->first();
+        return $this->success(new UserResources($model));
     }
 
     /**
@@ -66,13 +84,23 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         //
         $original = $user->replicate();
         foreach($request->all() as $key => $value){
-            $user->$key = $value;
+            if($key != 'user_privileges'){
+                $user->$key = $value;
+            }
         }
+
+        $user_privileges_model = UserPrivileges::where('user_id',$request->id)->first();
+        foreach($request->user_privileges as $key => $value){
+            if($key != 'id'){
+                $user_privileges_model->$key = $value;
+            }   
+        }
+        $user_privileges_model->save();
         $user->save();
         ActivityLogs::log($user->id,'users','update',$original,$user);
         return $this->success(new UserResources($user),class_basename($user).ResponseConstants::UPDATE);
@@ -90,6 +118,11 @@ class UserController extends Controller
     }
     public function get_assigned_to() : JsonResponse {
         $model = User::where('id','<>',Auth::id())->get();
+        return $this->success($model);
+    }
+
+    public function get_role(): JsonResponse {
+        $model = Role::all();
         return $this->success($model);
     }
 }

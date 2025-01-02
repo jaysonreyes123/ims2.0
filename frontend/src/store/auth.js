@@ -135,12 +135,13 @@ export const useAuthStore = defineStore('auth', {
             try {  
                 let response = await this.axios.get('/user_details');     
                 this.user = response.data.data; 
+                console.log(this.user)
                 this.authenticated = true;
                 this.isLoading = false;
                 toast.success("Login successfully", {
                     timeout: 1000,
                 });
-                this.router.push("/app/module/incidents");
+                this.router.push("/app/dashboard");
             } catch (err) { 
                 this.isLoading = false;
                 toast.error("Get User Details Error, please try again!", {

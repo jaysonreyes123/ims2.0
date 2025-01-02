@@ -7,9 +7,10 @@ export const usePreplanStore = defineStore("preplan",{
             loading:false,
             id:"",
             pre_plan_classifications_picklist:[],
+            incident_types_picklist:[],
             form:{
                 pre_plan_name:"",
-                incident_type:"",
+                incident_types_picklist:"",
                 pre_plan_classifications_picklist:"",
                 initial_assessment:"",
                 response_action:"",
@@ -35,7 +36,7 @@ export const usePreplanStore = defineStore("preplan",{
         async list(){
             try {
                 this.loading = true;
-                const response = await this.axios.get('pre-plans');
+                const response = await this.axios.get('preplans');
                 this.ResourceList = response.data.data;
                 this.loading = false;
             } catch (error) {
@@ -44,7 +45,7 @@ export const usePreplanStore = defineStore("preplan",{
         },
         async getItem(){
             this.loading = true;
-            const response = await this.axios.get('pre-plans/'+this.id);
+            const response = await this.axios.get('preplans/'+this.id);
             const keys = Object.keys(this.form);
             const data = response.data.data;
             keys.map(item=>{
@@ -56,18 +57,18 @@ export const usePreplanStore = defineStore("preplan",{
             try {
                 this.loading = true;
                 if(this.id == ""){
-                    const response = await this.axios.post("pre-plans",this.form);
+                    const response = await this.axios.post("preplans",this.form);
                     this.id = response.data.data.id;
                 }
                 else{
-                    await this.axios.put("pre-plans/"+this.id,this.form);
+                    await this.axios.put("preplans/"+this.id,this.form);
                 }   
                 this.loading = false;
                 this.router.push({
                     name:"detail",
                     params:{
                         id:this.id,
-                        module:"pre-plans"
+                        module:"preplans"
                     }
                 });
             } catch (error) {
@@ -77,7 +78,7 @@ export const usePreplanStore = defineStore("preplan",{
         async del(id){
             try {
                 this.loading = true;
-                const response = await this.axios.delete("pre-plans/"+id);
+                const response = await this.axios.delete("preplans/"+id);
                 if(response.data.status == 200){
                     this.list();
                 }
@@ -93,7 +94,15 @@ export const usePreplanStore = defineStore("preplan",{
             } catch (error) {
                 
             }
-        }
+        },
+        async get_incident_type(){
+            try {
+                const response = await this.axios.get("incident_type");
+                this.incident_types_picklist = response.data.data;
+            } catch (error) {
+                
+            }
+        },
     },
     persist:true
 })

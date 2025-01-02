@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\ContactsResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Barangay;
@@ -20,10 +21,12 @@ class ContactsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return ContactsResources::collection(Contact::where('deleted',0)->paginate(10));
+        $model = Contact::query();
+        $list = Module::list_view($model,[],$request->filter);
+        return  ContactsResources::collection($list);
     }
 
     /**

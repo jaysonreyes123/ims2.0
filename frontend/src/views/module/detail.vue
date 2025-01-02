@@ -7,7 +7,7 @@
             <Tab
               v-slot="{ selected }"
               as="template"
-              v-for="(item, i) in buttons"
+              v-for="(item, i) in button_module"
               :key="i"
             >
             <button
@@ -18,20 +18,20 @@
                 ]"
                 class="inline-flex items-start text-sm font-medium capitalize bg-white dark:bg-slate-800 ring-0 foucs:ring-0 focus:outline-none px-2 transition duration-150 before:transition-all before:duration-150 relative before:absolute before:left-1/2 before:bottom-[-6px] before:h-[1.5px] before:bg-primary-500 before:-translate-x-1/2"
               >
-                <span class="text-base relative top-[1px] ltr:mr-1 rtl:ml-1"
+                <span class="text-ba  se relative top-[1px] ltr:mr-1 rtl:ml-1"
                   ><Icon :icon="item.icon" /></span
                 >{{ item.title }}
               </button>
             </Tab>
           </TabList>
         </Card>
-      <TabPanels>
-        <TabPanel v-for="(item,i) in buttons" :key="i">
-            <component v-if="item.title == 'Details' " :is="Details()"></component>
-            <component v-if="item.title == 'Updates' " :is="Updates()"></component>
-        </TabPanel>
-      </TabPanels>
-  </TabGroup>
+        <TabPanels>
+          <TabPanel v-for="(item,i) in button_module" :key="i">
+              <component :is="item.component"></component>
+              <!-- <component v-if="item.title == 'Updates' " :is="Updates()"></component> -->
+          </TabPanel>
+        </TabPanels>
+    </TabGroup>
     </div>
 </template>
 
@@ -42,22 +42,14 @@ import Contact from "./contacts/detail.vue";
 import Agency from "./agency/detail.vue";
 import Responder from "./responder/detail.vue";
 import PrePlan from "./preplan/detail.vue";
+import CallLog from "./call_logs/detail.vue";
 import User from "./users/detail.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Update from "./update.vue";
 import Card from "@/components/Card";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { menu_button } from "./menu_button";
 import Icon from "@/components/Icon";
-const buttons = [
-  {
-    title: "Details",
-    icon: "heroicons-outline:view-columns",
-  },
-  {
-    title: "Updates",
-    icon: "heroicons-outline:queue-list",
-  },
-];
 export default {
     components:{
         Breadcrumb,
@@ -75,8 +67,8 @@ export default {
         Agency,
         Responder,
         PrePlan,
-        User
-      
+        User,
+        CallLog
     },
 
     methods:{
@@ -99,8 +91,11 @@ export default {
                 case 'responders':
                   modules_ = 'Responder';
                     break;
-                case 'pre-plans':
+                case 'preplans':
                   modules_ = 'PrePlan';
+                    break;
+                  case 'call_logs':
+                  modules_ = 'CallLog';
                     break;
                 case 'users':
                   modules_ = 'User';
@@ -114,13 +109,10 @@ export default {
         },
     },
     computed:{
-      
-    }, 
-    data(){
-        return{
-            buttons
+        button_module(){
+          return menu_button[this.$route.params.module];
         }
-    }
+    }, 
 }
 </script>
 

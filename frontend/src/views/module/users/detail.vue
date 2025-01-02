@@ -7,7 +7,15 @@
                     <div v-for="(field,i) in block.fields" :key="i" :class="`custom-grid-${i%2}`" class="mt-4">
                       <div class="fromGroup relative">
                           <label>{{ field.label }}</label>
-                          <span v-if="field.type != 'picklist' ">{{ ModuleStore.form[field.name] }}</span>
+                          <span v-if="field.type != 'picklist' ">
+                            <span v-if="field.type == 'checkbox' ">
+                              <Badge v-if="ModuleStore.form.user_privileges[split_name(field.name)]" label="Active" badgeClass="bg-success-500 text-white" />
+                              <Badge v-if="!ModuleStore.form.user_privileges[split_name(field.name)]" label="Inactive" badgeClass="bg-danger-500 text-white" />
+                            </span>
+                            <span v-else>
+                              {{ ModuleStore.form[field.name] }}
+                            </span>
+                          </span>
                           <span v-else>
                             <span v-if="field.name == 'assigned_to_picklist' ">
                                 {{ user_store.get_single_assigned_to_picklist(ModuleStore.form[field.name]) }}
@@ -22,6 +30,7 @@
   </div>
 </template>
 <script>
+import Badge from "@/components/Badge";
 import Card from "@/components/Card";
 import Block from "../../components/Block";
 import Map from "../../components/Map"
@@ -33,11 +42,13 @@ export default {
     Block,
     Map,
     Card,
+    Badge
   },
   mounted(){
     const id = this.$route.params.id;
     ModuleStore.id = id;
     ModuleStore.getItem();
+    console.log(ModuleStore.form)
   },
   methods:{
     find_picklist_value(name,value){
@@ -49,7 +60,11 @@ export default {
         } 
       }
       return label;
-    }
+    },
+    split_name(name){
+            const split_name = name.split(".");
+            return split_name[1];
+    },
   },
   data(){
     return{

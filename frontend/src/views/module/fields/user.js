@@ -19,6 +19,14 @@ export const user_fields = [
                 readonly:false
             },
             {
+                label:"Role",
+                name:"roles_picklist",
+                type:"picklist",
+                default:1,
+                required:true,
+                readonly:false
+            },
+            {
                 label:"Password",
                 name:"password",
                 type:"text",
@@ -33,15 +41,15 @@ export const user_fields = [
         fields:[
             {
                 label:"Incident",
-                name:"incident",
+                name:"user_privileges.incidents",
                 type:"checkbox",
-                default:true,
+                default:false,
                 required:false,
                 readonly:false
             },
             {
                 label:"Resources",
-                name:"resources",
+                name:"user_privileges.resources",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -49,7 +57,7 @@ export const user_fields = [
             },
             {
                 label:"Pre Plan",
-                name:"preplan",
+                name:"user_privileges.preplans",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -57,7 +65,7 @@ export const user_fields = [
             },
             {
                 label:"Contact",
-                name:"contact",
+                name:"user_privileges.contacts",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -65,7 +73,7 @@ export const user_fields = [
             },
             {
                 label:"Agency",
-                name:"agency",
+                name:"user_privileges.agencies",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -73,7 +81,7 @@ export const user_fields = [
             },
             {
                 label:"Responder",
-                name:"responder",
+                name:"user_privileges.responders",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -81,7 +89,23 @@ export const user_fields = [
             },
             {
                 label:"Incident Map",
-                name:"incident_map",
+                name:"user_privileges.incident_map",
+                type:"checkbox",
+                default:true,
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Heat Map",
+                name:"user_privileges.heat_map",
+                type:"checkbox",
+                default:true,
+                required:false,
+                readonly:false
+            },
+            {
+                label:"Call Logs",
+                name:"user_privileges.call_logs",
                 type:"checkbox",
                 default:true,
                 required:false,
@@ -89,7 +113,7 @@ export const user_fields = [
             },
             {
                 label:"User",
-                name:"user",
+                name:"user_privileges.users",
                 type:"checkbox",
                 default:true,
                 required:false,

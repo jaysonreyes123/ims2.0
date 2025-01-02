@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\ResponseConstants;
 use App\Helpers\ActivityLogs;
+use App\Helpers\Module;
 use App\Http\Resources\PrePlanResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\PrePlan;
@@ -18,10 +19,12 @@ class PrePlanController extends Controller
      * Display a listing of the resource.
      */
     use HttpResponses;
-    public function index()
+    public function index(Request $request)
     {
         //
-        return PrePlanResources::collection(PrePlan::where('deleted',0)->paginate(10));
+       $model = PrePlan::query();
+       $list = Module::list_view($model,[],$request->filter);
+       return  PrePlanResources::collection($list);
     }
 
     /**
@@ -43,17 +46,18 @@ class PrePlanController extends Controller
             $model->$key = $value;
         }
         $model->save();
-        ActivityLogs::log($model->id,'pre-plans','create');
+        ActivityLogs::log($model->id,'preplans','create');
         return $this->success(new PrePlanResources($model),class_basename($model).ResponseConstants::STORE);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PrePlan $prePlan)
+    public function show(String $id)
     {
         //
-        return $this->success(new PrePlanResources($prePlan)    );
+        $model = PrePlan::find($id);
+        return $this->success(new PrePlanResources($model));
     }
 
     /**
@@ -67,24 +71,26 @@ class PrePlanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PrePlan $prePlan) : JsonResponse
+    public function update(Request $request, String $id) : JsonResponse
     {
         //
+        $prePlan = PrePlan::find($id);
         $original = $prePlan->replicate();
         foreach($request->all() as $key => $value){
             $prePlan->$key = $value;
         }
         $prePlan->save();
-        ActivityLogs::log($prePlan->id,'pre-plans','update',$original,$prePlan);
+        ActivityLogs::log($prePlan->id,'preplans','update',$original,$prePlan);
         return $this->success(new PrePlanResources($prePlan),class_basename($prePlan).ResponseConstants::UPDATE);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PrePlan $prePlan)
+    public function destroy(String $id)
     {
         //
+        $prePlan = PrePlan::find($id);
         $prePlan->deleted = 1;
         $prePlan->save();
         return $this->success([],class_basename($prePlan).ResponseConstants::DESTROY);
