@@ -14,7 +14,6 @@ use App\Http\Controllers\PrePlanController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ResponderController;
 use App\Http\Controllers\UserController;
-use App\Models\ResponderType;
 use Illuminate\Support\Facades\Route;
 
 Route::post("login",[LoginController::class,'login']);
