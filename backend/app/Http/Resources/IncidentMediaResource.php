@@ -18,7 +18,7 @@ class IncidentMediaResource extends JsonResource
         $allow_extension = ["txt","png","jpg","jpeg","php","pdf","svg","gif","mp4"];
         $response = parent::toArray($request);
         if(in_array($this->extension,$allow_extension)){
-            $response['view'] = env('APP_URL').Storage::url($this->path);
+            $response['view'] = env('ASSET_URL').Storage::url($this->path);
         }
         else{
             $response['view'] = "";

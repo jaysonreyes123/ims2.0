@@ -17,12 +17,13 @@ class ForgotPassword extends Mailable
      * Create a new message instance.
      */
     public $token,$user;
-    public $ims_domain = "http://localhost:5173/reset-password/";
+    public $ims_domain;
     public function __construct($token,$user)
     {
         //
         $this->token = $token;
         $this->user = $user;
+        $this->ims_domain = env('FRONTEND_URL')."/reset-password/";
     }
 
     /**
