@@ -103,7 +103,7 @@ class Module{
     public static function search($module,$search){
         $model = self::check_duplicate($module);
         if($module == 'incidents'){
-            $model = $model->with(['incident_types']);
+            $model = $model->with(['incident_types','incident_statuses']);
             $model = $model->where('incident_no','like',$search."%");
             $model = $model->orWhereHas('incident_types',function($query) use ($search){
                 return $query->where('label','like',$search."%");
