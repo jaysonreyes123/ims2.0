@@ -39,7 +39,7 @@ export const incidents_field = [
                 name:"incident_statuses_picklist",
                 type:"picklist",
                 default:"",
-                required:false,
+                required:true,
                 readonly:false
             },
             {
