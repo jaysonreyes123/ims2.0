@@ -10,19 +10,29 @@
                   <span>{{ ResourcesStore.form.resources_name }}</span>
               </div>
               <div class="fromGroup relative">
+                  <label for="">Resource Category</label>
+                  <span>{{ find_picklist_value('resources_categories_picklist',ResourcesStore.form.resources_categories_picklist) }}</span>
+              </div>
+              
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
                   <label for="">Resource Type</label>
                   <span>{{ find_picklist_value('resources_types_picklist',ResourcesStore.form.resources_types_picklist) }}</span>
               </div>
-            </div>
-
-            <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
                   <label for="">Quantity</label>
                   <span>{{ ResourcesStore.form.quantity }}</span>
               </div>
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
                   <label for="">Status</label>
                   <span>{{ find_picklist_value('resources_statuses_picklist',ResourcesStore.form.resources_statuses_picklist) }}</span>
+              </div>
+              <div class="fromGroup relative">
+                  <label for="">Condition</label>
+                  <span>{{ find_picklist_value('conditions_picklist',ResourcesStore.form.conditions_picklist) }}</span>
               </div>
             </div>
 
@@ -53,10 +63,7 @@
                   <label for="">Remarks</label>
                   <span>{{ ResourcesStore.form.remarks }}</span>
               </div>
-              <div class="fromGroup relative">
-                  <label for="">Condition</label>
-                  <span>{{ find_picklist_value('conditions_picklist',ResourcesStore.form.conditions_picklist) }}</span>
-              </div>
+ 
             </div>
 
         </Block>
@@ -72,6 +79,28 @@
                       <Map :set_coordinates="ResourcesStore.form.coordinates" />
                   </div>
               </div>
+          </Block>
+          <Block blockname="System Generated">
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                      <label for="" >Created time</label>
+                      <span>{{ ResourcesStore.data.created_at }}</span>
+                  </div>
+                  <div class="fromGroup relative">
+                      <label for="" >Created By</label>
+                      <span>{{ ResourcesStore.data.created_by }}</span>
+                  </div>
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated</label>
+                      <span>{{ ResourcesStore.data.updated_at }}</span>
+                  </div> 
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated by</label>
+                      <span>{{ ResourcesStore.data.updated_by }}</span>
+                  </div> 
+            </div>
           </Block>
       </div>
   </div>

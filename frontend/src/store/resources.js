@@ -6,13 +6,17 @@ export const useResourcesStore = defineStore("resources",{
         return{
             loading:false,
             ResourceList:[],
+            resources_type_storage:[],
             resources_types_picklist:[],
             conditions_picklist:[],
             dispatchers_picklist:[],
             resources_statuses_picklist:[],
+            resources_categories_picklist:[],
+            data:[],
             id:"",
             form:{
                 resources_name:"",
+                resources_categories_picklist:"",
                 resources_types_picklist:"",
                 resources_statuses_picklist:"",
                 coordinates:"",
@@ -58,6 +62,7 @@ export const useResourcesStore = defineStore("resources",{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            this.data = data;
             this.loading = false;
         },
         async save(){
@@ -97,7 +102,7 @@ export const useResourcesStore = defineStore("resources",{
         async get_resources_type(){
             try {
                 const response = await this.axios.get("resources_type");
-                this.resources_types_picklist = response.data.data;
+                this.resources_type_storage = response.data.data;
             } catch (error) {
                 
             }
@@ -122,6 +127,14 @@ export const useResourcesStore = defineStore("resources",{
             try {
                 const response = await this.axios.get("resources_dispatch");
                 this.dispatchers_picklist = response.data.data;
+            } catch (error) {
+                
+            }
+        },
+        async get_resources_category(){
+            try {
+                const response = await this.axios.get("resources_categories");
+                this.resources_categories_picklist = response.data.data;
             } catch (error) {
                 
             }

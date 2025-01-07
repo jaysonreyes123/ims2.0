@@ -91,6 +91,15 @@
             </div>
           </Block>
 
+          <Block blockname="Incident Resolution">
+            <div class="lg:grid lg:grid-cols-1 gap-12">
+                <div class="fromGroup relative">
+                      <label for="">Incident Resolution</label>
+                      <span>{{ IncidentStore.form.incident_resolution }}</span>
+                  </div> 
+            </div>
+          </Block>
+
           <Block blockname="Responder Details">
             <div class="lg:grid lg:grid-cols-2 gap-12">
               <div class="fromGroup relative">
@@ -106,6 +115,29 @@
                 <div class="fromGroup relative">
                       <label for="" >Assigned Team</label>
                       <span>{{ IncidentStore.form.assigned_team }}</span>
+                  </div> 
+            </div>
+          </Block>
+
+          <Block blockname="System Generated">
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                      <label for="" >Created time</label>
+                      <span>{{ IncidentStore.data.created_at }}</span>
+                  </div>
+                  <div class="fromGroup relative">
+                      <label for="" >Created By</label>
+                      <span>{{ IncidentStore.data.created_by }}</span>
+                  </div>
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated</label>
+                      <span>{{ IncidentStore.data.updated_at }}</span>
+                  </div> 
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated by</label>
+                      <span>{{ IncidentStore.data.updated_by }}</span>
                   </div> 
             </div>
           </Block>

@@ -17,19 +17,23 @@ class IncidentPrioritySeeder extends Seeder
         DB::table('incident_priorities')->insert([
             [
                 "id" => 1,
-                "label" => "Low"
+                "label" => "Critical"
             ],
             [
                 "id" => 2,
-                "label" => "Medium"
-            ],
-            [
-                "id" => 3,
                 "label" => "High"
             ],
             [
+                "id" => 3,
+                "label" => "Medium"
+            ],
+            [
                 "id" => 4,
-                "label" => "Urgent"
+                "label" => "Low"
+            ],
+            [
+                "id" => 5,
+                "label" => "None"
             ],
         ]);
     }

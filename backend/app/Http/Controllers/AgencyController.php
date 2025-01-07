@@ -10,6 +10,7 @@ use App\Http\Traits\HttpResponses;
 use App\Models\Agency;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgencyController extends Controller
 {
@@ -20,8 +21,7 @@ class AgencyController extends Controller
     public function index(Request $request)
     {
         //
-        $model = Agency::query();
-        $list = Module::list_view($model,['roles'],$request->filter);
+        $list = Module::list_view($request->module,[],$request->filter,$request->search);
         return  AgencyResources::collection($list);
     }
 
@@ -56,6 +56,7 @@ class AgencyController extends Controller
                 $model->$key = $value;
             }
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'agencies','create');
         return $this->success(new AgencyResources($model),class_basename($model).ResponseConstants::STORE);
@@ -93,6 +94,7 @@ class AgencyController extends Controller
                 $agency->$key = $value;
             }
         }
+        $agency->updated_by = Auth::id();
         $agency->save();
         ActivityLogs::log($agency->id,'agencies','update',$original,$agency);
         return $this->success(new AgencyResources($agency),class_basename($agency).ResponseConstants::UPDATE);

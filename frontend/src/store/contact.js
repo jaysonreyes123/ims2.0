@@ -10,6 +10,7 @@ export const useContactsStore = defineStore("contacts",{
             created_by_picklist:[],
             municipalities_picklist:[],
             barangays_picklist:[],
+            data:[],
             form:{
                 firstname:"",
                 lastname:"",
@@ -17,9 +18,7 @@ export const useContactsStore = defineStore("contacts",{
                 landline:"",
                 email:"",
                 date_of_birth:"",
-                created_by:"",
                 caller_types_picklist:"",
-                created_by:"",
                 municipalities_picklist:"",
                 barangays_picklist:""
 
@@ -55,6 +54,7 @@ export const useContactsStore = defineStore("contacts",{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            this.data = data;
             this.loading = false;
         },
         async save(){

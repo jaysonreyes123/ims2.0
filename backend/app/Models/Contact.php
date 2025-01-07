@@ -16,5 +16,12 @@ class Contact extends Model
     public function barangays(){
         return $this->hasOne(Barangay::class,'id','barangays_picklist');
     }
+
+    public function created_by_(){
+        return $this->hasOne(User::class,'id','created_by');
+    }
+    public function updated_by_(){
+        return $this->hasOne(User::class,'id','updated_by');
+    }
     
 }

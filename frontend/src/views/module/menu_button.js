@@ -14,7 +14,7 @@ export const menu_button =
     {
       title: "Media",
       icon: "heroicons-outline:view-columns",
-      component:"Update"
+      component:"IncidentMedia"
   },
   ],
   resources:[

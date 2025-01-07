@@ -8,6 +8,7 @@ export const useAgencyStore = defineStore("agency",{
             id:"",
             municipalities_picklist:[],
             barangays_picklist:[],
+            data:[],
             form:{
                 agency_name:"",
                 contact_no_1:"",
@@ -50,6 +51,7 @@ export const useAgencyStore = defineStore("agency",{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            this.data = data;
             this.loading = false;
         },
         async save(){

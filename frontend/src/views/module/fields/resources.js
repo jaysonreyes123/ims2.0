@@ -11,6 +11,14 @@ export const resources_field = [
                 readonly:false
             },
             {
+                label:"Resource Category",
+                name:"resources_categories_picklist",
+                type:"picklist",
+                default:"",
+                required:false,
+                readonly:false
+            },
+            {
                 label:"Resource Type",
                 name:"resources_types_picklist",
                 type:"picklist",

@@ -34,14 +34,14 @@ export const responder_fields = [
                 required:false,
                 readonly:false
             },
-            {
-                label:"Middle Name",
-                name:"middlename",
-                type:"text",
-                default:"",
-                required:false,
-                readonly:false
-            },
+            // {
+            //     label:"Middle Name",
+            //     name:"middlename",
+            //     type:"text",
+            //     default:"",
+            //     required:false,
+            //     readonly:false
+            // },
             // {
             //     label:"Assigned To",
             //     name:"assigned_to_picklist",

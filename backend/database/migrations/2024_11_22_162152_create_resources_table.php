@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('resources_name')->nullable();
 
+            $table->unsignedBigInteger('resources_categories_picklist')->nullable();
+            $table->foreign('resources_categories_picklist')->references('id')->on('resources_categories')->onDelete('cascade');
+
             $table->unsignedBigInteger('resources_types_picklist')->nullable();
             $table->foreign('resources_types_picklist')->references('id')->on('resources_types')->onDelete('cascade');
 
@@ -36,6 +39,11 @@ return new class extends Migration
             $table->string('owner')->nullable();
             $table->integer('deleted')->default(0);
             $table->string('source')->default('crm');
+            
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

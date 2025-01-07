@@ -24,17 +24,24 @@ return new class extends Migration
             $table->foreign('assigned_to_picklist')->references('id')->on('users')->onDelete('cascade');
 
             $table->string('street_name')->nullable();
+            $table->string('barangays_picklist')->nullable();
+            $table->string('municipalities_picklist')->nullable();
 
-            $table->unsignedBigInteger('barangays_picklist')->nullable();
-            $table->foreign('barangays_picklist')->references('id')->on('barangays')->onDelete('cascade');
+            // $table->unsignedBigInteger('barangays_picklist')->nullable();
+            // $table->foreign('barangays_picklist')->references('id')->on('barangays')->onDelete('cascade');
 
-            $table->unsignedBigInteger('municipalities_picklist')->nullable();
-            $table->foreign('municipalities_picklist')->references('id')->on('municipalities')->onDelete('cascade');
+            // $table->unsignedBigInteger('municipalities_picklist')->nullable();
+            // $table->foreign('municipalities_picklist')->references('id')->on('municipalities')->onDelete('cascade');
 
 
 
             $table->integer('deleted')->default(0);
             $table->string('source')->default('crm');
+
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

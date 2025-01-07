@@ -14,6 +14,7 @@ use App\Models\Municipality;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactsController extends Controller
 {
@@ -24,8 +25,7 @@ class ContactsController extends Controller
     public function index(Request $request)
     {
         //
-        $model = Contact::query();
-        $list = Module::list_view($model,[],$request->filter);
+        $list = Module::list_view($request->module,[],$request->filter,$request->search);
         return  ContactsResources::collection($list);
     }
 
@@ -60,6 +60,7 @@ class ContactsController extends Controller
                 $model->$key = $value;
             }
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'contacts','create');
         return $this->success(new ContactsResources($model),class_basename($model).ResponseConstants::STORE);
@@ -98,6 +99,7 @@ class ContactsController extends Controller
                 $contact->$key = $value;
             }
         }
+        $contact->updated_by = Auth::id();
         $contact->save();
         ActivityLogs::log($contact->id,'contacts','update',$original,$contact);
         return $this->success(new ContactsResources($contact),class_basename($contact).ResponseConstants::UPDATE);

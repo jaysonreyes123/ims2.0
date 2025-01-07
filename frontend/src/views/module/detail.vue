@@ -46,6 +46,7 @@ import CallLog from "./call_logs/detail.vue";
 import User from "./users/detail.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Update from "./update.vue";
+import IncidentMedia from "./incident/media/media.vue"
 import Card from "@/components/Card";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { menu_button } from "./menu_button";
@@ -68,45 +69,8 @@ export default {
         Responder,
         PrePlan,
         User,
-        CallLog
-    },
-
-    methods:{
-      Details(){
-          const modules=this.$route.params.module
-            var modules_ = "";
-            switch (modules) {
-                case 'incidents':
-                  modules_ = 'Incident';
-                    break;
-                case 'resources':
-                  modules_ = 'Resource';
-                    break;
-                case 'contacts':
-                  modules_ = 'Contact';
-                    break;
-                case 'agencies':
-                  modules_ = 'Agency';
-                    break;
-                case 'responders':
-                  modules_ = 'Responder';
-                    break;
-                case 'preplans':
-                  modules_ = 'PrePlan';
-                    break;
-                  case 'call_logs':
-                  modules_ = 'CallLog';
-                    break;
-                case 'users':
-                  modules_ = 'User';
-                default:
-                    break;
-            }
-            return modules_;
-        },
-        Updates(){
-            return 'Update'
-        },
+        CallLog,
+        IncidentMedia
     },
     computed:{
         button_module(){

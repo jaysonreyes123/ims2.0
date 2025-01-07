@@ -58,7 +58,7 @@ export const agency_fields = [
             {
                 label:"Municipality",
                 name:"municipalities_picklist",
-                type:"picklist",
+                type:"text",
                 default:"",
                 required:false,
                 readonly:false
@@ -66,7 +66,7 @@ export const agency_fields = [
             {
                 label:"Barangay",
                 name:"barangays_picklist",
-                type:"picklist",
+                type:"text",
                 default:"",
                 required:false,
                 readonly:false

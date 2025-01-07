@@ -44,7 +44,7 @@
             activeSubmenu === i ? 'parent_active not-collapsed' : 'collapsed'
           "
           @click="toggleSubmenu(i)"
-           v-if="item.child.filter(filter => filter.visible == true ).length > 0"
+           v-if="item.child.filter(filter => filter.visible == true ).length > 0  "
         >
           <div class="flex-1 flex items-start"> 
             <span class="menu-icon" v-show="item.icon">

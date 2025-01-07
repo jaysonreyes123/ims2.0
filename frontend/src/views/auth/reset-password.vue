@@ -63,7 +63,7 @@
   <script>
   import ForgotPass from "./common/resetPassword";
   // Image Import
-  import pageBg from "@/assets/images/all-img/login-bg.png"
+  import pageBg from "@/assets/images/all-img/bg3.png"
   import logoWhite from "@/assets/images/logo/logo-white.svg"
   import logo from "@/assets/images/logo/logo.svg"
   import loginBg from "@/assets/images/all-img/istockphoto-520773327-612x612.jpg"

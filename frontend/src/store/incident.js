@@ -21,6 +21,7 @@ export const useIncidentStore = defineStore("incident",{
                 location:"",
                 street_name:"",
                 nearest_landmark:"",
+                incident_resolution:"",
                 coordinates:"",
                 assigned_team:[],
                 response_team:"",
@@ -28,7 +29,8 @@ export const useIncidentStore = defineStore("incident",{
                 caller_contact:"",
                 caller_firstname:"",
                 caller_lastname:""
-            }
+            },
+            data:[]
         }
     },
     actions:{
@@ -56,6 +58,7 @@ export const useIncidentStore = defineStore("incident",{
             const response = await this.axios.get('incidents/'+this.id);
             const keys = Object.keys(this.form);
             const data = response.data.data;
+            this.data = data;
             keys.map(item=>{
                 if(item == "assigned_team"){
                     this.form[item] = JSON.parse(data[item]); 

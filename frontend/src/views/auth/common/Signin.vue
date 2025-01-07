@@ -19,8 +19,11 @@
       <router-link to="/forgot-password" class="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium">Forgot
         Password?</router-link>
     </div>
-
+    <br>
+    <br>
+    <br>
     <Button text="Sign in" type="submit" btnClass="btn btn-dark block w-full text-center" :isLoading="auth.isLoading" />
+    <br>
   </form>
 </template>
 <script setup>

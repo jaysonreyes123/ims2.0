@@ -24,7 +24,7 @@ export const user_fields = [
                 type:"picklist",
                 default:1,
                 required:true,
-                readonly:false
+                readonly:false,
             },
             {
                 label:"Password",
@@ -43,7 +43,7 @@ export const user_fields = [
                 label:"Incident",
                 name:"user_privileges.incidents",
                 type:"checkbox",
-                default:false,
+                default:true,
                 required:false,
                 readonly:false
             },

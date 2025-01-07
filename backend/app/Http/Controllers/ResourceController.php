@@ -8,6 +8,7 @@ use App\Helpers\Module;
 use App\Http\Resources\ResourceResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Resource;
+use App\Models\ResourcesCategory;
 use App\Models\ResourcesCondition;
 use App\Models\ResourcesDispatcher;
 use App\Models\ResourcesStatus;
@@ -15,6 +16,7 @@ use App\Models\ResourcesType;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResourceController extends Controller
 {
@@ -26,8 +28,7 @@ class ResourceController extends Controller
     {
         //
         
-       $model = Resource::query();
-       $list = Module::list_view($model,['resources_types'],$request->filter);
+        $list = Module::list_view($request->module,['resources_types','resources_statuses'],$request->filter,$request->search);
        return  ResourceResources::collection($list);
     }
 
@@ -57,6 +58,7 @@ class ResourceController extends Controller
                 $model->$key = $value;
             }
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'resources','create');
         return $this->success(new ResourceResources($model),class_basename($model).ResponseConstants::STORE);
@@ -97,6 +99,7 @@ class ResourceController extends Controller
                 $resource->$key = $value;
             }
         }
+        $resource->updated_by = Auth::id();
         $resource->save();
         ActivityLogs::log($resource->id,'resources','update',$original,$resource);
         return $this->success(new ResourceResources($resource),class_basename($resource).ResponseConstants::UPDATE);
@@ -127,6 +130,10 @@ class ResourceController extends Controller
     }
     public function resources_status(){
         $model = ResourcesStatus::all();
+        return $this->success($model);
+    }
+    public function resources_categories(){
+        $model = ResourcesCategory::all();
         return $this->success($model);
     }
 }

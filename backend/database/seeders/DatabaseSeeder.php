@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             IncidentTypeSeeder::class,
             IncidentStatusSeeder::class,
             IncidentPrioritySeeder::class,
+            ResourcesCategory::class,
             ResourcesTypeSeeder::class,
             ResourcesStatusSeeder::class,
             ResourcesDispatchSeeder::class,
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             CallerTypeSeeder::class,
             ResponderTypeSeeder::class,
             PrePlanClassificaionSeeder::class,
+
         ]);
     }
 }

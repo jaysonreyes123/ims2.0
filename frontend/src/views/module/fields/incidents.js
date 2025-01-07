@@ -30,7 +30,7 @@ export const incidents_field = [
                 label:"Date of Incident",
                 name:"date_of_incident",
                 type:"date",
-                default:"",
+                default:"current_date",
                 required:false,
                 readonly:false
             },
@@ -46,7 +46,7 @@ export const incidents_field = [
                 label:"Incident Priority",
                 name:"incident_priorities_picklist",
                 type:"picklist",
-                default:"",
+                default:5,
                 required:false,
                 readonly:false
             },
@@ -99,7 +99,7 @@ export const incidents_field = [
         ]
     },
     {
-        block_name:"Caller Details",
+        block_name:"Report Details",
         fields:[
             {
                 label:"First Name",
@@ -121,6 +121,19 @@ export const incidents_field = [
                 label:"Contact No",
                 name:"caller_contact",
                 type:"text",
+                default:"",
+                required:false,
+                readonly:false
+            },
+        ]
+    },
+    {
+        block_name:"Incident Resolution",
+        fields:[
+            {
+                label:"Incident resolution",
+                name:"incident_resolution",
+                type:"textarea",
                 default:"",
                 required:false,
                 readonly:false

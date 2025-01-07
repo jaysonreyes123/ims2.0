@@ -14,6 +14,7 @@ use App\Models\IncidentType;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IncidentController extends Controller
 {
@@ -25,7 +26,7 @@ class IncidentController extends Controller
     {
         //
        $model = Incident::query();
-       $list = Module::list_view($model,['incident_types','incident_statuses'],$request->filter);
+       $list = Module::list_view($request->module,['incident_types','incident_statuses'],$request->filter,$request->search);
        return  IncidentResources::collection($list);
     }
 
@@ -62,6 +63,7 @@ class IncidentController extends Controller
                 $model->$key = $value;
             }
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'incidents','create');
         return $this->success(new IncidentResources($model),class_basename($model).ResponseConstants::STORE);
@@ -107,6 +109,7 @@ class IncidentController extends Controller
                 $incident->$key = $value;
             }
         }
+        $incident->updated_by = Auth::id();
         $incident->save();
         ActivityLogs::log($incident->id,'incidents','update',$original_incident,$incident);
         return $this->success(new IncidentResources($incident),class_basename($incident).ResponseConstants::UPDATE);

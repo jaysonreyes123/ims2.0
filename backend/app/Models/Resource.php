@@ -22,4 +22,10 @@ class Resource extends Model
     public function conditions(){
         return $this->hasOne(ResourcesCondition::class,'id','conditions_picklist');
     }
+    public function created_by_(){
+        return $this->hasOne(User::class,'id','created_by');
+    }
+    public function updated_by_(){
+        return $this->hasOne(User::class,'id','updated_by');
+    }
 }

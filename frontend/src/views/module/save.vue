@@ -44,6 +44,14 @@
                                 <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
                                 <Select placeholder="Select an option" :reduce="(option) => option.id" :options="user_store[field.name]" v-model="form[field.name]"/>
                             </div>
+                            <div class="fromGroup relative" v-if="field.name == 'roles_picklist' ">
+                                <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
+                                <Select @option:selected="ChangeRole" placeholder="Select an option" :reduce="(option) => option.id" :options="user_store[field.name]" v-model="form[field.name]"/>
+                            </div>
+                            <div class="fromGroup relative" v-if="field.name == 'resources_categories_picklist' ">
+                                <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
+                                <Select @option:selected="ResourcesCategories" placeholder="Select an option" :reduce="(option) => option.id" :options="ModuleStore[field.name]" v-model="form[field.name]"/>
+                            </div>
                             <div class="fromGroup relative" v-else>
                                 <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
                                 <Select placeholder="Select an option" :reduce="(option) => option.id" :options="ModuleStore[field.name]" v-model="form[field.name]"/>
@@ -57,7 +65,8 @@
                         </div>
                         <div v-else-if="field.type == 'checkbox'">
                             <div v-if="this.$route.params.module == 'users'">
-                                <Switch :label="field.label" v-model="form.user_privileges[split_name(field.name)] " :active="form.user_privileges[split_name(field.name)] == 1 ? true: false " class="mb-5" />
+                                <Switch v-if="form.user_privileges[split_name(field.name)] == 1" :label="field.label" v-model="form.user_privileges[split_name(field.name)] " :active="true" class="mb-5" />
+                                <Switch v-if="form.user_privileges[split_name(field.name)] == 0" :label="field.label" v-model="form.user_privileges[split_name(field.name)] " :active="false" class="mb-5" />
                             </div>
                             <div v-else>
                                 <Switch :label="field.label" v-model="form[field.name]" :active="form[field.name]" class="mb-5" />
@@ -151,10 +160,20 @@
         }
         this.load_picklist();
       },
-      unmounted(){
-        
-      },
       methods:{
+        ResourcesCategories(){
+            const resources_type_filter = this.ModuleStore.resources_type_storage.filter(item => item.resources_categories_id == this.ModuleStore.form.resources_categories_picklist );
+            this.ModuleStore.resources_types_picklist = resources_type_filter;
+        },
+        ChangeRole(){
+            if(this.form.roles_picklist == 2){
+                this.form.user_privileges.users = 0;
+            }
+            else{
+                this.form.user_privileges.users = 1;
+            }
+            
+        },
         split_name(name){
             const split_name = name.split(".");
             return split_name[1];
@@ -165,7 +184,19 @@
                     this.ModuleStore.id = "";
                     const split_name = item2.name.split(".");
                     if(split_name.length == 1){
-                        this.form[item2.name] = item2.default;
+                        if(item2.type == "date"){
+                            var today = new Date();
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                            var yyyy = today.getFullYear();
+
+                            today = yyyy+"-"+mm+"-"+dd;
+                            var default_value_date = item2.default == "current_date" ? today : item2.default;
+                            this.form[item2.name] = default_value_date;
+                        }
+                        else{
+                            this.form[item2.name] = item2.default;
+                        }
                     }
                     else{
                         this.form[split_name[0]][split_name[1]] = item2.default;
@@ -221,8 +252,8 @@
                 if(this.ModuleStore.conditions_picklist.length == 0){
                     this.ModuleStore.get_resources_condition();
                 }
-                if(this.ModuleStore.dispatchers_picklist.length == 0){
-                    this.ModuleStore.get_resources_dispatch();
+                if(this.ModuleStore.resources_categories_picklist.length == 0){
+                    this.ModuleStore.get_resources_category();
                 }
 
             }
@@ -350,7 +381,7 @@
             }
             return module_store;
         },
-      }
+      },
   }
   </script>
   

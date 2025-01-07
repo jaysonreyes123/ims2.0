@@ -10,14 +10,17 @@ use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PrePlanController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ResponderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::post("login",[LoginController::class,'login']);
-
+Route::get("forgot-password/{email}",[UserController::class,'forgot_password']);
+Route::post("reset-password", [UserController::class, 'reset_password']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('user_details', [LoginController::class, 'details']);
     Route::get("logout",[LoginController::class,'logout']);
@@ -43,6 +46,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get("resources_condition",[ResourceController::class,'resources_condition']);
     Route::get("resources_dispatch",[ResourceController::class,'resources_dispatch']);
     Route::get("resources_status",[ResourceController::class,'resources_status']);
+    Route::get("resources_categories",[ResourceController::class,'resources_categories']);
 
     //contacts
     Route::apiResource('contacts',ContactsController::class);
@@ -74,6 +78,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     //import
     Route::post("import/get_single_data",[ImportController::class,'get_single_data']);
     Route::post("import/save_import",[ImportController::class,'save_import']);
+
+    //media
+    Route::apiResource("media",MediaController::class);
 
     //map api
     Route::get("map/{module}",[MapController::class,'index']);

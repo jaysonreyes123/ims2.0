@@ -7,7 +7,7 @@ export const preplan_fields = [
                 name:"pre_plan_name",
                 type:"text",
                 default:"",
-                required:false,
+                required:true,
                 readonly:false
             },
             {
@@ -15,7 +15,7 @@ export const preplan_fields = [
                 name:"incident_types_picklist",
                 type:"picklist",
                 default:"",
-                required:false,
+                required:true,
                 readonly:false
             },
             {

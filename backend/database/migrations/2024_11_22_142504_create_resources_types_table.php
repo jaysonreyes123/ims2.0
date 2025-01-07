@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('resources_types', function (Blueprint $table) {
             $table->id();
             $table->string('label');
+            $table->unsignedBigInteger('resources_categories_id')->nullable();
+            $table->foreign('resources_categories_id')->references('id')->on('resources_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

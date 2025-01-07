@@ -19,6 +19,29 @@
                 </div>
             </Block>
         </div>
+
+        <Block blockname="System Generated">
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+              <div class="fromGroup relative">
+                      <label for="" >Created time</label>
+                      <span>{{ ModuleStore.data.created_at }}</span>
+                  </div>
+                  <div class="fromGroup relative">
+                      <label for="" >Created By</label>
+                      <span>{{ ModuleStore.data.created_by }}</span>
+                  </div>
+            </div>
+            <div class="lg:grid lg:grid-cols-2 gap-12">
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated</label>
+                      <span>{{ ModuleStore.data.updated_at }}</span>
+                  </div> 
+                  <div class="fromGroup relative">
+                      <label for="" >Last updated by</label>
+                      <span>{{ ModuleStore.data.updated_by }}</span>
+                  </div> 
+            </div>
+          </Block>
   </div>
 </template>
 <script>

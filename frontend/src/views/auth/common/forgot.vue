@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="auth.forgotPassword(forgotForm)" class="space-y-4">
+  <form @submit.prevent="auth.forgotPassword(forgotForm.email)" class="space-y-4">
     <Textinput
       label="Email"
       type="email"

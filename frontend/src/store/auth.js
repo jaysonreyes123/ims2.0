@@ -64,10 +64,12 @@ export const useAuthStore = defineStore('auth', {
         async forgotPassword(data){
             try {
                 this.isLoadingForgotPassword = true;
-                let response = await this.axios.post('/forgot-password', data);     
-                toast.success(response.data.message, {
-                    timeout: 5000,
-                });
+                let response = await this.axios.get('forgot-password/'+data);     
+                if(response.status == 200){
+                    toast.success("Email Sent", {
+                        timeout: 5000,
+                    });
+                }
                 this.isLoadingForgotPassword = false;
                 
             } catch (err) { 

@@ -2,7 +2,7 @@
     <div>
         <table class="w-full">
             <tr>
-                <td style="text-align: left;"><img src="@/assets/images/logo/navy.png" style="width: 110px;display:block"></td>
+                <td style="text-align: left;"><img src="@/assets/images/logo/BAYAN911.jpg" style="width: 200px;display:block"></td>
                 <td style="text-align: left;">
                     <span style="font-weight: bold;font-size: 25px;"> Incident Management System </span>
                 </td>            

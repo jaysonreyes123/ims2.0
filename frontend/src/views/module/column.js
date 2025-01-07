@@ -37,6 +37,11 @@ export const columns = {
       name: "resources_types_picklist",
     },
     {
+      label: "Resources Status",
+      field: "resources_statuses.label",
+      name: "resources_statuses_picklist",
+    },
+    {
       label: "Action",
       field: "action",
     },

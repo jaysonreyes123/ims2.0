@@ -8,6 +8,7 @@ export const usePreplanStore = defineStore("preplan",{
             id:"",
             pre_plan_classifications_picklist:[],
             incident_types_picklist:[],
+            data:[],
             form:{
                 pre_plan_name:"",
                 incident_types_picklist:"",
@@ -51,6 +52,7 @@ export const usePreplanStore = defineStore("preplan",{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            this.data = data;
             this.loading = false;
         },
         async save(){

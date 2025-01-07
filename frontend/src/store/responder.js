@@ -8,6 +8,7 @@ export const useResponderStore = defineStore("responder",{
             id:"",
             responder_types_picklist:[],
             responder_statuses_picklist:[],
+            data:[],
             form:{
                 responder_types_picklist:"",
                 responder_statuses_picklist:"",
@@ -15,7 +16,6 @@ export const useResponderStore = defineStore("responder",{
                 firstname:"",
                 lastname:"",
                 contact_no:"",
-                middlename:"",
                 email_address:"",
                 password:"",
             }
@@ -49,6 +49,7 @@ export const useResponderStore = defineStore("responder",{
             keys.map(item=>{
                 this.form[item] = response.data.data[item];  
             })
+            this.data = data;
             this.loading = false;
         },
         async save(){

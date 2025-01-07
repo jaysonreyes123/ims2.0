@@ -17,15 +17,31 @@ class IncidentStatusSeeder extends Seeder
         DB::table('incident_statuses')->insert([
             [
                 "id" => 1,
-                'label' => "Open",
+                'label' => "New",
             ],
             [
                 "id" => 2,
-                'label' => "In Progress",
+                'label' => "Open",
             ],
             [
                 "id" => 3,
-                'label' => "Completed",
+                'label' => "In Progress",
+            ],
+            [
+                "id" => 4,
+                'label' => "On Hold",
+            ],
+            [
+                "id" => 5,
+                'label' => "Resolved",
+            ],
+            [
+                "id" => 6,
+                'label' => "Closed",
+            ],
+            [
+                "id" => 7,
+                'label' => "Cancelled",
             ],
         ]);
     }

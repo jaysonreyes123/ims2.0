@@ -13,8 +13,8 @@ const routes = [
   }, 
   {
     path: "/reset-password/:token",
-    name: "/reset-password",
-    component: () => import("@/views/auth/reset-password.vue"),
+    name: "reset-password",
+    component: () => import("@/views/auth/reset-password3.vue"),
   }, 
   {
     path: "/app/module/:module/print/:id",

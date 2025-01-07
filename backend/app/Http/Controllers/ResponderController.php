@@ -12,6 +12,7 @@ use App\Models\ResponderType;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResponderController extends Controller
 {
@@ -22,8 +23,7 @@ class ResponderController extends Controller
     public function index(Request $request)
     {
         //
-        $model = Responder::query();
-        $list = Module::list_view($model,[],$request->filter);
+        $list = Module::list_view($request->module,[],$request->filter,$request->search);
         return  ResponderResource::collection($list);
     }
 
@@ -45,6 +45,7 @@ class ResponderController extends Controller
         foreach($request->all() as $key => $value){
             $model->$key = $value;
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'responders','create');
         return $this->success(new ResponderResource($model),class_basename($model).ResponseConstants::STORE);
@@ -77,6 +78,7 @@ class ResponderController extends Controller
         foreach($request->all() as $key => $value){
             $responder->$key = $value;
         }
+        $responder->updated_at = Auth::id();
         $responder->save();
         ActivityLogs::log($responder->id,'resources','update',$original,$responder);
         return $this->success(new ResponderResource($responder),class_basename($responder).ResponseConstants::UPDATE);

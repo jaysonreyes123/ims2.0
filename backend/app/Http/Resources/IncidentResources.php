@@ -17,6 +17,9 @@ class IncidentResources extends JsonResource
     {
         $response = parent::toArray($request);
         $response['created_at'] = Carbon::parse($this->created_at)->format('Y-m-d H:i:s');
+        $response['updated_at'] = Carbon::parse($this->updated_at)->format('Y-m-d H:i:s');
+        $response['created_by'] = $this->created_by_->name ?? "";
+        $response['updated_by'] = $this->updated_by_->name ?? "";
         return $response;
     }
 }

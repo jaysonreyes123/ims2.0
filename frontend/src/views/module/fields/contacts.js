@@ -51,14 +51,6 @@ export const contacts_field = [
                 readonly:false
             },
             {
-                label:"Created By",
-                name:"created_by",
-                type:"picklist",
-                default:"",
-                required:false,
-                readonly:false
-            },
-            {
                 label:"Caller Type",
                 name:"caller_types_picklist",
                 type:"picklist",
@@ -74,7 +66,7 @@ export const contacts_field = [
             {
                 label:"Municipality",
                 name:"municipalities_picklist",
-                type:"picklist",
+                type:"text",
                 default:"",
                 required:false,
                 readonly:false
@@ -82,7 +74,7 @@ export const contacts_field = [
             {
                 label:"Barangay",
                 name:"barangays_picklist",
-                type:"picklist",
+                type:"text",
                 default:"",
                 required:false,
                 readonly:false

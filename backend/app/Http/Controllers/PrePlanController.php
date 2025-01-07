@@ -12,6 +12,7 @@ use App\Models\PrePlanClassification;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PrePlanController extends Controller
 {
@@ -22,8 +23,7 @@ class PrePlanController extends Controller
     public function index(Request $request)
     {
         //
-       $model = PrePlan::query();
-       $list = Module::list_view($model,[],$request->filter);
+        $list = Module::list_view($request->module,[],$request->filter,$request->search);
        return  PrePlanResources::collection($list);
     }
 
@@ -45,6 +45,7 @@ class PrePlanController extends Controller
         foreach($request->all() as $key => $value){
             $model->$key = $value;
         }
+        $model->created_by = Auth::id();
         $model->save();
         ActivityLogs::log($model->id,'preplans','create');
         return $this->success(new PrePlanResources($model),class_basename($model).ResponseConstants::STORE);
@@ -79,6 +80,7 @@ class PrePlanController extends Controller
         foreach($request->all() as $key => $value){
             $prePlan->$key = $value;
         }
+        $prePlan->updated_by = Auth::id();
         $prePlan->save();
         ActivityLogs::log($prePlan->id,'preplans','update',$original,$prePlan);
         return $this->success(new PrePlanResources($prePlan),class_basename($prePlan).ResponseConstants::UPDATE);

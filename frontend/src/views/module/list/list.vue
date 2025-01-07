@@ -1,19 +1,11 @@
 <template>
     <div>
         <Card>
-            <vue-good-table
-            :isLoading.sync="listStore.loading"
-            :columns="columns"
-            styleClass=" vgt-table  lesspadding2 centered "
-            :rows="listStore.list"
-            :pagination-options="{
+            <vue-good-table :isLoading.sync="listStore.loading" :columns="columns"
+                styleClass=" vgt-table  lesspadding2 centered " :rows="listStore.list" :pagination-options="{
                 enabled: true,
                 perPage:15
-            }"
-            v-on:cell-click="onRowClick"
-            :row-style-class="rowStyleClassFn"
-            max-height="600px"
-            :select-options="{
+            }" v-on:cell-click="onRowClick" :row-style-class="rowStyleClassFn" max-height="600px" :select-options="{
                 enabled: true,
                 selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
                 selectioninfoClass: 'custom-class',
@@ -21,54 +13,56 @@
                 clearSelectionText: 'clear',
                 disableSelectinfo: true, // disable the select info-500 panel on top
                 selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
-            }"
-            >
-            <template v-slot:table-row="props">
-                <span v-if="props.column.field == 'action'">
-                <div class="flex space-x-3 justify-center rtl:space-x-reverse">
-                <Tooltip placement="top" arrow theme="dark">
-                    <template #button>
-                    <router-link :to="`${this.$route.params.module}/detail/${props.row.id}`">
-                        <div class="action-btn">
-                        <Icon icon="heroicons:eye" />
+            }">
+                <template v-slot:table-row="props">
+                    <span v-if="props.column.name == 'incident_statuses_picklist' ">
+                        <span class="inline-block px-3 min-w-[90px] text-center mx-auto py-1 rounded-[999px] bg-opacity-25"
+                            :style="{ 'background': dropdown_color[props.column.name][props.row.incident_statuses.id - 1]+`25`,
+                            'color':dropdown_color[props.column.name][props.row.incident_statuses.id - 1] }"
+                        >
+                            {{ props.row.incident_statuses.label }}
+                       </span>
+                    </span>
+                    <span v-if="props.column.field == 'action'">
+                        <div class="flex space-x-3 justify-center rtl:space-x-reverse">
+                            <Tooltip placement="top" arrow theme="dark">
+                                <template #button>
+                                    <router-link :to="`${this.$route.params.module}/detail/${props.row.id}`">
+                                        <div class="action-btn">
+                                            <Icon icon="heroicons:eye" />
+                                        </div>
+                                    </router-link>
+                                </template>
+                                <span> View</span>
+                            </Tooltip>
+                            <Tooltip placement="top" arrow theme="dark">
+                                <template #button>
+                                    <router-link :to="`${this.$route.params.module}/edit/${props.row.id}`">
+                                        <div class="action-btn">
+                                            <Icon icon="heroicons:pencil-square" />
+                                        </div>
+                                    </router-link>
+                                </template>
+                                <span> Edit</span>
+                            </Tooltip>
+                            <Tooltip placement="top" arrow theme="danger-500">
+                                <template #button>
+                                    <div class="action-btn text-red-500" @click="del(props.row.id)">
+                                        <Icon icon="heroicons:trash" />
+                                    </div>
+                                </template>
+                                <span>Delete</span>
+                            </Tooltip>
                         </div>
-                    </router-link>
-                    </template>
-                    <span> View</span>
-                </Tooltip>
-                <Tooltip placement="top" arrow theme="dark">
-                    <template #button>
-                    <router-link :to="`${this.$route.params.module}/edit/${props.row.id}`">
-                    <div class="action-btn">
-                        <Icon icon="heroicons:pencil-square" />
+                    </span>
+                </template>
+                <template #pagination-bottom="props">
+                    <div class="py-4 px-3 flex justify-center">
+                        <Pagination :total="listStore.total" :current="listStore.current" :per-page="listStore.per_page"
+                            @page-changed="changePage" :perPageChanged="props.perPageChanged">
+                        </Pagination>
                     </div>
-                    </router-link>
-                    </template>
-                    <span> Edit</span>
-                </Tooltip>
-                <Tooltip placement="top" arrow theme="danger-500">
-                    <template #button>
-                    <div class="action-btn text-red-500" @click="del(props.row.id)">
-                        <Icon  icon="heroicons:trash" />
-                    </div>
-                    </template>
-                    <span>Delete</span>
-                </Tooltip>
-                </div>
-            </span>
-            </template>
-            <template #pagination-bottom="props">
-                <div class="py-4 px-3 flex justify-center">
-                <Pagination
-                    :total="listStore.total"
-                    :current="listStore.current"
-                    :per-page="listStore.per_page"
-                     @page-changed="changePage"
-                    :perPageChanged="props.perPageChanged"
-                    >
-                </Pagination>
-                </div>
-            </template>
+                </template>
             </vue-good-table>
         </Card>
     </div>
@@ -84,7 +78,8 @@ import {
     columns
 } 
 from "../column";
-
+import {dropdown_color} from "../dropdown_color";
+import Badge from "@/components/Badge";
 const listStore = useListStore();
 export default {
     components:{
@@ -92,7 +87,8 @@ export default {
         Pagination,
         Swal,
         Tooltip,
-        Icon
+        Icon,
+        Badge
     },
     created(){
         this.$watch(
@@ -113,9 +109,13 @@ export default {
             modules:"",
             listStore,
             columns:[],
+            dropdown_color
         }
     },
     methods:{
+        DropdownColor(field){
+            return dropdown_color[this.$route.params.module][field];
+        },
         rowStyleClassFn(row){
             return 'VGT-row';
         },
