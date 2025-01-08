@@ -11,6 +11,7 @@ use App\Models\PrePlan;
 use App\Models\Resource;
 use App\Models\Responder;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Module{
     public static function check_duplicate($module){
@@ -85,15 +86,18 @@ class Module{
     }
     public static function filter($module,$relation,$filters){
         $model = self::check_duplicate($module);
-        if(!empty($relation)){
-            $model = $model->with($relation);
-           }
-            if(isset($filters)){
-                foreach($filters as $filter){
-                    if($filter['value'] != ""){
-                        $model = $model->where($filter['field'],'like',$filter['value']."%");
+            if (!empty($relation)) {
+                $model = $model->with($relation);
+            }
+            if (isset($filters)) {
+                foreach ($filters as $filter) {
+                    if ($filter['value'] != "") {
+                        $model = $model->where($filter['field'], 'like', $filter['value'] . "%");
                     }
                 }
+            }
+            if($module == 'users'){
+                $model = $model->whereNot('id',Auth::id());
             }
            $model = $model->where('deleted',0);
            $model = $model->orderBy('updated_at','desc');
@@ -114,6 +118,10 @@ class Module{
         }
         else if($module == 'resources'){
             $model = $model->where('resources_name','like',$search."%");
+        }
+        else if($module == 'users'){
+            $model = $model->where('name','like',$search."%");
+            $model = $model->whereNot('id',Auth::id());
         }
         $model = $model->where('deleted', 0);
         $model = $model->orderBy('updated_at','desc');

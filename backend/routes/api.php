@@ -3,6 +3,7 @@
 use App\Helpers\Generate;
 use App\Http\Controllers\ActivityLogsController;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\Api\Mobile\Account\AuthController;
 use App\Http\Controllers\CallLogsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
@@ -18,6 +19,12 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+
+//mobile app route
+Route::post("mobile/account/login.php",[AuthController::class,'login']);
+
+
+//web
 Route::post("login",[LoginController::class,'login']);
 Route::get("forgot-password/{email}",[UserController::class,'forgot_password']);
 Route::post("reset-password", [UserController::class, 'reset_password']);
