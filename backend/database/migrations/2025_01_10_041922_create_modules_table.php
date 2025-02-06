@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("label");
-            $table->string("prefix");
-            $table->string("icon");
+            $table->string("label")->nullable();
+            $table->string("prefix")->nullable();
+            $table->string("icon")->nullable();
             $table->tinyInteger("presence")->default(1);
             $table->timestamps();
         });
