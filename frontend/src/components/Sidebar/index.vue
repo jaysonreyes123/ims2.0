@@ -137,7 +137,6 @@ import Navmenu from "./Navmenu";
 import { gsap } from "gsap";
 import { SimpleBar } from "simplebar-vue3";
 import { ref, onMounted } from "vue";
-
 export default defineComponent({
   components: {
     // Icon,

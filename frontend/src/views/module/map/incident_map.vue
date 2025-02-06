@@ -6,7 +6,7 @@
               class="h-screen"
               @mb-created="(mapInstance) => map = mapInstance"
               access-token="pk.eyJ1IjoiamF5c29ucmV5ZXMyNiIsImEiOiJjbGd1aDViYXUwZzM2M3BsamlpdWtjbzBsIn0.DmYf96Yhwg7vip5Qpzghnw"
-              map-style="mapbox://styles/mapbox/streets-v11"
+              map-style="mapbox://styles/mapbox/satellite-streets-v12"
               :center="[122.4902841093123,12.573067659271082]"
               :zoom="5"
               >
@@ -55,7 +55,7 @@
               <div>
                   <p class="text-sm font-bold">Current incidents</p>
                   <ul class="list-item mt-1">
-                      <li v-if="incident_map_ !== undefined" @click="flyto(item.geometry.coordinates)" v-for="(item,index) in incident_map_.features" :key="index"
+                      <li @click="flyto(item.geometry.coordinates)" v-for="(item,index) in incident_map_.features" :key="index"
                       class="hover:bg-slate-100 p-2 cursor-pointer flex items-center border-b border-slate-100 dark:border-slate-700 last:border-b-0">
                           <div class="text-start overflow-hidden text-ellipsis whitespace-nowrap max-w-[63%]">
                               <div class="text-xs text-slate-600 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap flex">

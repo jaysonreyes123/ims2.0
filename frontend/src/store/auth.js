@@ -1,13 +1,12 @@
 
-import { defineStore } from "pinia"; 
+import { defineStore,getActivePinia } from "pinia"; 
 import { useToast } from "vue-toastification";
-import { getActivePinia } from "pinia" 
 
 const toast = useToast();
-
 export const useAuthStore = defineStore('auth', {
     state: () => {
         return {
+            module:[],
             authenticated: false,
             isLoading: false,
             isLoadingForgotPassword:false,
@@ -92,10 +91,8 @@ export const useAuthStore = defineStore('auth', {
             try {
                 this.isLoading = true;
                 let response = await this.axios.post('/login', data);    
-                // let response2 =  await this.axios.get('/system/1'); 
-                // this.fmslogo = response2.data.logo;
-                // this.fmssite = response2.data.site;
                 localStorage.setItem("_token", response.data.data.token); 
+                this.get_module();
                 this.getuserDetails();   
             } catch (err) { 
                 this.isLoading = false;
@@ -137,7 +134,6 @@ export const useAuthStore = defineStore('auth', {
             try {  
                 let response = await this.axios.get('/user_details');     
                 this.user = response.data.data; 
-                console.log(this.user)
                 this.authenticated = true;
                 this.isLoading = false;
                 toast.success("Login successfully", {
@@ -163,7 +159,15 @@ export const useAuthStore = defineStore('auth', {
                     timeout: 3000,
                 }); 
             }  
-        }
+        },
+        async get_module(){
+            try {
+                 const response = await this.axios.get("module");
+                 this.module = response.data.data;
+            } catch (error) {
+             
+            }
+         },
     },
     persist: true,
 })

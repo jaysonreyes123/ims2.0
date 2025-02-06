@@ -38,7 +38,7 @@
               : 'container-fluid'
           }`"
         >
-          <Breadcrumbs v-if="!$route.meta.hide" />
+          <!-- <Breadcrumbs v-if="!$route.meta.hide" /> -->
           <router-view v-slot="{ Component }">
             <transition name="router-animation" mode="out-in" appear>
               <component :is="Component"></component>

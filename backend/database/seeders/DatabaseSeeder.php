@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\IncidentPiority;
+use App\Models\IncidentType;
 use App\Models\ResourcesDispatcher;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,20 +19,13 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            RoleSeeder::class,
+            ModuleSeeder::class,
+            UserRoleSeeder::class,
             UserSeeder::class,
             IncidentTypeSeeder::class,
             IncidentStatusSeeder::class,
             IncidentPrioritySeeder::class,
-            ResourcesCategory::class,
-            ResourcesTypeSeeder::class,
-            ResourcesStatusSeeder::class,
-            ResourcesDispatchSeeder::class,
-            ResourcesConditionSeeder::class,
-            CallerTypeSeeder::class,
-            ResponderTypeSeeder::class,
-            PrePlanClassificaionSeeder::class,
-
+            FieldSeeder::class
         ]);
     }
 }

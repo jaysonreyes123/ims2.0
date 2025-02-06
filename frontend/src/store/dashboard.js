@@ -1,34 +1,29 @@
-import {defineStore} from "pinia"; 
-import { useToast } from "vue-toastification"; 
-const toast = useToast(); 
-export const useDashboardStore = defineStore("dashboard",{
-    state:()=>{
-        return{
+
+import { defineStore } from "pinia"; 
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+export const useDashboardStore = defineStore('dashboard', {
+    state: () => {
+        return {
             loading:false,
-            id:"",
-            incident_by_type_:[],
-            incident_by_status_:[],
+            chart:[]
         }
     },
-    actions:{
-        async incident_by_type(){
-            try {
-                const response = await this.axios.get('dashboard/incident_by_type');
-                this.incident_by_type_ = response.data.data;
-                
-            } catch (error) {
-                
-            }
-        },
-        async incident_by_status(){
-            try {
-                const response = await this.axios.get('dashboard/incident_by_status');
-                this.incident_by_status_ = response.data.data;
-                
-            } catch (error) {
-                
-            }
-        },
+    getters: {
     },
-    persist:true
+    actions: {
+        async get_dashboard_report_chart(){
+            try {
+                this.loading = true;
+                const response = await this.axios.get("dashboard/get_report_charts");
+                this.chart = response.data.data;
+                this.loading = false;
+                
+            } catch (error) {
+                
+            }
+        }
+    },
+    persist: true,
 })

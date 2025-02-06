@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Incident;
-use App\Models\Resource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use stdClass;
+use Illuminate\Support\Facades\DB;
 
 class MapController extends Controller
 {
@@ -25,7 +22,7 @@ class MapController extends Controller
         return $map_data;
     }
     public function incident(){
-        $model = Incident::with('incident_statuses')->where('deleted',0)->whereNotNull('coordinates')->get();
+        $model = DB::table('incidents')->where('deleted',0)->whereNotNull('coordinates')->get();
         $result = [];
         $result["type"] = "FeatureCollection";
         $result["features"] = array();
@@ -55,7 +52,7 @@ class MapController extends Controller
     }
 
     public function resources(){
-        $model = Resource::with('resources_statuses')->where('deleted',0)->whereNotNull('coordinates')->get();
+        $model = DB::table('resources')->where('deleted',0)->whereNotNull('coordinates')->get();
         $result = [];
         $result["type"] = "FeatureCollection";
         $result["features"] = array();
@@ -85,7 +82,7 @@ class MapController extends Controller
     }
 
     public function heat_map(){
-        $model = Incident::where('deleted',0)->where('incident_statuses_picklist',3)->whereNotNull('coordinates')->get();
+        $model = DB::table('incidents')->where('deleted',0)->where('incident_statuses','Resolved')->whereNotNull('coordinates')->get();
         $result = [];
         $result["type"] = "FeatureCollection";
         $result["features"] = array();

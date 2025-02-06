@@ -7,14 +7,18 @@ use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityLogs{
-    public static function log($module_id = "",$module,$action,$old_model = null,$new_model = null){
+    public static function log($module = "",$module_item_id = "",$action,$old = null,$new = null){
+        $module_id = Module::module_id($module);
         $description = "";
         if($action == "update"){
-            foreach($new_model->getChanges() as $key => $val){
-                if($key != "updated_at"){
-                    $old_value = self::check_picklist($key,$old_model);
-                    $new_value = self::check_picklist($key,$new_model);
-                    $label = $key;
+            $old = (array)$old;
+            $get_changes = array_diff($new,$old);
+            foreach($get_changes as $key => $val){
+                if($key != "updated_at" && $key != "module" && $key != "created_at" && $key != "created_by" && $key != "updated_by"){
+                    $module_fields = Module::get_field($module_id,$key);
+                    $old_value = $old[$key];
+                    $new_value = $val;
+                    $label = $module_fields->label;
                     $description.= $label." changed <br>";
                     $description.="<b>From</b>: ".$old_value." <br> <b>To</b>: ".$new_value."<br> <br>";
                 }   
@@ -22,28 +26,10 @@ class ActivityLogs{
         }
         $model = new ActivityLog();
         $model->module_id   = $module_id;
-        $model->module      = $module;
+        $model->module_item_id   = $module_item_id;
         $model->description = $description;
         $model->action      = $action;
         $model->user_id     = Auth::id();
         $model->save();
     }
-    protected static function serialize_label($label){
-        $parse_label = explode("_",$label);
-        $labels = [];
-        foreach($parse_label as $val){
-            $labels[] = ucfirst(str_replace("picklist","",$val));
-        }
-        return implode(" ",$labels);
-    }
-
-    protected static function check_picklist($label,$model){
-        $parse_label = explode("_",$label);
-        if(end($parse_label) == "picklist"){
-            $new_label = str_replace("_picklist","",$label);
-            return $model->$new_label->label ?? "";
-        }
-        return $model->$label;
-    }
-
 }

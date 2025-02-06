@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Module;
 use App\Models\User;
+use App\Models\UserPrivilege;
 use App\Models\UserPrivileges;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,35 +20,29 @@ class UserSeeder extends Seeder
         //
         DB::table('users')->insert([
             [
-                'name' => 'Mark Santos',
-                'email' => 'mark@test.com',
-                'password' => bcrypt('123456789'),
-                'roles_picklist' => 1
-            ],
-            [
                 'name' => 'Admin',
                 'email' => 'admin@test.com',
                 'password' => bcrypt('admin'),
-                'roles_picklist' => 1
+                'user_roles' => 'Admin'
+            ],
+            [
+                'name' => 'Jayson',
+                'email' => 'jayson.reyes@microbizone.com',
+                'password' => bcrypt('admin'),
+                'user_roles' => 'Non Admin'
             ]
 
         ]);
 
         $users = User::all();
+        $modules = Module::whereIn('presence',[1,3])->get();
         foreach($users as $user){
-            $user_privileges = new UserPrivileges();
+            $user_privileges = new UserPrivilege();
             $user_privileges->user_id = $user->id;
-            $user_privileges->incidents = true;
-            $user_privileges->resources = true;
-            $user_privileges->preplans = true;
-            $user_privileges->contacts = true;
-            $user_privileges->agencies = true;
-            $user_privileges->responders = true;
-            $user_privileges->responders = true;
-            $user_privileges->incident_map = true;
-            $user_privileges->heat_map = true;
-            $user_privileges->call_logs = true;
-            $user_privileges->users = true;
+            foreach($modules as $module){
+                $name = $module->name;
+                $user_privileges->$name = 1;
+            }
             $user_privileges->save();
         }
     }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Module;
-use App\Http\Resources\IncidentMediaResource;
 use App\Http\Traits\HttpResponses;
-use App\Models\IncidentMedia;
+use App\Models\Media;
+use App\Models\RelatedEntry;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -39,21 +39,30 @@ class MediaController extends Controller
         $date = Carbon::now();
         $file_path = $date->year."/".$date->month."/files";
         if($request->hasFile('files')){
-            $incident_id = $request->incident_id;
+            $id = $request->id;
             $files = $request->file('files');
             foreach($files as $file){
                 if($path = $file->store($file_path,["disk" => "public"])){
-                    $model = new IncidentMedia();
+                    $model = new Media();
                     $filename = $file->getClientOriginalName();
                     $filename = explode(".",$filename)[0];
                     $extension = $file->getClientOriginalExtension();
                     $filetype = $file->getClientMimeType();
-                    $model->incident_id = $incident_id;
                     $model->filename = $filename;
                     $model->extension = $extension;
                     $model->filetype = $filetype;
-                    $model->path = $path;
+                    $model->path = asset('storage')."/".$path;
                     $model->save();
+
+                    $module_id = Module::module_id($request->module);
+                    $relation_module_id = Module::module_id('media');
+                    $relation_entries = new RelatedEntry();
+                    $relation_entries->module_id = $id;
+                    $relation_entries->module = $module_id;
+                    $relation_entries->related_id = $model->id;
+                    $relation_entries->related_module = $relation_module_id;
+                    $relation_entries->save();
+
                 }
             }
         }
@@ -63,10 +72,9 @@ class MediaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id,Request $request)
+    public function show(string $id)
     {
-        $list = Module::list_view_relation($request->module,[],$request->filter,$request->search,$id,"incident_id");
-        return  IncidentMediaResource::collection($list);
+        //
     }
 
     /**
@@ -91,12 +99,5 @@ class MediaController extends Controller
     public function destroy(string $id)
     {
         //
-        $model = IncidentMedia::find($id);
-        $path = $model->path;
-        $model->delete();
-        if($model){
-            Storage::disk('public')->delete($path);
-            return $this->success([],200);
-        }
     }
 }

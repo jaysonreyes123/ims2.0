@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\FieldValidator;
 use App\Http\Traits\HttpResponses;
 use App\Imports\Import;
-use App\Models\Import as ModelsImport;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,12 +31,12 @@ class ImportController extends Controller
         $duplicate_handling = $request->duplicate_option;
         $duplicate_handling_field = $request->duplicate_fields;
         $this->create_table($fields); 
-        Excel::import(new Import($hasheader,$module,$fields,$duplicate_handling,$duplicate_handling_field),$files);
+        Excel::import(new Import($hasheader,$module,$fields,$duplicate_handling,json_decode($duplicate_handling_field)),$files);
         return $this->success($this->import_result());
     }
     
     protected function import_result(){
-       return DB::table('import_user_2')->get();
+       return DB::table('import_user_1')->get();
     }
 
     protected function create_table($fields){

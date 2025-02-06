@@ -7,7 +7,7 @@
     <Dialog
       as="div"
       @close="closeModal"
-      class="relative z-[99999]"
+      class="relative z-[999]"
       v-if="disableBackdrop === false"
     >
       <TransitionChild
@@ -72,7 +72,7 @@
         </div>
       </div>
     </Dialog>
-    <Dialog as="div" class="relative z-[99999]" v-else>
+    <Dialog as="div" class="relative z-[999]" v-else>
       <div class="fixed inset-0 overflow-y-auto">
         <div
           class="flex min-h-full justify-center text-center p-6"
@@ -127,7 +127,6 @@
 
 <script>
 import Icon from "@/components/Icon";
-
 import {
   TransitionRoot,
   TransitionChild,

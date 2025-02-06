@@ -14,18 +14,25 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('roles_picklist')->nullable();
-            $table->foreign('roles_picklist')->references('id')->on('roles')->onDelete('cascade');
-
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('user_roles')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+            
             $table->timestamps();
+            
 
             $table->tinyInteger('deleted')->default(0);
             $table->string('source')->default('crm');
+            
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

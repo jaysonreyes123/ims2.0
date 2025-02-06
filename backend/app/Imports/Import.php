@@ -6,6 +6,7 @@ use App\Helpers\FieldValidator;
 use App\Helpers\Generate;
 use App\Helpers\Module;
 use App\Models\Incident;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class Import implements ToModel, WithStartRow,WithBatchInserts
     public $header;
     public $duplicate_handling;
     public $duplicate_handling_field;
-    public function __construct($header = false,$module="",$fields = "",$duplicate_handling = 1,$duplicate_handling_field = "")
+    public function __construct($header = false,$module="",$fields = "",$duplicate_handling = 1,array $duplicate_handling_field =[] )
     {
         $this->fields = $fields;
         $this->module = $module;
@@ -36,12 +37,12 @@ class Import implements ToModel, WithStartRow,WithBatchInserts
     }
     public function model(array $row)
     {
-
-        
-        $model = Module::get_module($this->module);
-        $check_duplicate_model = Module::check_duplicate($this->module);
-        $duplicate_field = $this->get_duplicate_field($this->duplicate_handling_field,$this->fields);
+        $timestamp = Carbon::now();
+        $model_module = DB::table($this->module);
+        $insert_field = [];
         $update_field = [];
+        $duplicate_field = $this->get_duplicate_field($this->duplicate_handling_field,$this->fields);
+        $status = 1;
         $table = "import_user_".Auth::id();
         $insert_into_import_table = "INSERT INTO $table ";
         $insert_column = "(";
@@ -51,56 +52,55 @@ class Import implements ToModel, WithStartRow,WithBatchInserts
             $value      = $row[$values['position']];
             $field_type = $values['type'];
             $value_     = FieldValidator::validate($this->module,$field,$field_type,$value); 
-            $model->$field = $value_;
+            $insert_field[$field] = $value_;
             $update_field[$field] = $value_;
             $insert_column.="`".$field."`".",";
             $insert_data.="'".$value."'".",";
-
         }
-        
+        $insert_field['source'] = 'import';
+        $insert_field['created_at'] = $timestamp;
+        $insert_field['updated_at'] = $timestamp;
+        $insert_field['created_by'] = Auth::id();
+        $insert_field['updated_by'] = Auth::id();
+
         if($this->duplicate_handling != 1 && count($duplicate_field) != 0){
             foreach($duplicate_field as $key => $values){
                 $field_type = $values['type'];
                 $field      = $values['fields'];
                 $value = $row[$values['position']];
-                if($field_type == "picklist"){
-                    $value = FieldValidator::validate($this->module,$field,$field_type,$value);
-                }
-                $check_duplicate_model->where($values['fields'],$value);
+                $model_module = $model_module->where($values['fields'],$value);
             }
         }
-       
-        
-        if($this->module == 'incidents'){
-            $model->incident_no = Generate::id($this->module);
-            
-        }
-        $status = 0;
-         //skip step
-        if($this->duplicate_handling == 1){
-            $model->save();
- 
-            $status = 1;
-        }
-        //skip the duplicate
-        else if($this->duplicate_handling == 2){
-            if($check_duplicate_model->count() == 0 || count($duplicate_field) == 0 ){
-                $model->save();
+
+        $status = 1;
+        //check duplicate handling
+        if($this->duplicate_handling == 2){
+            //check if data is exist
+            if($model_module->count() == 0){
                 $status = 1;
             }
             else{
                 $status = 2;
             }
         }
-        //update the duplcate
         else if($this->duplicate_handling == 3){
-            if($check_duplicate_model->update($update_field)){
                 $status = 3;
+        }
+        //insert
+        if($status == 1){
+            $model_module->insert($insert_field);
+        }
+        //update
+        else if($status == 3){
+            if($model_module->update($insert_field)){
             }
             else{
                 $status = 0;
             }
         }
+        
+
+        //create import table by user
         $insert_column.="`status`";
         $insert_data.="$status";
         $insert_data.=" )";
@@ -119,7 +119,7 @@ class Import implements ToModel, WithStartRow,WithBatchInserts
 
     public function get_duplicate_field($duplicate_fields,$fields){
         $fields_ = [];
-        foreach(json_decode($duplicate_fields,true) as $duplicate_field){
+        foreach($duplicate_fields as $duplicate_field){
             foreach(json_decode($fields,true) as $keys => $values){
                 if($duplicate_field == $values['fields']){
                     $fields_[] = $values;

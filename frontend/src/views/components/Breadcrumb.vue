@@ -8,7 +8,7 @@
         <Icon v-if="mode != 'list' " class="mt-1" icon="heroicons-outline:chevron-right"></Icon> 
         <span v-if="mode != 'list' ">{{  getName  }}</span>
       </div>
-      <div v-if="mode == 'edit' ">
+      <div v-else-if="mode == 'edit' ">
          <span class="font-bold">{{ editName }}</span> 
       </div>
     </div>
@@ -85,7 +85,7 @@ export default {
       },
       editName(){
         var edit_name = "";
-        if(this.$route.params.id == ""){
+        if(this.$route.params.id == "" || this.$route.params.id == undefined){
           edit_name = "Creating new "+this.$route.params.module; 
         }
         return edit_name;
