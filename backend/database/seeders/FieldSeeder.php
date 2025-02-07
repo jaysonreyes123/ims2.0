@@ -27,7 +27,7 @@ class FieldSeeder extends Seeder
              "call_logs"   =>  ["Basic Information"],
              "reports"      => ["Report Details"],
              "users"      => ["Basic Information","User Privileges"],
-             "media"      => ["Basic Information"],
+             "media"      => ["Basic Information","File"],
         ];
 
         $fields =
@@ -42,7 +42,8 @@ class FieldSeeder extends Seeder
                         "table"  => "incidents",
                         "type"  => "generate",
                         "readonly" => 1,
-                        "column" => 1
+                        "column" => 1,
+                        "display_type" => 3
                     ],
                     [
                         "label" => "Incident Type",
@@ -656,12 +657,36 @@ class FieldSeeder extends Seeder
                 ],
             ],
             "media" => [
-                0 => [
+                0 => [ 
+                    [
+                        "label" => "File Title",
+                        "name"  => "filetitle",
+                        "type"  => "text",
+                        "table" => "media",
+                        "column" => 1
+                    ],
+                    [
+                        "label" => "Assigned To",
+                        "name"  => "assigned_to",
+                        "type"  => "dropdown",
+                        "table" => "media",
+                        "column" => 1
+                    ],
+                    [
+                        "label" => "Note",
+                        "name"  => "note",
+                        "type"  => "textarea",
+                        "table" => "media",
+                        "column" => 1
+                    ],
+                ],
+                1 => [
                     [
                         "label" => "Filename",
                         "name"  => "filename",
                         "type"  => "text",
                         "table" => "media",
+                        "column" => 1
                     ], 
                     [
                         "label" => "Extension",
@@ -674,14 +699,16 @@ class FieldSeeder extends Seeder
                         "name"  => "filetype",
                         "type"  => "text",
                         "table" => "media",
+                        "display_type" => 0
                     ],
                     [
                         "label" => "Path",
                         "name"  => "path",
                         "type"  => "text",
                         "table" => "media",
+                        "display_type" => 0
                     ],
-                ],
+                ]
             ]
         ];
         $modules = Module::all();
@@ -704,6 +731,7 @@ class FieldSeeder extends Seeder
                     $field_model->readonly = $field['readonly'] ?? 0;
                     $field_model->column = $field['column'] ?? 0;
                     $field_model->default_value = $field['default'] ?? null;
+                    $field_model->display_type = $field['display_type'] ?? 1;
                     $field_model->sequence = 1;
                     $field_model->save();
                 }

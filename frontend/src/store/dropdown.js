@@ -6,7 +6,8 @@ export const useDropdownStore = defineStore('dropdown', {
     state: () => {
         return {
             dropdownlist_data:[],
-            dropdownlist:[]
+            dropdownlist:[],
+            assigned_to:[]
         }
     },
     getters:{
@@ -35,6 +36,15 @@ export const useDropdownStore = defineStore('dropdown', {
                 data.map(item=>{
                     this.dropdownlist_data.push({label:item.label,value:item.name});
                 })
+            } catch (error) {
+                
+            }
+        },
+        async get_assigned_to(){
+            try {
+                const response = await this.axios.get("dropdown/assigned_to");
+                this.assigned_to = response.data;
+                
             } catch (error) {
                 
             }

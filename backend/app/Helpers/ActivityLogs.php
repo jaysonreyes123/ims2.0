@@ -10,7 +10,7 @@ class ActivityLogs{
     public static function log($module = "",$module_item_id = "",$action,$old = null,$new = null){
         $module_id = Module::module_id($module);
         $description = "";
-        if($action == "update"){
+        if($action == "updated"){
             $old = (array)$old;
             $get_changes = array_diff($new,$old);
             foreach($get_changes as $key => $val){

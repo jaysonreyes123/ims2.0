@@ -14,6 +14,8 @@ class ListResources extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $response = parent::toArray($request);
+        $response["0"]["asdasdasd"] = "test";
+        return $response;
     }
 }

@@ -1,7 +1,7 @@
 <template lang="">
     <div>
       <apexchart
-        ref="chart"
+        ref="chart_line"
         type="line"
         :height="height"
         :options="chartConfiguration.chartOptions"
@@ -38,13 +38,15 @@ export default {
                 const response = await this.$axios.get("reports/get_chart/"+this.report_id);
                 const data = response.data;
                 setTimeout(()=>{
-                    this.$refs.chart.updateOptions({
-                    series:[{data:data.count}],
-                    xaxis:{
-                        categories:data.label
+                    if(this.$refs.chart_line != null){
+                        this.$refs.chart_line.updateOptions({
+                            series:[{data:data.count}],
+                            xaxis:{
+                                categories:data.label
+                            }
+                        });
                     }
-                });
-                },1000)
+                },100)
                 report.loading = false;
 
             } catch (error) {

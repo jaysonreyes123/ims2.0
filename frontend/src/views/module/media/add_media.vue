@@ -1,5 +1,23 @@
 <template lang="">
-    <div>
+    <div>   
+            <div class="lg:grid lg:grid-cols-2 gap-4 mb-4">
+                <div class="fromGroup relative">
+                    <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">
+                        File Title <span class="text-red-500">*</span>
+                    </label>
+                    <Textinput v-model="media.form.filetitle" />
+                </div>
+                <assigned_to v-model:assigned_to="media.form.assigned_to"/>
+            </div>
+            <div class="mb-4">
+                <div class="fromGroup relative">
+                    <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">
+                        Note
+                    </label>
+                    <Textarea v-model="media.form.note" />
+                </div>
+            </div>
+            <br>
             <div
                 v-bind="getRootProps()"
                 class="w-full text-center border-dashed border border-secondary-500 rounded-md py-[52px] flex flex-col justify-center items-center"
@@ -45,13 +63,17 @@
 </template>
 <script>
 import Button from '@/components/Button';
+import Textinput from "@/components/Textinput";
+import Textarea from "@/components/Textarea"
 import { useDropzone } from "vue3-dropzone";
 import { ref } from "vue";
 import Icon from "@/components/Icon";
 import router from '@/router';
+import Swal from 'sweetalert2';
 import { useMediaStore } from '@/store/media';
 import Modal from '@/components/Modal/Modal.vue';
 import { useRelatedStore } from '@/store/related';
+import assigned_to from '../components_/assigned_to.vue';
 const related_store = useRelatedStore();
 export default {
     setup() {
@@ -72,19 +94,39 @@ export default {
             console.log(event.target.files[0])
         }
         const SaveMedia = () => {
-            if(media.form.files.length > 0){
+            var error = "";
+            if(media.form.files.length == 0){
+                error+=`<span class="text-red-500"><b>File Upload</b> is required field</span><br>`;
+            }
+            if(media.form.filetitle == ""){
+                error+=`<span class="text-red-500"><b>File Title</b> is required field</span><br>`;
+            }
+            if(media.form.assigned_to == ""){
+                error+=`<span class="text-red-500"><b>Assgined To</b> is required field</span><br>`;
+            }
+            if(error != ""){
+            Swal.fire({
+                icon: "error",
+                title: "Fill up the Required field",
+                html:error,
+            });
+                return false;
+           }
+            if(error == ""){
+                related_store.loading = true;
                 const id = router.currentRoute.value.params.id;
                 const module = router.currentRoute.value.params.module;
                 var form = new FormData();
                 media.id = id;
                 form.append("id",id);
                 form.append("module",module);
+                form.append("filetitle",media.form.filetitle)
+                form.append("note",media.form.note);
+                form.append("assigned_to",media.form.assigned_to);
                 media.form.files.map((item)=>{
                     form.append("files[]",item);
                 })
                 media.save(form);
-                const router_ = router.currentRoute.value.params;
-                related_store.get_column(router_.id,router_.module,router_.related_module)
             }
             closeModal();
 
@@ -104,7 +146,10 @@ export default {
     components:{
         Modal,
         Icon,
-        Button
+        Button,
+        Textarea,
+        Textinput,
+        assigned_to
     },
 }
 </script>

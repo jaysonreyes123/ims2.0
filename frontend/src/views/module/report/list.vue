@@ -1,6 +1,5 @@
 <template lang="">
     <div>
-        <Loading v-model:active="report.loading"/>
         <div class="flex justify-end mb-4">
             <router-link target="_blank" :to="{name:'print-report',params:{module:this.$route.params.module,id:this.$route.params.id}}">
                 <Button

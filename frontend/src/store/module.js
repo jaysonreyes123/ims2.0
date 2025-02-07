@@ -60,15 +60,21 @@ export const useModuleStore = defineStore('module', {
         get_required_field(field){
             this.required_field = Object.assign(this.required_field,field);
         },
-        async get_edit_form(){
+        async get_edit_form(id){
            try {
                 this.clear();
                 this.loading = true;
                 const response = await this.axios.get("module/edit/form/"+this.module);
                 const data = response.data.data;
+                this.id = id;
                 this.set_form(data.blocks)
                 this.data = response.data.data;
-                this.loading = false;
+                if(id != "" && id !== undefined){
+                    this.get(id);
+                }
+                else{
+                    this.loading = false;
+                }
            } catch (error) {
             
            }
@@ -85,7 +91,7 @@ export const useModuleStore = defineStore('module', {
                 const data = response.data.data;
                 const form_key = Object.keys(this.form);
                 form_key.map(item=>{
-                    if(item != "module" && item != "related_module"){
+                    if(item != "module"){
                         this.form[item] = data[item];
                     }
                 })

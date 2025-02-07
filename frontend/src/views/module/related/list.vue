@@ -26,7 +26,7 @@
                 styleClass=" vgt-table  lesspadding2 centered " :rows="related_store.list_data" :pagination-options="{
                 enabled: true,
                 perPage:15
-            }" v-on:cell-click="onRowClick" :row-style-class="rowStyleClassFn" max-height="600px" :select-options="{
+            }"   max-height="600px" :select-options="{
                 enabled: true,
                 selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
                 selectioninfoClass: 'custom-class',
@@ -42,7 +42,7 @@
                                 <template #button>
                                     <a @click="preview(props.row.filename,props.row.path,props.row.filetype)">
                                         <div class="action-btn">
-                                            <Icon icon="heroicons:eye" />
+                                            <Icon icon="heroicons:photo" />
                                         </div>
                                     </a>
                                 </template>
@@ -56,7 +56,7 @@
                                 </template>
                                 <span> View</span>
                             </Tooltip>
-                            <Tooltip placement="top" arrow theme="dark">
+                            <Tooltip v-if="this.$route.params.related_module != 'media'" placement="top" arrow theme="dark">
                                 <template #button>
                                         <div class="action-btn" @click="edit(props.row.id)">
                                             <Icon icon="heroicons:pencil-square" />
@@ -168,6 +168,7 @@ export default {
         edit(id){
             method.value = "edit";
             related_store.id = id;
+            related_store.loading = true;
             related_store.modal = true;
         },
         view(id){

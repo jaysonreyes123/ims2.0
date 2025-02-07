@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Helpers\Module;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -26,7 +27,12 @@ class ExportReport implements FromCollection,WithHeadings
         $module = $this->report_model->modules;
         $report_columns = $this->report_model->report_columns;
         $headers = [];
+        $get_assigned_to_column = "";
         foreach($report_columns as $columns){
+            $parse_column = explode(".",$columns->column);
+            if($parse_column[1] == 'assigned_to'){
+                $get_assigned_to_column = $columns->column;
+            }
             $headers[] = $columns->column;
         }
         $model =  DB::table($module);
@@ -51,7 +57,15 @@ class ExportReport implements FromCollection,WithHeadings
         foreach($this->report_model->report_conditions as $conditon){
             $model = $model->where($conditon->column,$conditon->operator,$conditon->value);
         }
-        return $model->get();
+        $model = $model->get();
+        if($get_assigned_to_column != ""){
+            $model->map(function($assigned_to){
+                $user_model = User::where('id',$assigned_to->assigned_to)->first();
+                $assigned_to->assigned_to = $user_model->name ?? "";
+                return $assigned_to;
+            });
+        }
+        return $model;
     }
     
     public function headings():array

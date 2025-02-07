@@ -1,8 +1,6 @@
 <template lang="">
         <div>
-            
-            <Loading v-model:active="report.loading"/>
-            <Card :title="title" :bodyClass="`min-h-[${height}]`" bodyClass="p-6">
+            <Card :title="title" bodyClass="min-h-[300px] p-6">
                 <pie 
                     :title="title"
                     :report_id="report_id" 

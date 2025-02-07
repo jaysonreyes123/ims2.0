@@ -2,7 +2,7 @@ import axios from 'axios';
 const host = window.location.hostname;
 const port = host == "localhost" ? "8000" : "8082";
 const axiosIns = axios.create({
-    baseURL: 'https://ims2.0.microbizone.com/ims2.0/backend/', 
+    baseURL: 'http://'+host+':'+port+'/api/', 
 });
 
 // Set up a request interceptor to add the Bearer token to each request

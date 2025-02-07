@@ -52,6 +52,10 @@ class MediaController extends Controller
                     $model->extension = $extension;
                     $model->filetype = $filetype;
                     $model->path = asset('storage')."/".$path;
+
+                    $model->filetitle = $request->filetitle;
+                    $model->note = $request->note;
+                    $model->assigned_to = $request->assigned_to;
                     $model->save();
 
                     $module_id = Module::module_id($request->module);

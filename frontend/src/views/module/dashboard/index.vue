@@ -1,5 +1,6 @@
 <template lang="">
     <div>
+        <Loading v-model:active="dashboard_store.loading"/>
         <div class="flex mb-8">
             <span class="capitalize font-bold text-2xl">dashboard</span>
         </div>

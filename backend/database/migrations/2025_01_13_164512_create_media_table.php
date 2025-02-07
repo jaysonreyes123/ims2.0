@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
+            $table->string("filetitle")->nullable();
             $table->string('filename');
             $table->string('extension');
             $table->string('filetype');
-            $table->string("path");
+            $table->string("path"); 
+
+            $table->text("note")->nullable();
+            $table->unsignedBigInteger('assigned_to')->nullable();
+            $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('deleted')->default(0);
             $table->string('source')->default('crm');

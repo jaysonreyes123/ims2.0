@@ -10,6 +10,7 @@ use App\Models\Report;
 use App\Models\ReportChart;
 use App\Models\ReportColumn;
 use App\Models\ReportCondition;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -37,7 +38,7 @@ class ReportController extends Controller
         $related_modules = $request->related_module;
        
         $module_ = Module::module_details($module);
-        $data[$module_->label] = Field::where('module_id',$module_->id)->get();
+        $data[$module_->label] = Field::where('module_id',$module_->id)->where('display_type',[1,2,3])->get();
         if(!empty($related_modules)){
             foreach($related_modules as $related_module){
                 $related_module_ = Module::module_details($related_module);
@@ -107,6 +108,7 @@ class ReportController extends Controller
         foreach($report_condition_model as $report_condition){
             $model = $model->where($report_condition->column,$report_condition->operator,$report_condition->value);
         }
+        $model->where("$primary_table.deleted",0);
         $model->groupBy($column);
         $model->orderBy("$primary_table.id","asc");
         $output = [];
@@ -131,8 +133,14 @@ class ReportController extends Controller
         $report_model = Report::find($id);
         $report_column_model = $report_model->report_columns;
         $report_condition_model = $report_model->report_conditions;
+        $get_assigned_to_column = "";
         foreach($report_column_model as $report_column){
-            $columns[] = $report_column->column ." as ".str_replace(".","_",$report_column->column);
+            $parse_column = explode(".",$report_column->column);
+            $column__ = $report_column->column ." as ".str_replace(".","_",$report_column->column);
+            if($parse_column[1] == 'assigned_to'){
+                $get_assigned_to_column = str_replace(".","_",$report_column->column);
+            }
+            $columns[] = $column__;
         }
         $primary_table = $report_model->modules;
         $model = DB::table($report_model->modules)
@@ -158,6 +166,13 @@ class ReportController extends Controller
         }
         if(isset($request->limit)){
             $model = $model->limit($request->limit)->get();
+        }
+        if($get_assigned_to_column != ""){
+            $model->map(function($assigned_to) use ($get_assigned_to_column){
+                $user_model = User::where('id',$assigned_to->$get_assigned_to_column)->first();
+                $assigned_to->$get_assigned_to_column = $user_model->name ?? "";
+                return $assigned_to;
+            });
         }
         return $this->success($model);
         

@@ -8,7 +8,6 @@
                 :title="block.block"
                 class="mb-4"
                 >
-                
                 <div v-if="block.block == 'Location Details' ">
                     <div class="lg:grid lg:grid-cols-2 gap-12"> 
                         <div>
@@ -118,10 +117,10 @@ export default {
     mounted(){
         const id = this.$route.params.id;
         module_store.module = modules.value;
-        module_store.get_edit_form();
+        module_store.get_edit_form(id);
         module_store.id = id;
         if(id != "" && id !== undefined){
-            module_store.get(id);
+            //module_store.get(id);
         }
         else{
             //module_store.generate();
@@ -132,7 +131,6 @@ export default {
             var error = "";
             const required_keys = Object.keys(module_store.required_field)
             required_keys.map(item=>{
-                console.log(module_store.form[item])
                 if(module_store.form[item] == ""){
                     error+=`<span class="text-red-500"><b>${module_store.required_field[item]}</b> is required field</span><br>`;
                 }

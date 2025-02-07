@@ -66,4 +66,16 @@ class UserController extends Controller
     {
         //
     }
+
+    public function assigned_to(){
+        $model = User::all();
+        $dropdown = [];
+        foreach($model as $item){
+            $sub_dropdown = [];
+            $sub_dropdown['label'] = $item->name;
+            $sub_dropdown['value'] = $item->id;
+            $dropdown[] = $sub_dropdown;
+        }
+        return $dropdown;
+    }
 }

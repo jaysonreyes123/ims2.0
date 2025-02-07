@@ -10,10 +10,12 @@ use App\Models\Field;
 use App\Models\Module;
 use App\Models\RelatedEntry;
 use App\Models\RelatedMenu;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RelatedController extends Controller
 {
@@ -38,7 +40,14 @@ class RelatedController extends Controller
         $module_ = HelpersModule::module_id($module);
         $related_module_ = HelpersModule::module_id($related_module);
         $related_entries_id = RelatedEntry::where('module_id',$id)->where("module",$module_)->where("related_module",$related_module_)->pluck('related_id');
-        $model = DB::table($related_module)->whereIn('id',$related_entries_id)->paginate();
+        $model = DB::table($related_module)->whereIn('id',$related_entries_id)->paginate(15);
+        if (Schema::hasColumn($related_module, 'assigned_to')) {
+            $model->through(function($assigned_to){
+                $user_model = User::where('id',$assigned_to->assigned_to)->first();
+                $assigned_to->assigned_to = $user_model->name ?? "";
+                return $assigned_to;
+            });   
+        }
         return $this->success($model);
     }
     public function save(Request $request){

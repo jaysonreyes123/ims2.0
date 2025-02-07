@@ -116,15 +116,17 @@ export const useRelatedStore = defineStore('related',{
         get_required_field(field){
             this.required_field = Object.assign(this.required_field,field);
         },
-        async get_edit_form(){
+        async get_edit_form(id,related_id){
            try {
                 ///this.claer();
-                this.loading = true;
                 const response = await this.axios.get("module/edit/form/"+this.related_module);
                 const data = response.data.data;
+                this.id = id;
                 this.set_form(data.blocks)
                 this.data = response.data.data;
-                this.loading = false;
+                if(related_id != ""){
+                    this.get(id,related_id)
+                }
            } catch (error) {
             
            }

@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <apexchart
-            ref="chart"
+            ref="chart_horizontal"
             type="bar"
             :height="height"
             :options="ChartConfiguration.chartOptions"
@@ -34,19 +34,18 @@ export default {
     methods:{
         async get_chart(){
             try {
-                report.loading = true;
                 const response = await this.$axios.get("reports/get_chart/"+this.report_id);
                 const data = response.data;
                 setTimeout(()=>{
-                    this.$refs.chart.updateOptions({
-                    series:[{data:data.count}],
-                    xaxis:{
-                        categories:data.label
+                    if(this.$refs.chart_horizontal != null){
+                        this.$refs.chart_horizontal.updateOptions({
+                            series:[{data:data.count}],
+                            xaxis:{
+                                categories:data.label
+                            }
+                        });
                     }
-                });
-                },1000)
-                report.loading = false;
-
+                },100)
             } catch (error) {
                 
             }

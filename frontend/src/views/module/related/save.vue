@@ -103,7 +103,7 @@ export default {
         Button,
         Textarea,
         Select,
-        Map
+        Map,
     },
     data(){
         return{
@@ -119,12 +119,12 @@ export default {
         related_store.related_module = related_module.value;
     },
     mounted(){
-        related_store.get_edit_form();
+        related_store.get_edit_form(this.$route.params.id,related_store.id);
         related_store.form.id = this.$route.params.id;
-        if(related_store.id != ""){
-            related_store.form.related_id = related_module.id;
-            related_store.get(this.$route.params.id,related_store.id);
-        }
+        // if(related_store.id != ""){
+        //     related_store.form.related_id = related_module.id;
+        //     related_store.get(this.$route.params.id,related_store.id);
+        // }
     },
     computed:{
         modules_(){

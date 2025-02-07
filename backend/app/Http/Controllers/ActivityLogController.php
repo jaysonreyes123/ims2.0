@@ -15,7 +15,7 @@ class ActivityLogController extends Controller
         $id = Module::module_id($module);
         return $this->success(
             ActivityLog::with(['users_'])->where('module_id',$id)
-            ->where('module_item_id',$module_id)->get()
+            ->where('module_item_id',$module_id)->orderByDesc('created_at')->get()
         );
     }
 }

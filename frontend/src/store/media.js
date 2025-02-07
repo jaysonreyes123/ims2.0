@@ -1,9 +1,11 @@
 import {defineStore} from "pinia"; 
 import { useToast } from "vue-toastification"; 
 import { useListStore } from "./list";
+import { useRelatedStore } from "./related";
+import router from '@/router';
+const related_store = useRelatedStore();
 const list = useListStore();
 const toast = useToast(); 
-
 export const useMediaStore = defineStore('media',{
     state:()=>{
         return{
@@ -15,6 +17,9 @@ export const useMediaStore = defineStore('media',{
             current:1,
             per_page:0,
             form:{
+                filetitle:"",
+                assigned_to:"",
+                note:"",
                 files:[]
             },
             mediaList:[],
@@ -29,7 +34,9 @@ export const useMediaStore = defineStore('media',{
                         'Content-Type': 'multipart/form-data'
                       }
                 });
-                list.List_Relation('media',this.id);
+                const router_ = router.currentRoute.value.params;
+                related_store.get_column(router_.id,router_.module,router_.related_module)
+                //list.List_Relation('media',this.id);
                 this.loading = false;
                 this.clearFile();
 
@@ -74,6 +81,9 @@ export const useMediaStore = defineStore('media',{
         },
         clearFile(){
             this.form.files = [];
+            this.form.assigned_to = "";
+            this.form.filetitle = "";
+            this.form.note = "";
             this.modal = false;
         }
     },

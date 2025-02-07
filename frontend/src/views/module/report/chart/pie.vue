@@ -1,7 +1,7 @@
 <template lang="">
     <div>
             <apexchart
-                ref="chart"
+                ref="chart_pie"
                 type="pie"
                 :height="height"
                 :options="ChartConfiguration.chartOptions"
@@ -32,17 +32,16 @@ export default {
     methods:{
         async get_chart(){
             try {
-                report.loading = true;
                 const response = await this.$axios.get("reports/get_chart/"+this.report_id);
                 const data = response.data;
                 setTimeout(()=>{
-                    this.$refs.chart.updateOptions({
-                    series:data.count,
-                    labels:data.label
-                });
-                },1000)
-                report.loading = false;
-
+                    if(this.$refs.chart_pie != null){
+                        this.$refs.chart_pie.updateOptions({
+                            series:data.count,
+                            labels:data.label
+                        });
+                    }
+                },100)
             } catch (error) {
                 
             }

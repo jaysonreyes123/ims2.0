@@ -55,7 +55,6 @@ export const useReportStore = defineStore('report', {
         async get_chart(id){
             this.loading = true;
             const response = await this.axios.get("reports/get_chart/"+id);
-            console.log(response);
             this.loading = false;
         },
         async get_fields(){
@@ -123,7 +122,6 @@ export const useReportStore = defineStore('report', {
                 this.loading = true;
                 const response = await this.axios.get("reports/"+this.id+"/edit");
                 const data = response.data.data;
-                console.log(data)
                 this.form.modules = data.modules;
                 this.form.report_name = data.report_name;
                 this.form.related_module = JSON.parse(data.related_module);

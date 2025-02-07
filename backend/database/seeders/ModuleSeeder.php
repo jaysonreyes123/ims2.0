@@ -24,70 +24,80 @@ class ModuleSeeder extends Seeder
                 'name' => 'incidents',
                 "label" => "Incidents",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "INCIDENT",
             ],
             [
                 'id' => 2,
                 'name' => 'resources',
                 "label" => "Resources",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 3,
                 'name' => 'preplans',
                 "label" => "Pre Plan",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 4,
                 'name' => 'contacts',
                 "label" => "Contact",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 5,
                 'name' => 'agencies',
                 "label" => "Agency",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 6,
                 'name' => 'responders',
                 "label" => "Responder",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 7,
                 'name' => 'call_logs',
                 "label" => "Call Logs",
                 "icon" => "carbon:dashboard",
-                "presence" => 1
+                "presence" => 1,
+                "prefix" => "",
             ],
             [
                 'id' => 8,
                 'name' => 'reports',
                 "label" => "Reports",
                 "icon" => "carbon:dashboard",
-                "presence" => 3
+                "presence" => 3,
+                "prefix" => "",
             ],
             [
                 'id' => 9,
                 'name' => 'users',
                 "label" => "User",
                 "icon" => "carbon:dashboard",
-                "presence" => 3
+                "presence" => 3,
+                "prefix" => "",
             ],
             [
                 'id' => 10,
                 'name' => 'media',
                 "label" => "Media",
                 "icon" => "carbon:dashboard",
-                "presence" => 2
+                "presence" => 2,
+                "prefix" => "",
             ],
         ]);
     }

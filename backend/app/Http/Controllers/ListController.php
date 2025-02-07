@@ -34,6 +34,13 @@ class ListController extends Controller
         $model = $model->where('deleted',0);
         $model = $model->orderByDesc('updated_at');
         $model = $model->paginate(15);
+        if($request->module == 'reports'){
+            $model->through(function($report){
+                $module_details = HelpersModule::module_details($report->modules);
+                $report->modules = $module_details->label;
+                return $report;
+            });
+        }
         return $this->success($model);
     }
     public function get_column(Request $request){

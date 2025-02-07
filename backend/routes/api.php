@@ -64,4 +64,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //user
     Route::apiResource('users',UserController::class);
+    Route::get("dropdown/assigned_to",[UserController::class,'assigned_to']);
 });

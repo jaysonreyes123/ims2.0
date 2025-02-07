@@ -1,5 +1,6 @@
 <template lang="">
     <div>
+        <Loading v-model:active="report.loading"/>
         <div  v-if="report.form.type == 'list' ">
             <List/>
         </div>

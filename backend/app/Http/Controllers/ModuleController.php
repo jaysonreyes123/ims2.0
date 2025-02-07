@@ -30,7 +30,9 @@ class ModuleController extends Controller
     }
     public function edit_form(string $module){
         $model = Module::with(['blocks'=>function($query){
-            return $query->with('fields');
+            return $query->with(['fields'=>function($query_field){
+                $query_field->whereIn('display_type',[1,2,3]);
+            }]);
         }])
         ->where('name',$module)
         ->first();
@@ -89,7 +91,13 @@ class ModuleController extends Controller
             foreach ($field_with_table as $table => $fields) {
                 $table_single = DB::table($table)->where('id', $id)->first();
                 foreach ($table_single as $field => $value) {
-                    $field_data[$field] = $value;
+                    if($field == 'assigned_to'){
+                        $user_model = User::where('id',$value)->first();
+                        $field_data[$field] = $user_model->name ?? "";
+                    }
+                    else{
+                        $field_data[$field] = $value;
+                    }
                 }
             }
         }
@@ -163,10 +171,10 @@ class ModuleController extends Controller
                 $model_id = DB::getPdo()->lastInsertId();
                 if($model){
                     if($id != ""){
-                        ActivityLogs::log($request->module,$id,"update",$old_value,$request->all());
+                        ActivityLogs::log($request->module,$id,"updated",$old_value,$request->all());
                     }
                     else{
-                        ActivityLogs::log($request->module,$model_id,"ceate");
+                        ActivityLogs::log($request->module,$model_id,"created");
                     }
                 }
             }
