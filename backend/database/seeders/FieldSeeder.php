@@ -50,6 +50,7 @@ class FieldSeeder extends Seeder
                         "name"  => "incident_types",
                         "table"  => "incidents",
                         "type"  => "dropdown",
+                        "column" => 1
                     ],
                     [
                         "label" => "Time of Incident",
@@ -68,12 +69,14 @@ class FieldSeeder extends Seeder
                         "name"  => "incident_statuses",
                         "table" => "incidents",
                         "type"  => "dropdown",
+                        "column" => 1
                     ],
                     [
                         "label" => "Incident Priority",
                         "name"  => "incident_priorities",
                         "table" => "incidents",
                         "type"  => "dropdown",
+                        "column" => 1
                     ],
                     [
                         "label" => "Notes/Remarks",
