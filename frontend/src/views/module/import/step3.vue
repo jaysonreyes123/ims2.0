@@ -17,7 +17,7 @@
           <div v-if="props.column.field == 'crm_fields' ">
               <select class="w-full import-crm-fields" style="border:1px solid #ccc;padding: 5px;border-radius: 5px;outline: none">
                   <option value="" disabled selected>Select an option</option>
-                  <option  v-for="(item,index) in ImportStore.import_fields" :key="index" :value="item.name" :data-required="item.required" :data-type="item.type">
+                  <option  v-for="(item,index) in ImportStore.import_fields.filter(import_field=>import_field.display_type != 3)" :key="index" :value="item.name" :data-required="item.required" :data-type="item.type">
                       {{ item.label }}<span class="text-red-500" v-if="item.required">*</span>
                   </option>
               </select>
@@ -71,9 +71,12 @@
             const import_dropdown_ = [];
             ImportStore.import_fields.map(item=>{
                 const sub_import_data = {};
-                sub_import_data["label"] = item.label;
-                sub_import_data["value"] = item.name;
-                import_dropdown_.push(sub_import_data);
+                console.log(item.display_type)
+                if(item.display_type != 3){
+                    sub_import_data["label"] = item.label;
+                    sub_import_data["value"] = item.name;
+                    import_dropdown_.push(sub_import_data);
+                }
             })
             return import_dropdown_;
           }

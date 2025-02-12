@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('related_module')->nullable();
             $table->foreign('related_module')->references('id')->on('modules')->onDelete('cascade');
             $table->string("label");
+            $table->string("action")->nullable();
             $table->timestamps();
         });
     }

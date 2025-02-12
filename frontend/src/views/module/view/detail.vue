@@ -94,7 +94,7 @@ export default {
     },
     mounted(){
         module_store.module = modules.value;
-        module_store.get_edit_form(module_id.value);
+        module_store.get_edit_form(module_id.value,'detail');
         //module_store.get(module_id.value);
     }
 }

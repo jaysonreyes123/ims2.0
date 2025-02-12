@@ -74,9 +74,14 @@
                         v-model="report.form.selected_column"
                         :closeOnSelect="false" 
                         multiple
-                        :selectable="(option) => !report.form.selected_column.includes(option.value) && report.form.selected_column.length < 15 "
+                        :selectable="(option) => !report.form.selected_column.includes(option.value) && report.form.selected_column.length < 15 && !option.header "
                         :reduce="option => option.value"
-                    />
+                    >
+                    <template #option="{ header,label }">
+                        <h6 v-if="header" class="font-bold text-[18px] text-black">{{ label }}</h6>
+                        <span v-else class="text-[12px]">{{ label }}</span>
+                    </template>
+                    </Select>
                     </div>
                 </div>
                 <div v-if="stepNumber === 2" class="px-5">
@@ -142,7 +147,7 @@
                 </div>
                 <div class="mt-10" :class="stepNumber > 0 ? 'flex justify-between' : ' text-right'">
                     <Button @click.prevent="prev()" text="prev" btnClass="btn-dark" v-if="this.stepNumber !== 0" />
-                    <Button @click="submit" :text="stepNumber !== this.steps.length - 1 ? 'next' : 'Save and Generate'" btnClass="btn-dark" />
+                    <Button @click="submit" :text="stepNumber !== this.steps.length - 1 ? 'next' : 'Save and Generate'" btnClass="btn-danger" />
                 </div>
         </div>
     </Card>

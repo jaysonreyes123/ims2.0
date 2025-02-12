@@ -38,11 +38,11 @@ class ReportController extends Controller
         $related_modules = $request->related_module;
        
         $module_ = Module::module_details($module);
-        $data[$module_->label] = Field::where('module_id',$module_->id)->where('display_type',[1,2,3])->get();
+        $data[$module_->label] = Field::where('module_id',$module_->id)->whereIn('display_type',[1,2,3])->get();
         if(!empty($related_modules)){
             foreach($related_modules as $related_module){
                 $related_module_ = Module::module_details($related_module);
-                $data[$related_module_->label] = Field::where('module_id',$related_module_->id)->get();
+                $data[$related_module_->label] = Field::where('module_id',$related_module_->id)->whereIn('display_type',[1,2,3])->get();
             }
         }
         return $this->success($data);

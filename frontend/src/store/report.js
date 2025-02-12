@@ -66,9 +66,10 @@ export const useReportStore = defineStore('report', {
                 const data = response.data.data;
                 const keys = Object.keys(data);
                 keys.map(key=>{
+                    this.fields_list.push({label:key,header:true})
                     data[key].map(item=>{
                         const item_ = item.table+"."+item.name;
-                        this.fields_list.push({label:item.label,value:item_,type:item.type})
+                        this.fields_list.push({label:item.label,value:item_,type:item.type,header:false})
                     })
                 })
                 // const current_selected_column = this.form.selected_column;

@@ -1,6 +1,5 @@
 <template lang="">
     <div>
-        <Loading v-model:active="related_store.loading"/>
         <form @submit.prevent="save" v-if="!related_store.loading">
             <Card 
                 v-for="(block,block_index) in related_store.data.blocks" 
@@ -8,7 +7,6 @@
                 :title="block.block"
                 class="mb-4"
                 >
-                
                 <div v-if="block.block == 'Location Details' ">
                     <div class="lg:grid lg:grid-cols-2 gap-12"> 
                         <div>

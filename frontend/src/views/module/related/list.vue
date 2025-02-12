@@ -1,92 +1,61 @@
 <template lang="">
     <div>
+        <div  v-for="blocks in related_store.blocks" :key="blocks.id" class="mt-4">
+            <Card :title="blocks.blocks[0].block">
+                <div class="lg:grid gap-x-12" style="grid-template-columns: 1fr 1fr;"> 
+                    <div v-for="(field,i) in blocks.blocks[0].fields" :key="i" :class="`custom-grid-${i%2}`" class="mt-4">
+                        <div class="fromGroup relative" v-if="field.type == 'checkbox' ">
+                            <label>{{ field.label }}</label>
+                            <Badge v-if="module_store.form[field.name]" label="Active" badgeClass="bg-success-500 text-white" />
+                            <Badge v-if="!module_store.form[field.name]" label="Inactive" badgeClass="bg-danger-500 text-white" />
+                        </div>
+                        <div class="fromGroup relative" v-else>
+                            <label>{{ field.label }}</label>
+                            <span>{{ module_store.form[field.name] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+        </div>
         <Card class="mt-4" :title="modules_.label" >
             <br>
             <div class="flex justify-end">
-            <Button
-                v-if="this.$route.params.related_module == 'media' "
+                <div v-for="item in get_related_menu_action" :key="item">
+                    <Button
+                        v-if="item == 'add'"
                         icon="heroicons-outline:plus"
-                        :text="`New ${this.$route.params.related_module}`"
+                        :text="`New ${modules_.label}`"
                         btnClass="btn-danger mr-2 py-2"
-                        @click="openMediaModal"
-            />
-            <Button
-               v-else
+                        @click="this.$route.params.related_module == 'media' ? openMediaModal() : openSaveRelatedModal()"
+                    />
+                    <Button
+                        v-if="item == 'select'"
                         icon="heroicons-outline:plus"
-                        :text="`New ${this.$route.params.related_module}`"
+                        :text="`Select ${modules_.label}`"
                         btnClass="btn-danger mr-2 py-2"
-                        @click="openSaveRelatedModal"
-            />
+                        @click="openSelectRelatedModal"
+                    />
+                </div>
             </div>
-            <Modal :preview-content="preview_content_data"/>
-            <RelatedModal :method="method" :title="modules_.label" />
+            <SelectListModal :module_id="parseInt(this.$route.params.id)" :module="this.$route.params.module" :related_module="this.$route.params.related_module" />
             <br>
-            <br>
-            <vue-good-table :fixed-header="true" :isLoading.sync="related_store.loading" :columns="related_store.columns_header"
-                styleClass=" vgt-table  lesspadding2 centered " :rows="related_store.list_data" :pagination-options="{
-                enabled: true,
-                perPage:15
-            }"   max-height="600px" :select-options="{
-                enabled: true,
-                selectOnCheckboxOnly: true, // only select when checkbox is clicked instead of the row
-                selectioninfoClass: 'custom-class',
-                selectionText: 'rows selected',
-                clearSelectionText: 'clear',
-                disableSelectinfo: true, // disable the select info-500 panel on top
-                selectAllByGroup: true, // when used in combination with a grouped table, add a checkbox in the header row to check/uncheck the entire group
-            }">
-                <template v-slot:table-row="props">
-                    <span v-if="props.column.field == 'action'">
-                        <div class="flex space-x-3 justify-center rtl:space-x-reverse">
-                            <Tooltip placement="top" arrow theme="dark" v-if="props.row.view != '' && this.$route.params.related_module == 'media' ">
-                                <template #button>
-                                    <a @click="preview(props.row.filename,props.row.path,props.row.filetype)">
-                                        <div class="action-btn">
-                                            <Icon icon="heroicons:photo" />
-                                        </div>
-                                    </a>
-                                </template>
-                                <span>Preview</span>
-                            </Tooltip>
-                            <Tooltip placement="top" arrow theme="dark">
-                                <template #button>
-                                        <div class="action-btn" @click="view(props.row.id)">
-                                            <Icon icon="heroicons:eye" />
-                                        </div>
-                                </template>
-                                <span> View</span>
-                            </Tooltip>
-                            <Tooltip v-if="this.$route.params.related_module != 'media'" placement="top" arrow theme="dark">
-                                <template #button>
-                                        <div class="action-btn" @click="edit(props.row.id)">
-                                            <Icon icon="heroicons:pencil-square" />
-                                        </div>
-                                </template>
-                                <span> Edit</span>
-                            </Tooltip>
-                            <Tooltip placement="top" arrow theme="danger-500">
-                                <template #button>
-                                    <div class="action-btn text-red-500" @click="del(props.row.id,props.row.originalIndex)">
-                                        <Icon icon="heroicons:trash" />
-                                    </div>
-                                </template>
-                                <span>Delete</span>
-                            </Tooltip>
-                        </div>
-                    </span>
-                </template>
-                <template #pagination-bottom="props">
-                    <div class="py-4 px-3 flex justify-center">
-                        <Pagination :total="related_store.page.total" :current="related_store.page.current" :per-page="related_store.page.per_page"
-                            @page-changed="changePage" :perPageChanged="props.perPageChanged">
-                        </Pagination>
-                    </div>
-                </template>
-            </vue-good-table>
+            <Table 
+                :loading="related_store.loading" 
+                :rows="related_store.list_data" 
+                :perPage="related_store.page.per_page"
+                :total="related_store.page.total"
+                :current="related_store.page.current"
+                @changePage="changePage"
+                @search="search"
+                @clearsearch="clearsearch"
+                :clearbutton="clearbutton"
+            />
         </Card>
     </div>
 </template>
 <script>
+import Badge from "@/components/Badge";
+import Table from "./table.vue";
 import InputGroup from "@/components/InputGroup";
 import Card from "@/components/Card";
 import Pagination from "@/components/Pagination";
@@ -95,16 +64,20 @@ import Button from "@/components/Button";
 import Icon from "@/components/Icon";
 import { useRelatedStore } from '@/store/related';
 import Modal from "../media/modal.vue";
+import SelectListModal from "./select_list.vue";
 import { useMediaStore } from "@/store/media";
 import { ref } from "vue";
 import {useAuthStore} from "@/store/auth";
 import RelatedModal from "./modal.vue";
-import Swal from 'sweetalert2';
+import { useListStore } from "@/store/list";
+import { useModuleStore } from "@/store/module";
+const list_store = useListStore();
 const auth_store = useAuthStore();
 const related_store = useRelatedStore();
-const media_store = useMediaStore();
-const preview_content_data = ref("");
 const method = ref("");
+const clearbutton = ref(false);
+const media_store = useMediaStore();
+const module_store = useModuleStore();
 export default {
     components:{
         Card,
@@ -114,38 +87,59 @@ export default {
         Button,
         Icon,
         Modal,
-        RelatedModal
+        RelatedModal,
+        Table,
+        SelectListModal,
+        Badge
     },
     data(){
         return{
             related_store,
-            preview_content_data,
-            method
+            method,
+            clearbutton,
+            module_store
         }
     },
     created(){
-        related_store.page.current = 1;
-        related_store.modal = false;
+        this.clear();
         this.$watch(
             ()=>this.$route.params.related_module,
             (modules) => {
-                const params = this.$route.params;
-                related_store.get_column(params.id,params.module,params.related_module);
+                this.set_initial();
             }
         )
     },
     mounted(){
-        const params = this.$route.params;
-        related_store.get_column(params.id,params.module,params.related_module);
+        this.set_initial();
     },
     computed:{
         modules_(){
             const current_module = this.$route.params.related_module;
             const module_info = auth_store.module.find(module__ => module__.name == current_module );
             return module_info;
+        },
+        get_related_menu_action(){
+            const related_id = this.modules_.id;
+            const menu_option = related_store.related_menu.find(menu => menu.related_module == related_id);
+            return menu_option.action.split(",");
         }
     },
     methods:{
+        clear(){
+            related_store.page.current = 1;
+            related_store.modal = false;
+            related_store.select_list_modal = false;
+            related_store.search = "";
+            related_store.blocks = [];
+            clearbutton.value = false;
+        },
+        set_initial(){
+            const params = this.$route.params;
+            related_store.module = this.$route.params.module;
+            related_store.related_module = this.$route.params.related_module;
+            related_store.get_column(params.id,params.module,params.related_module);
+            related_store.get_related_block();
+        },
         openMediaModal(){
             media_store.title = 'Media';
             media_store.modal = true;
@@ -154,48 +148,54 @@ export default {
             related_store.page.current = event;
             related_store.get_related_list(this.$route.params.id,this.$route.params.module,this.$route.params.related_module);
         },
-        preview(name,data,type){
-            preview_content_data.value = {name:name,preview:data,type:type};
-            console.log(preview_content_data.value)
-            media_store.title = "Preview";
-            media_store.modal = true;
+        search(value){
+            clearbutton.value = true;
+            related_store.get_related_list(this.$route.params.id,this.$route.params.module,this.$route.params.related_module);
+        },
+        clearsearch(value){
+            if(!value){
+                related_store.search = "";
+                clearbutton.value = false;
+                related_store.get_related_list(this.$route.params.id,this.$route.params.module,this.$route.params.related_module);
+            }
         },
         openSaveRelatedModal(){
-            method.value = "edit";
+            related_store.method = "edit";
             related_store.id = "";
             related_store.modal = true;
         },
-        edit(id){
-            method.value = "edit";
-            related_store.id = id;
-            related_store.loading = true;
-            related_store.modal = true;
+        openSelectRelatedModal(){
+            list_store.columns = [];
+            list_store.list_data = [];
+            related_store.select_list_modal = true;
         },
-        view(id){
-            method.value = "view";
-            related_store.id = id;
-            related_store.related_module = this.$route.params.related_module;
-            related_store.modal = true;
-        },
-        del(id,index){
-            const module_ = this.modules_.label;
-            Swal.fire({
-            title: "Unlink "+module_+" ", 
-            text: "Are you sure you want to unlink this "+module_+"? ",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            confirmButtonText: "Unlink",
-            cancelButtonColor: "#3085d6",
-            reverseButtons: true, 
-            }).then((result) => { 
-                if (result.isConfirmed) {
-                    related_store.delete(this.$route.params.module,this.$route.params.related_module,this.$route.params.id,id,index);
-                } 
-            });
-        }
     }
 }
 </script>
-<style lang="">
-    
+<style scoped>
+label{
+  font-weight: bold;
+}
+.fromGroup{
+  margin-bottom: 15px;
+  display: flex;
+
+}
+.custom-grid-0{
+    grid-column:1
+}
+.custom-grid-1{
+    grid-column:2
+}
+.fromGroup label{
+  overflow-wrap:break-word;
+  width: 200px;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  text-transform: capitalize;
+}
+.fromGroup span{
+  font-size: 0.875rem;
+}
 </style>

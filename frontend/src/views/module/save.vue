@@ -1,5 +1,6 @@
 <template lang="">
     <div>
+        <Breadcrum mode='save' />
         <Loading v-model:active="module_store.loading"/>
         <form @submit.prevent="save" v-if="!module_store.loading">
             <Card 
@@ -80,6 +81,7 @@
     </div>
 </template>
 <script>
+import Breadcrum from "./Breadcrum.vue";
 import Card from "@/components/Card";
 import Textinput from "@/components/Textinput";
 import Button from "@/components/Button";
@@ -102,7 +104,8 @@ export default {
         Textarea,
         Select,
         Map,
-        Switch
+        Switch,
+        Breadcrum
     },
     data(){
         return{

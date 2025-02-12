@@ -4,32 +4,67 @@ namespace App\Helpers;
 
 use App\Constants\FieldConstants;
 use App\Models\ActivityLog;
+use App\Models\ActivitylogDetail;
+use App\Models\ActivitylogMain;
+use App\Models\ActivitylogRelation;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityLogs{
-    public static function log($module = "",$module_item_id = "",$action,$old = null,$new = null){
-        $module_id = Module::module_id($module);
-        $description = "";
-        if($action == "updated"){
-            $old = (array)$old;
-            $get_changes = array_diff($new,$old);
-            foreach($get_changes as $key => $val){
-                if($key != "updated_at" && $key != "module" && $key != "created_at" && $key != "created_by" && $key != "updated_by"){
-                    $module_fields = Module::get_field($module_id,$key);
-                    $old_value = $old[$key];
-                    $new_value = $val;
-                    $label = $module_fields->label;
-                    $description.= $label." changed <br>";
-                    $description.="<b>From</b>: ".$old_value." <br> <b>To</b>: ".$new_value."<br> <br>";
-                }   
+    protected static $not_allow = ['id','module','created_at','updated_at','created_by','updated_by','source','deleted'];
+    public static function log($itemid,$module_id,$status,$fields = [],$old_field = [],$related_module = 0,$related_item_id = 0){
+        $activity_model = new ActivitylogMain();
+        $activity_model->itemid = $itemid;
+        $activity_model->module = $module_id;
+        $activity_model->status = $status;
+        $activity_model->whodid = Auth::id();
+        $activity_model->save();
+        //create
+        if($status == 1){
+            self::create($fields,$activity_model->id);
+        }
+        //update
+        else if($status == 2){
+            self::update($old_field,$fields,$activity_model->id);
+        }
+        //link
+        else if($status == 4 || $status == 5){
+            self::link($activity_model->id,$related_module,$related_item_id);
+        }
+    }
+    public static function create($fields,$activityid){
+        foreach($fields as $field => $value){
+            if(!in_array($field,self::$not_allow)){
+                if($value != "" || $value != null){
+                    $create_model = new ActivitylogDetail();
+                    $create_model->activity_log_id = $activityid;
+                    $create_model->field = $field;
+                    $create_model->newvalue = $value;
+                    $create_model->save();   
+                }
             }
         }
-        $model = new ActivityLog();
-        $model->module_id   = $module_id;
-        $model->module_item_id   = $module_item_id;
-        $model->description = $description;
-        $model->action      = $action;
-        $model->user_id     = Auth::id();
-        $model->save();
+    }
+    public static function update($old,$new,$activityid){
+        $old = (array) $old;
+        $get_changes = array_diff($new,$old);
+        foreach($get_changes as $field => $value){ 
+            if(!in_array($field,self::$not_allow)){
+                if($value != "" || $value != null){
+                    $create_model = new ActivitylogDetail();
+                    $create_model->activity_log_id = $activityid;
+                    $create_model->field = $field;
+                    $create_model->oldvalue = $old[$field];
+                    $create_model->newvalue = $value;
+                    $create_model->save();   
+                }
+            }
+        }
+    }
+    public static function link($activityid,$related_module,$itemid){
+        $link_model = new ActivitylogRelation();
+        $link_model->activity_log_id = $activityid;
+        $link_model->related_module = $related_module;
+        $link_model->related_item_id = $itemid;
+        $link_model->save();
     }
 }

@@ -1,8 +1,8 @@
 <template lang="">
     <div>
-        <Modal :title="title" :activeModal="related_store.modal" @close="closeModal" sizeClass="max-w-9xl">
-            <save v-if="method == 'edit'" :props_module="this.$route.params.module" :props_related_module="this.$route.params.related_module" />
-            <detail v-else-if="method == 'view' " :props_module="related_store.related_module" :props_id="related_store.id" />
+        <Modal :title="title" :activeModal="related_store.modal" @close="closeModal" sizeClass="max-w-7xl">
+            <save v-if="related_store.method == 'edit'" :props_module="this.$route.params.module" :props_related_module="this.$route.params.related_module" />
+            <detail v-else-if="related_store.method == 'view' " :props_module="related_store.related_module" :props_id="related_store.id" />
         </Modal>
     </div>
 </template>

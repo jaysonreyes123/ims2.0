@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("entityname");
             $table->string("label")->nullable();
             $table->string("prefix")->nullable();
             $table->string("icon")->nullable();

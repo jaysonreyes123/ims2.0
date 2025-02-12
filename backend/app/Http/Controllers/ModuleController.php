@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ActivityLogs;
+use App\Helpers\Generate;
 use App\Helpers\Module as HelpersModule;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\ModuleResources;
@@ -28,14 +29,31 @@ class ModuleController extends Controller
         $model = Module::all();
         return $this->success($model);
     }
-    public function edit_form(string $module){
-        $model = Module::with(['blocks'=>function($query){
-            return $query->with(['fields'=>function($query_field){
-                $query_field->whereIn('display_type',[1,2,3]);
-            }]);
-        }])
-        ->where('name',$module)
-        ->first();
+    public function edit_form(string $module,string $option){
+        if($option == "summary"){
+            $model = Module::with(['blocks'=>function($query){
+                return $query
+                ->withCount(['fields'=>function($query_field){
+                    $query_field->select('id');
+                    $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
+                }])
+                ->with(['fields'=>function($query_field){
+                    $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
+                }])
+                ->having('fields_count','<>',0);
+            }])
+            ->where('name',$module)
+            ->first();
+        }
+        else{
+            $model = Module::with(['blocks'=>function($query){
+                return $query->with(['fields'=>function($query_field){
+                    $query_field->whereIn('display_type',[1,2,3]);
+                }]);
+            }])
+            ->where('name',$module)
+            ->first();
+        }
         return $this->success($model);
     }
 
@@ -129,8 +147,11 @@ class ModuleController extends Controller
      */
     public function destroy(Request $request,string $id)
     {
-        //
         $model = DB::table($request->module)->where("id",$id)->update(["deleted" => 1]);
+        if($model){
+            $module_id = HelpersModule::module_id($request->module);
+            ActivityLogs::log($id,$module_id,$status = 3);
+        }
         return $this->success($model);
     }
     public function save($request,$id = ""){
@@ -169,12 +190,13 @@ class ModuleController extends Controller
                 );
                 //check if the update was success then create logs
                 $model_id = DB::getPdo()->lastInsertId();
+                
                 if($model){
                     if($id != ""){
-                        ActivityLogs::log($request->module,$id,"updated",$old_value,$request->all());
+                        ActivityLogs::log($id,$module_id,$status = 2,$request->all(),$old_value);
                     }
                     else{
-                        ActivityLogs::log($request->module,$model_id,"created");
+                        ActivityLogs::log($model_id,$module_id,$status = 1,$request->all());
                     }
                 }
             }
@@ -224,8 +246,12 @@ class ModuleController extends Controller
         return $this->success($model);
     }
     public function generate($module){
-        $prefix = Module::where('name',$module)->first();
-        $count = DB::table($module)->count();
-        return $prefix->prefix.$count+1;
+        $generate = Generate::get($module);
+        return $generate['prefix'].$generate['current_count'];
+    }
+    public function get_summary(string $module){
+        $module_id = HelpersModule::module_id($module);
+        $fields = Field::where('module_id',$module_id)->where('summary',1);
+        return $this->success($fields->count());
     }
 }

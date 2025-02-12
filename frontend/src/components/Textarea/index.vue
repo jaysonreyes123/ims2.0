@@ -27,6 +27,7 @@
         :disabled="disabled"
         :rows="rows"
         :validate="validate"
+        ref="textarea_"
       ></textarea>
 
       <div
@@ -140,6 +141,9 @@ export default {
       // toggle the type of the input field
       this.types = this.types === "text" ? "password" : "text";
     },
+    textarea_focus(){
+      this.$refs.textarea_.focus();
+    }
   },
 };
 </script>

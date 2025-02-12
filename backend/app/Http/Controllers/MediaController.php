@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogs;
 use App\Helpers\Module;
 use App\Http\Traits\HttpResponses;
 use App\Models\Media;
@@ -66,7 +67,7 @@ class MediaController extends Controller
                     $relation_entries->related_id = $model->id;
                     $relation_entries->related_module = $relation_module_id;
                     $relation_entries->save();
-
+                    ActivityLogs::log($id,$module_id,$status = 4,related_module:$relation_module_id,related_item_id:$model->id);
                 }
             }
         }

@@ -6,6 +6,7 @@ export const useListStore = defineStore('list', {
     state: () => {
         return {
             module:"",
+            modal:false,
             loading:false,
             list_data:[],
             columns:[],
@@ -16,7 +17,7 @@ export const useListStore = defineStore('list', {
                 total:0,
                 current:1,
                 per_page:0
-            }
+            },
         }
     },
     actions: {
@@ -26,25 +27,46 @@ export const useListStore = defineStore('list', {
             this.columns_header=[];
         },
         async get_column(){
-            try {
-                this.loading = true;
-                const response = await this.axios.get("list/columns",{
-                    params:{
-                        module:this.module
+        
+                const column_header_cache = JSON.parse(localStorage.getItem('column_header'));
+                const check_if_exist = column_header_cache == null ? false : column_header_cache.hasOwnProperty(this.module);
+                //cache column if not exist to current local storage
+                if(check_if_exist){
+                    column_header_cache[this.module].map(item=>{
+                        this.columns.push(item.name);
+                    })
+                    this.columns.push("id");
+                    this.columns_header = column_header_cache[this.module];
+                    this.list_function()
+                }
+                else{
+                    try {
+                        this.loading = true;
+                        const response = await this.axios.get("list/columns",{
+                            params:{
+                                module:this.module
+                            }
+                        });
+                        const data = response.data;
+                        this.columns_header = data.data;
+                        this.columns_header.push({field:"action",label:"Action"});
+
+                        var get_column_name = data.data.map(column => column.name)
+                        var get_column_name_  = [...get_column_name,"id"];
+                        this.columns = get_column_name_;
+                        
+                        // cache
+                        const cache = {};
+                        cache[this.module] = this.columns_header;
+                        const set_column_header_cache = {...column_header_cache,...cache}
+                        localStorage.setItem("column_header",JSON.stringify(set_column_header_cache))
+                        // end cache
+                        this.list_function()
+                        //this.loading = false;
+                    } catch (error) {
+                        
                     }
-                });
-                const data = response.data;
-                this.columns_header = data.data;
-                data.data.map(item=>{
-                    this.columns.push(item.name);
-                })
-                this.columns_header.push({field:"action",label:"Action"});
-                this.columns.push("id");
-                this.loading = false;
-                this.list_function();
-            } catch (error) {
-                
-            }
+                }
         },
         async list_function(){
             try {
@@ -81,7 +103,7 @@ export const useListStore = defineStore('list', {
             } catch (error) {
                 
             }
-        }
+        },
     },
     persist: true,
 })

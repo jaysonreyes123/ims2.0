@@ -47,15 +47,28 @@ class Import implements ToModel, WithStartRow,WithBatchInserts
         $insert_into_import_table = "INSERT INTO $table ";
         $insert_column = "(";
         $insert_data = "(";
+
+        //generate
+        $generate_field = Generate::get_field($this->module);
+        $prefix = "";
+        $current_count = 0;
+        if($generate_field != ""){  
+            $generate = Generate::get($this->module);
+            $prefix = $generate['prefix'];
+            $current_count = $generate['current_count'];
+            $insert_field[$generate_field] = $prefix.$current_count;
+        }
+        //end generate
         foreach(json_decode($this->fields,true) as $keys => $values){
             $field      = $values['fields'];
             $value      = $row[$values['position']];
             $field_type = $values['type'];
             $value_     = FieldValidator::validate($this->module,$field,$field_type,$value); 
-            $insert_field[$field] = $value_;
-            $update_field[$field] = $value_;
             $insert_column.="`".$field."`".",";
             $insert_data.="'".$value."'".",";
+
+            $insert_field[$field] = $value_;
+            $update_field[$field] = $value_;
         }
         $insert_field['source'] = 'import';
         $insert_field['created_at'] = $timestamp;

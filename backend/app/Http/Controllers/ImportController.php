@@ -30,17 +30,18 @@ class ImportController extends Controller
         $hasheader = $request->hasheader == 'true' ? true :false ;
         $duplicate_handling = $request->duplicate_option;
         $duplicate_handling_field = $request->duplicate_fields;
-        $this->create_table($fields); 
+
+        $import_user_table = "import_user_".Auth::id();
+        $this->create_table($fields,$import_user_table); 
         Excel::import(new Import($hasheader,$module,$fields,$duplicate_handling,json_decode($duplicate_handling_field)),$files);
-        return $this->success($this->import_result());
+        return $this->success($this->import_result($import_user_table));
     }
     
-    protected function import_result(){
-       return DB::table('import_user_1')->get();
+    protected function import_result($table){
+       return DB::table($table)->get();
     }
 
-    protected function create_table($fields){
-        $table = "import_user_".Auth::id();
+    protected function create_table($fields,$table){
         Schema::dropIfExists($table);
         Schema::create($table,function(Blueprint $table) use ($fields) {
             foreach(json_decode($fields,true) as $key => $val){

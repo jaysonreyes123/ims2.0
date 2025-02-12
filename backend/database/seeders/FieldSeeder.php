@@ -28,6 +28,7 @@ class FieldSeeder extends Seeder
              "reports"      => ["Report Details"],
              "users"      => ["Basic Information","User Privileges"],
              "media"      => ["Basic Information","File"],
+             "tasks"      => ["Basic Information"],
         ];
 
         $fields =
@@ -712,9 +713,34 @@ class FieldSeeder extends Seeder
                         "display_type" => 0
                     ],
                 ]
+            ],
+            "tasks" => [
+                0 =>[
+                    [
+                        "label" => "Task Name",
+                        "name"  => "name",
+                        "type"  => "text",
+                        "table" => "tasks",
+                        "column" => 1
+                    ],
+                    [
+                        "label" => "Status",
+                        "name"  => "status",
+                        "type"  => "dropdown",
+                        "table" => "tasks",
+                        "column" => 1
+                    ],
+                    [
+                        "label" => "Description",
+                        "name"  => "description",
+                        "type"  => "textarea",
+                        "table" => "tasks",
+                        "column" => 1
+                    ],
+                ]
             ]
         ];
-        $modules = Module::all();
+        $modules = Module::whereNot('name','comments')->get();
         foreach($modules as $module){
             foreach($blocks[$module->name] as $key => $block){
                 $block_model = new Block();

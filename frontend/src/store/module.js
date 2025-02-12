@@ -10,10 +10,14 @@ export const useModuleStore = defineStore('module', {
         return {
             loading:false,
             module:"",
+            entityname_field:"",
+            entityname:"",
             id:"",
             data:[],
             required_field:{},
-            form:{}
+            form:{},
+            summary:0,
+            blocks:[]
         }
     },
     actions: {
@@ -57,18 +61,36 @@ export const useModuleStore = defineStore('module', {
             })
           })
         },
+        view_set_form(fields){
+            this.required_field = [];
+            this.form  = Object.assign(this.form,{module:this.module,id:"",created_at:"",updated_at:"",created_by:"",updated_by:""});
+            fields.map(item=>{
+              item.fields.map(item2=>{
+                  const fields_ = {};
+                  fields_[item2.name] = item2.default_value == null ? "" : item2.default_value ;
+                  this.form = Object.assign(this.form,fields_);
+              })
+            })
+          },
         get_required_field(field){
             this.required_field = Object.assign(this.required_field,field);
         },
-        async get_edit_form(id){
+        async get_edit_form(id,option = 'save'){
            try {
                 this.clear();
                 this.loading = true;
-                const response = await this.axios.get("module/edit/form/"+this.module);
+                const response = await this.axios.get("module/edit/form/"+this.module+"/"+option);
                 const data = response.data.data;
+                this.blocks = data.blocks;
                 this.id = id;
-                this.set_form(data.blocks)
                 this.data = response.data.data;
+                this.entityname_field = response.data.data.entityname;
+                if(option == 'save'){
+                    this.set_form(data.blocks)
+                }
+                else if(option == 'detail' || option == 'summary'){
+                    this.view_set_form(data.blocks);
+                }
                 if(id != "" && id !== undefined){
                     this.get(id);
                 }
@@ -95,7 +117,20 @@ export const useModuleStore = defineStore('module', {
                         this.form[item] = data[item];
                     }
                 })
+                this.entityname = "";
+                const entityname_field = this.entityname_field.split(",");
+                entityname_field.map(item=>{
+                    this.entityname+=data[item]+" ";
+                })
                this.loading = false;
+           } catch (error) {
+           }
+        },
+         async get_summary(){
+            try {
+                this.summary = 0;
+                const response =  await this.axios.get("module/get_summary/"+this.module);
+                this.summary = response.data.data;
            } catch (error) {
            }
         },

@@ -25,10 +25,12 @@
                     @click="pin(0)"
                 />
             </div>
-            <Chart
-                :title="report.data.report_name" 
-                :report_id="report.data.id" 
-                :chart_type="report.data.report_charts.chart" />
+                <Chart
+                    v-if="report.data.report_charts"
+                    :title="report.data.report_name" 
+                    :report_id="report.data.id" 
+                    :chart_type="report.data.report_charts.chart" 
+                />
         </div>
     </div>
 </template>

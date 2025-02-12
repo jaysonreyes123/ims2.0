@@ -5,7 +5,7 @@
       :key="i"
       :class="`
       ${item.child ? 'item-has-children' : ''}
-      ${activeSubmenu === i ? 'open' : ''}
+      ${activeSubmenu === i ? 'open menu-item-active' : ''}
       ${this.$route.params.module === item.name ? 'menu-item-active' : ''}
       ${this.$route.name == item.title ? 'menu-item-active' : ''}
       ${this.$route.name == item.name ? 'menu-item-active' : ''}
@@ -241,7 +241,7 @@ export default {
       }
 
       this.items.map((item) => {
-        if (item.link === this.$route.name) {
+        if (item.name === this.$route.params.module && !item.child) {
           this.activeSubmenu = null;
         }
       });
