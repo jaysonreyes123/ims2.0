@@ -57,7 +57,7 @@ class RelatedMenuSeeder extends Seeder
                 "module" => 1,
                 "related_module" => 12,
                 "label" => "Action Plan",
-                "action" =>"select"
+                "action" =>"add"
             ],
         ]);
     }

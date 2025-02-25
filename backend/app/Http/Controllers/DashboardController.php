@@ -20,7 +20,7 @@ class DashboardController extends Controller
         return $this->success($report_chart_model);
     }
     public function get_widget($module,$field = null,$operator = null,$value = null){
-        $model = DB::table($module);
+        $model = DB::table($module)->where("deleted",0);
         if($field != null && $operator != null && $value != null){
             $parse_value = explode(":",$value);
             $model->select($field);
