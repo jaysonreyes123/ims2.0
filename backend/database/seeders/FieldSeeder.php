@@ -130,7 +130,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Contact",
                         "name"  => "caller_contact",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "incidents",
                     ], 
                 ],
@@ -203,7 +203,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Contact Info",
                         "name"  => "contact_info",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "resources",
                     ], 
                     [
@@ -343,7 +343,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Mobile No",
                         "name"  => "mobile",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "contacts",
                     ],
                     [
@@ -355,7 +355,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Primary Email",
                         "name"  => "primary_email",
-                        "type"  => "text",
+                        "type"  => "email",
                         "table" => "contacts",
                     ], 
                     [
@@ -404,19 +404,19 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Contact No. 1",
                         "name"  => "contact_no_1",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "agencies",
                     ], 
                     [
                         "label" => "Contact No. 2",
                         "name"  => "contact_no_2",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "agencies",
                     ], 
                     [
                         "label" => "Primary Email",
                         "name"  => "primary_email",
-                        "type"  => "text",
+                        "type"  => "email",
                         "table" => "agencies",
                     ],
                 ],
@@ -467,7 +467,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Contact No",
                         "name"  => "contact_no",
-                        "type"  => "text",
+                        "type"  => "phone",
                         "table" => "responders",
                     ],
                 ],
@@ -475,7 +475,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Email Address",
                         "name"  => "email_address",
-                        "type"  => "text",
+                        "type"  => "email",
                         "table" => "responders",
                     ], 
                     [
@@ -585,7 +585,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Email",
                         "name"  => "email",
-                        "type"  => "text",
+                        "type"  => "email",
                         "table" => "users",
                         "column" => 1
                     ], 

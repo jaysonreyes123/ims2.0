@@ -5,7 +5,7 @@
                 <router-link :to=" {name:'list',params:{module:module_}} ">
                         <span class="capitalize font-bold">{{ modules_.label }}</span>
                 </router-link>
-                <Icon class="mt-[5px] ml-1" icon="heroicons-outline:chevron-right"></Icon> 
+                <Icon class="mt-[4px] ml-1" icon="heroicons-outline:chevron-right"></Icon> 
                 
                 <span class='flex ml-1 mt-[1px]' v-if="mode == 'view'">
                     <router-link :to=" {name:'list',params:{module:module_}} ">
@@ -23,8 +23,8 @@
                         <span class="ml-1 mt-[1px]">Adding new</span>
                     </span>
                     <span class="flex" v-else>
-                        <Icon class="mt-[5px] ml-1" icon="heroicons-outline:chevron-right"></Icon> 
-                        <span class="ml-1 mt-[1px]">Editing : {{module_store.entityname}}</span>
+                        <Icon class="mt-[3px] ml-1" icon="heroicons-outline:chevron-right"></Icon> 
+                        <span class="ml-1 mt-[0px]">Editing : {{module_store.entityname}}</span>
                     </span>
                 </span>
                 <span v-else class="ml-1 mt-[1px]">

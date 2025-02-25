@@ -5,17 +5,20 @@
                 <div v-for="(item,i) in filter_store.filter_field" :key="i"
                     class="lg:grid-cols-2 md:grid-cols-2 grid-cols-1 grid gap-5 mb-5 last:mb-0">
                     <div class="fromGroup relative">
-                        <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">Select
-                            Field</label>
-                            <Select @option:selected="picklist_event($event,i)" :reduce="(option) => option.value" placeholder="Select an option" class="p-1"
-                                :options="filter_store.getDropdownFilter" v-model="item.field" 
-                            />
+                        <label class="flex-0 break-words ltr:inline-block rtl:block input-label">
+                            Select Field
+                        </label>
+                        <Select @option:selected="picklist_event($event,i)" :reduce="(option) => option.value" placeholder="Select an option"
+                            :options="filter_store.getDropdownFilter" v-model="item.field" 
+                        />
                     </div>
                     <div class="flex justify-between items-end space-x-5">
                         <div class="flex-1">
                             <Textinput v-if="
                                 filter_store.filter_field[i].type == 'text' || 
-                                filter_store.filter_field[i].type == 'number' " 
+                                filter_store.filter_field[i].type == 'number' || 
+                                filter_store.filter_field[i].type == 'generate'
+                                " 
                                 placeholder=""
                                 class="flex-1" 
                                 v-model="item.value"
@@ -38,16 +41,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-end">
+                <div class="flex justify-start">
                     <Button icon="heroicons-outline:plus" text="Add Condition"
-                        btnClass="btn-outline-light btn-sm bg-secondary text-slate-900 shadow-base2"
+                        btnClass="btn-outline-dark btn-sm"
                         @click="addCondition" />
                 </div>
             </div>
             <template class="" v-slot:footer>
                 <div class="w-full px-3 flex justify-between">
-                    <Button text="Close" btnClass="btn-dark" @click="closeModal()" />
-                    <Button text="Save Filter" btnClass="btn-danger" @click="SaveFilter()" />
+                    <Button text="Close" btnClass="btn-dark btn-sm" @click="closeModal()" />
+                    <Button text="Save Filter" btnClass="btn-danger btn-sm" @click="SaveFilter()" />
                 </div>
             </template>
         </Modal>

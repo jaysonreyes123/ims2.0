@@ -61,6 +61,7 @@ export const useReportStore = defineStore('report', {
             try {
                 this.loading = true;
                 this.fields_list = [];
+                this.required_field = [];
                 this.form.selected_column = [];
                 const response = await this.axios.post("reports/get_fields",{module:this.form.modules,related_module:this.form.related_module});
                 const data = response.data.data;
@@ -72,11 +73,6 @@ export const useReportStore = defineStore('report', {
                         this.fields_list.push({label:item.label,value:item_,type:item.type,header:false})
                     })
                 })
-                // const current_selected_column = this.form.selected_column;
-                // this.form.selected_column = [];
-                // current_selected_column.map(item=>{
-                //     this.form.selected_column.push(item);
-                // })
                 this.loading = false;
            } catch (error) {
             

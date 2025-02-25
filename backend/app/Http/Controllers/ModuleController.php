@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Helpers\ActivityLogs;
 use App\Helpers\Generate;
 use App\Helpers\Module as HelpersModule;
+use App\Helpers\NotificationHelper;
+use App\Http\Requests\ModuleRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\ModuleResources;
 use App\Http\Traits\HttpResponses;
 use App\Models\Field;
 use App\Models\Module;
+use App\Models\RelatedEntriesAll;
+use App\Models\RelatedEntry;
+use App\Models\RelatedField;
 use App\Models\User;
 use App\Models\UserPrivilege;
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +54,7 @@ class ModuleController extends Controller
         else{
             $model = Module::with(['blocks'=>function($query){
                 return $query->with(['fields'=>function($query_field){
+                    $query_field->with('related_fields');
                     $query_field->whereIn('display_type',[1,2,3]);
                 }]);
             }])
@@ -68,13 +75,24 @@ class ModuleController extends Controller
     public function store(Request $request)
     {
         //
-        $id = 0;
-        if($request->module == 'users'){
-           $id = $this->insert_users($request);
-        }   
-        else{
-            $id = $this->save($request);
+        $module = HelpersModule::module_id($request->module);
+        $fields = Field::where('module_id',$module)->get();
+        $rules = [];
+        foreach($fields as $field){
+            $sub_rule = [];
+            if($field->type == 'number'){
+                $sub_rule[] = "numeric";
+            }
+            if($field->unique == 1){
+                $sub_rule[] = Rule::unique($request->module);
+            }
+            if(!empty($sub_rule)){
+                $rules[$field->name] = $sub_rule;
+            }
         }
+        $request->validate($rules);
+        $id = 0;
+        $id = $this->save($request);
         return $this->success($id);
     }
 
@@ -127,19 +145,28 @@ class ModuleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $module = HelpersModule::module_id($request->module);
+        $fields = Field::where('module_id',$module)->get();
+        $rules = [];
+        $label = [];
+        foreach($fields as $field){
+            $sub_rule = [];
+            if($field->type == 'number'){
+                $sub_rule[] = "numeric";
+            }
+            if($field->type == 'email'){
+                $sub_rule[] = 'email';
+            }
+            if($field->unique == 1){
+                $id = (int) $id;
+                $sub_rule[] = Rule::unique($request->module)->ignore($id,'id');
+            }
+            if(!empty($sub_rule)){
+                $rules[$field->name] = $sub_rule;
+            }
+        }
+        $request->validate($rules);
         return $this->save($request,$id);
-        // $model = DB::table($request->module);
-        // $form_data = [];
-        // foreach($request->all() as $key => $value){
-        //     if($key != "module" && $key !="id"){
-        //         $form_data[$key] = $value; 
-        //     }
-        // }+
-        // $model = $model->where("id",$id);
-        // $old_value = $model->first();
-        // $model = $model->update($form_data);
-        // ActivityLogs::log($request->module,$id,"update",$old_value,$request->all());
     }
 
     /**
@@ -152,6 +179,16 @@ class ModuleController extends Controller
             $module_id = HelpersModule::module_id($request->module);
             ActivityLogs::log($id,$module_id,$status = 3);
         }
+        return $this->success($model);
+    }
+    public function delete_all(Request $request,string $module)
+    {
+        $ids = $request->ids;
+        $model = DB::table($module)->whereIn("id",$ids)->update(["deleted" => 1]);
+        // if($model){
+        //     $module_id = HelpersModule::module_id($request->module);
+        //     ActivityLogs::log($id,$module_id,$status = 3);
+        // }
         return $this->success($model);
     }
     public function save($request,$id = ""){
@@ -197,6 +234,7 @@ class ModuleController extends Controller
                     }
                     else{
                         ActivityLogs::log($model_id,$module_id,$status = 1,$request->all());
+                        NotificationHelper::notification($module_id,$model_id);
                     }
                 }
             }
@@ -253,5 +291,45 @@ class ModuleController extends Controller
         $module_id = HelpersModule::module_id($module);
         $fields = Field::where('module_id',$module_id)->where('summary',1);
         return $this->success($fields->count());
+    }
+    public function get_single_item($module,$id){
+        $module_details = HelpersModule::module_details($module);
+        $columns = explode(",",$module_details->entityname);
+        $entityname = "";
+        $get = DB::table($module)->where('id',$id)->first();
+        foreach($columns as $column){
+            $entityname.=$get->$column." ";
+        }
+        $entityname = rtrim($entityname," ");
+        $output = [
+            'id' =>$get->id,
+            'entityname' => $entityname
+        ];
+        return $this->success($output);
+    }
+    public function set_single_item($id,$fieldid,$field){
+        $get_related_field = RelatedField::where('fieldid',$fieldid)->first();
+        if(!$get_related_field){
+            return $this->success([]);
+        }  
+        $module_details = HelpersModule::module_details_by_id($get_related_field->module);
+        $related_module_details = HelpersModule::module_details_by_id($get_related_field->related_module);
+        $get_details = DB::table($module_details->name)->select($field)->where('id',$id)->first();   
+        $related_item_id = $get_details->$field;
+        $get_related_details = DB::table($related_module_details->name)->where('id',$related_item_id)->first();
+        if(!$get_related_details){
+            return $this->success([]);
+        }
+        $columns = explode(",",$related_module_details->entityname);
+        $entityname = "";
+        foreach($columns as $column){
+            $entityname.=$get_related_details->$column." ";
+        }
+        $entityname = rtrim($entityname," ");
+        $output = [
+            'id' =>$get_related_details->id,
+            'entityname' => $entityname
+        ];
+        return $this->success($output);
     }
 }

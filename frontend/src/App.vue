@@ -7,6 +7,7 @@ import { useThemeSettingsStore } from "@/store/themeSettings";
 export default {
   mounted() {
     this.$store.themeSettingsStore = useThemeSettingsStore()
+    document.title = "Test";
   }
 }
 </script>

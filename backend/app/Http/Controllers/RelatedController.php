@@ -9,6 +9,7 @@ use App\Models\ActivityLog;
 use App\Models\Field;
 use App\Models\Module;
 use App\Models\RelatedBlock;
+use App\Models\RelatedEntriesAll;
 use App\Models\RelatedEntry;
 use App\Models\RelatedMenu;
 use App\Models\User;
@@ -35,8 +36,16 @@ class RelatedController extends Controller
         ->where("module_id",$module_id)
         ->where("related_id",$related_module_id)
         ->delete();
-        ActivityLogs::log($module_id,$module_,status:5,related_module:$related_module_,related_item_id:$related_module_id);
-        return $this->success($model);
+        if($model){
+            RelatedEntriesAll::where("module",$module_)
+            ->where("related_module",$related_module_)
+            ->where("module_id",$module_id)
+            ->where("related_id",$related_module_id)
+            ->where('relation',1)
+            ->delete();
+            ActivityLogs::log($module_id,$module_,status:5,related_module:$related_module_,related_item_id:$related_module_id);
+            return $this->success($model);
+        }
     }
     public function related_list(Request $request,$id,$module,$related_module){
         $module_ = HelpersModule::module_id($module);
@@ -110,18 +119,17 @@ class RelatedController extends Controller
                 if ($related_id != "") {
                    //ActivityLogs::log($request->module, $id, "update", $old_value, $request->all());
                 } else {
+                    $related_model = new RelatedEntry();
+                    $related_model->module_id = $id;
+                    $related_model->module = $module_id;
+                    $related_model->related_id = $model_id;
+                    $related_model->related_module = $related_module_id;
+                    $related_model->save();
                     ActivityLogs::log($id,$module_id,$status = 4,related_module:$related_module_id,related_item_id:$model_id);
                    //ActivityLogs::log($request->related_module, $model_id, "created");
                 }
             }
         }
-        $related_model = new RelatedEntry();
-        $related_model->module_id = $id;
-        $related_model->module = $module_id;
-        $related_model->related_id = $model_id;
-        $related_model->related_module = $related_module_id;
-        $related_model->save();
-
     }
     public function save_selected_row(Request $request){
         $id = $request->id;

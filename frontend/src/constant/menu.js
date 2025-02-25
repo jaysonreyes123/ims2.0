@@ -9,7 +9,7 @@ export const topMenu = [
   },
   {
     title: "Incident",
-    icon: "carbon:dashboard",
+    icon: "heroicons:exclamation-triangle",
     link: "/app/module/incidents", 
     name : "incidents",
     breadcrum:true,
@@ -17,7 +17,7 @@ export const topMenu = [
   },
   {
     title: "Resources",
-    icon: "carbon:dashboard",
+    icon: "heroicons:clipboard-document-check",
     link: "/app/module/resources", 
     name : "resources",
     breadcrum:true,
@@ -25,7 +25,7 @@ export const topMenu = [
   },
   {
     title: "Pre Plan",
-    icon: "carbon:dashboard",
+    icon: "heroicons:document",
     link: "/app/module/preplans", 
     name : "preplans",
     breadcrum:true,
@@ -33,7 +33,7 @@ export const topMenu = [
   },
   {
     title:"Contacts",
-    icon: "ic:baseline-people",
+    icon: "heroicons:users",
     link: "#",
     name:"contacts",
     custom:true,
@@ -69,7 +69,7 @@ export const topMenu = [
     child:[
       {
         childtitle: "Incident Map",
-        childlink: "/map/incident_map",
+        childlink: "/app/map/incident_map",
         childicon: "solar:station-bold-duotone",
         name:"incident_map",
         custom_child:true
@@ -77,7 +77,7 @@ export const topMenu = [
       },
       {
         childtitle: "Heat Map",
-        childlink: "/map/heat_map",
+        childlink: "/app/map/heat_map",
         childicon: "solar:station-bold-duotone",
         name:"heat_map",
         custom_child:true
@@ -92,27 +92,34 @@ export const topMenu = [
     ]
   },
   {
+    title: "Report",
+    icon: "heroicons:chart-pie",
+    link: "/app/module/reports", 
+    name : "reports",
+    breadcrum:true,
+
+  },
+  {
     title:"Settings",
     icon: "fluent:settings-32-regular",
     link: "#",
     name:"settings",
-    custom:true,
     child:[
       {
         childtitle: "Users",
         childlink: "/app/module/users",
         childicon: "solar:station-bold-duotone",
         name:"users",
+        admin:true,
+      },
+      {
+        childtitle: "Workflow",
+        childlink: "/app/setting/workflow",
+        childicon: "solar:station-bold-duotone",
+        name:"workflow",
+        admin:true,
       },
     ]
-  },
-  {
-    title: "Report",
-    icon: "carbon:dashboard",
-    link: "/app/module/reports", 
-    name : "reports",
-    breadcrum:true,
-
   },
 
   // {

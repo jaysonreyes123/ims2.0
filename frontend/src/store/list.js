@@ -104,6 +104,24 @@ export const useListStore = defineStore('list', {
                 
             }
         },
+        async deleteAll(module,id,index){
+            try {
+                this.loading = true;
+                const response = await this.axios.get("module/delete_all/"+module,{
+                    params:{
+                        ids:id,
+                        module:module
+                    }
+                });
+                if(response.data.data > 0){
+                    this.list_function();
+                   //this.list_data = this.list_data.filter((item,i) => !index.includes(i));
+                }
+                //this.loading = false;
+            } catch (error) {
+                
+            }
+        },
     },
     persist: true,
 })

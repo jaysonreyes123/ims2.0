@@ -30,7 +30,7 @@
         <Card :title="report.form.report_name">
             <vue-good-table :columns="report.columns"
                 :fixed-header="true" :isLoading.sync="report.loading"
-                styleClass=" vgt-table  lesspadding2 centered " :rows="report.generate_report_list" :pagination-options="{
+                styleClass=" vgt-table  lesspadding2" :rows="report.generate_report_list" :pagination-options="{
                 enabled: false,
                 perPage:15
             }">

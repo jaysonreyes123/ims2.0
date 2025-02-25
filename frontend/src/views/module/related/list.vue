@@ -106,6 +106,7 @@ export default {
             ()=>this.$route.params.related_module,
             (modules) => {
                 this.set_initial();
+                this.clear();
             }
         )
     },
@@ -127,6 +128,7 @@ export default {
     methods:{
         clear(){
             related_store.page.current = 1;
+            related_store.page.total = 0;
             related_store.modal = false;
             related_store.select_list_modal = false;
             related_store.search = "";

@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('module_id')->nullable();
-            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
-            $table->integer('module_item_id')->nullable();
-            $table->text('description')->nullable();
-            $table->string('action')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('ipaddress')->nullable();
+            $table->timestamp('signin')->nullable();
+            $table->timestamp('signout')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }

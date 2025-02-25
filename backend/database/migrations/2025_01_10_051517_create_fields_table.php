@@ -31,6 +31,7 @@ return new class extends Migration
             $table->integer('search')->default(0);
             $table->integer('duplicate_handling')->default(0);
             $table->integer('summary')->default(0);
+            $table->integer('unique')->default(0);
             $table->timestamps();
         });
     }

@@ -8,7 +8,6 @@
                 :to="{name:'view',params:{action:item.name,id:this.$route.params.id}}"
                 >
                 <Button
-                    :icon="item.icon"
                     :text="item.text"
                     btnClass="btn-default"
                     :class="item.name == this.$route.params.action ? 'bg-danger-500 text-white' : '' "
@@ -21,7 +20,6 @@
                 :to="{name:'view',params:{action:item.name,id:this.$route.params.id}}"
             >
             <Button
-                :icon="item.icon"
                 :text="item.text"
                 btnClass="btn-default"
                 :class="item.name == this.$route.params.action ? 'bg-danger-500 text-white' : '' "
@@ -33,7 +31,6 @@
                 :to="{name:'related_list',params:{module:this.$route.params.module,related_module:item.related_menus.name,id:this.$route.params.id}}"
             >
                 <Button
-                    icon="heroicons-outline:newspaper"
                     :text="item.label"
                     btnClass="btn-default"
                      :class="item.related_menus.name == this.$route.params.related_module ? 'bg-danger-500 text-white' : '' "

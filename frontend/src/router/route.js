@@ -41,6 +41,26 @@ const routes = [
         component: () => import("@/views/module/dashboard/index.vue"),
       },
       {
+        path: "/app/setting/:module",
+        name: "workflow",
+        component: () => import("@/views/module/workflow/index.vue"),
+      },
+      {
+        path: "/app/setting/:module/edit/:id?",
+        name: "save_workflow",
+        component: () => import("@/views/module/workflow/save.vue"),
+      },
+      {
+        path: "notification",
+        name: "notification",
+        component: () => import("@/views/module/notification/index.vue"),
+      },
+      {
+        path: "login-history",
+        name: "login-history",
+        component: () => import("@/views/module/system/loginhistory.vue"),
+      },
+      {
         path: "profile",
         name: "profile",
         component: () => import("@/views/module/profile/profile.vue"),
@@ -86,7 +106,7 @@ const routes = [
         component: () => import("@/views/module/report/view.vue"),
       },
       {
-        path: "/map/:module",
+        path: "/app/map/:module",
         name: "Monitoring",
         component: () => import("@/views/module/map/index.vue"),
         meta: {

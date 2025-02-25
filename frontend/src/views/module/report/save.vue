@@ -96,7 +96,13 @@
                                     :options="report.fields_list" 
                                     v-model="report.form.filter[i].field"
                                     :reduce="option => option.value "
-                                />
+                                    :selectable="(option) => !option.header"
+                                >
+                                <template #option="{ header,label }">
+                                    <h6 v-if="header" class="font-bold text-[18px] text-black">{{ label }}</h6>
+                                    <span v-else class="text-[12px]">{{ label }}</span>
+                                </template>
+                                </Select>
                             </div>
                             <div class="col-start-4 col-span-2">
                                 <Select 

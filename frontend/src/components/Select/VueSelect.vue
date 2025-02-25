@@ -23,6 +23,7 @@
           :validate="validate"
           :multiple="multiple"
           :options="options"
+          @option:selected="optionSelected"
         >
         </vSelect>
       </div>
@@ -73,6 +74,11 @@ export default {
   components: {
     vSelect,
     Icon,
+  },
+  methods:{
+    optionSelected(value){
+      this.$emit("option:selected",value);
+    }
   },
   props: {
     placeholder: {

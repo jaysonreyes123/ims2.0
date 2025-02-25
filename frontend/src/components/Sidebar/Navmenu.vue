@@ -151,6 +151,7 @@ export default {
 
   computed: {
     newMenulist: function () {
+      const role = auth.user.user_roles;
       return this.items.filter(function (item) {  
         let bool = false;
         if(!item.child){
@@ -160,8 +161,11 @@ export default {
         }
         else{
           item.child.map(item2=>{
-            if(auth.user.user_privileges[item2.name]){
-              item2.visible = true
+            if(item2.admin && role == 'Admin'){
+              item2.visible = true;
+            }
+            else if(auth.user.user_privileges[item2.name]){
+              item2.visible = true;
             }
             else{
               if(item2.custom_child){

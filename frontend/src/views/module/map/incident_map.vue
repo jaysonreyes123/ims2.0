@@ -1,9 +1,9 @@
 <template>
   <div class="shadow-lg">
       <div class="lg:grid grid-cols-5 rounded-md">
-          <div class="col-span-4">
+          <div  :class="legend ? 'col-span-4' : 'col-span-5' ">
               <MapboxMap
-              class="h-screen"
+              :class="classHeight"
               @mb-created="(mapInstance) => map = mapInstance"
               access-token="pk.eyJ1IjoiamF5c29ucmV5ZXMyNiIsImEiOiJjbGd1aDViYXUwZzM2M3BsamlpdWtjbzBsIn0.DmYf96Yhwg7vip5Qpzghnw"
               map-style="mapbox://styles/mapbox/satellite-streets-v12"
@@ -31,7 +31,6 @@
                      <span class="pulsing-dot-red"></span>
                   </p>
               </MapboxMarker>
-
               <MapboxMarker v-if="resources_map_ !== undefined" v-for="(item,index) in resources_map_.features " :key="index" :lng-lat="item.geometry.coordinates">
                   <template v-slot:popup>
                       <div style="width: 300px">
@@ -51,7 +50,7 @@
               </MapboxMarker>
               </MapboxMap>
           </div>
-          <div class="bg-white p-5 h-screen overflow-x-auto">
+          <div class="bg-white p-5 h-screen overflow-x-auto" v-if="legend">
               <div>
                   <p class="text-sm font-bold">Current incidents</p>
                   <ul class="list-item mt-1">
@@ -94,6 +93,16 @@ const map = ref();
 const incident_map_ = ref([]);
 const resources_map_ = ref([]);
 export default { 
+    props:{
+        legend:{
+            type:Boolean,
+            default:true
+        },
+        classHeight:{
+            type:String,
+            default:'h-screen'
+        }
+    },
     components:{
         MapboxMap,
         MapboxMarker,

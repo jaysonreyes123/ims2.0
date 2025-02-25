@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             IncidentStatusSeeder::class,
             IncidentPrioritySeeder::class,
             FieldSeeder::class,
-            RelatedMenuSeeder::class
+            RelatedMenuSeeder::class,
+            ResponderStatusSeeder::class,
+            ResponderTypeSeeder::class
         ]);
     }
 }

@@ -4,11 +4,11 @@
         <Modal :title="`Select ${related_module}`" :activeModal="related_store.select_list_modal" @close="closeModal" sizeClass="max-w-7xl">
             <Table 
                 @selectionChanged="selectionChanged" 
-                :loading="list_store.loading" 
+                :loading="related_store.loading" 
                 :rows="related_store.list_data_remove_relation"
-                :perPage="list_store.page.per_page"
-                :total="list_store.page.total"
-                :current="list_store.page.current"
+                :perPage="related_store.page.per_page"
+                :total="related_store.page.total"
+                :current="related_store.page.current"
                 @changePage="changePage"
                 @search="search"
                 @clearsearch="clearsearch"
@@ -39,7 +39,10 @@ export default {
     props:{
         module:String,
         related_module:String,
-        module_id:Number
+        module_id:{
+            type:String,
+            default:0
+        }
     },
     components:{
         Modal,
@@ -60,6 +63,7 @@ export default {
                 if(modal){
                     related_store.search = "";
                     related_store.page.current = 1;
+                    related_store.list_data_remove_relation = [];
                     related_store.get_related_list(this.module_id,this.module,this.related_module,1);
                 }
                 else{   

@@ -24,6 +24,15 @@
                                 <Badge v-if="module_store.form[field.name]" label="Active" badgeClass="bg-success-500 text-white" />
                                 <Badge v-if="!module_store.form[field.name]" label="Inactive" badgeClass="bg-danger-500 text-white" />
                             </div>
+                            <div class="fromGroup relative" v-else-if="field.type == 'relation' ">
+                                <label>{{ field.label }}</label>
+                                <div v-if="field.related_fields">
+                                    <a :title="module_store.relation_field[field.name]" :href="`/app/module/${moduleDetails(field.related_fields.related_module).name}/detail/${module_store.form[field.name]}`" 
+                                    class="text-blue-600">
+                                        {{module_store.relation_field[field.name]}}
+                                    </a>
+                                </div>
+                            </div>
                             <div class="fromGroup relative" v-else>
                                 <label>{{ field.label }}</label>
                                 <span>{{ module_store.form[field.name] }}</span>
@@ -63,11 +72,13 @@ import { useModuleStore } from '@/store/module';
 import Card from "@/components/Card";
 import { ref } from 'vue';
 import Map from "../map/edit_map.vue"
-import { type } from "@amcharts/amcharts5";
+import { useAuthStore } from "@/store/auth";
+const auth_store = useAuthStore();
 const module_store = useModuleStore();
 const modules = ref("");
 const module_id = ref("");
 export default {
+    name:'detail',
     props:{
         props_id:{
             type:String,
@@ -91,11 +102,24 @@ export default {
     created(){
         modules.value = this.props_module == "" ?  this.$route.params.module : this.props_module;
         module_id.value = this.props_id == "" ?  this.$route.params.id : this.props_id;
+        this.$watch( 
+            ()=>this.$route.params.id,
+            (id) => {
+                module_store.get_edit_form(id,'detail');
+            }
+        )
     },
     mounted(){
         module_store.module = modules.value;
         module_store.get_edit_form(module_id.value,'detail');
         //module_store.get(module_id.value);
+    },
+    methods:{
+        moduleDetails(moduleid){
+            const current_module = moduleid;
+            const module_info = auth_store.module.find(module__ => module__.id == current_module );
+            return module_info;
+        },
     }
 }
 </script>

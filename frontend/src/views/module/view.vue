@@ -2,7 +2,7 @@
     <div>
         <Breadcrum mode='view' />
         <Menu />
-        <component :is="action_module"></component>
+        <component :is="action_module" v-if="action_module !=''"></component>
     </div>
 </template>
 <script>
@@ -18,7 +18,7 @@ import { useRelatedStore } from "@/store/related";
 import { useModuleStore } from "@/store/module";
 const module_store = useModuleStore();
 const related_store = useRelatedStore();
-const action_module = ref("detail");
+const action_module = ref("");
 
 export default {
     components:{

@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { useToast } from "vue-toastification";
 import { useDropdownStore } from "./dropdown";
 import Swal from "sweetalert2";
+import { useListStore } from "./list";
+const list_store = useListStore();
 const dropdown_store = useDropdownStore();
 const toast = useToast();
 export const useModuleStore = defineStore('module', {
@@ -17,7 +19,9 @@ export const useModuleStore = defineStore('module', {
             required_field:{},
             form:{},
             summary:0,
-            blocks:[]
+            blocks:[],
+            relation_field:{},
+            error:false
         }
     },
     actions: {
@@ -52,7 +56,13 @@ export const useModuleStore = defineStore('module', {
                     if(this.id == "" || this.id === undefined ){
                         this.generate(item2.name)
                     }
-                } 
+                }
+                else if(item2.type == 'relation'){
+                    const relation_field = {};
+                    relation_field[item2.name] = "";
+                    this.relation_field = Object.assign(this.relation_field,relation_field);
+                    this.set_single_item(item2.id,item2.name);
+                }
                 if(item2.required == 1){
                     const required_field = {};
                     required_field[item2.name] = item2.label;
@@ -60,6 +70,9 @@ export const useModuleStore = defineStore('module', {
                 }
             })
           })
+        },
+        get_required_field(field){
+            this.required_field = Object.assign(this.required_field,field);
         },
         view_set_form(fields){
             this.required_field = [];
@@ -69,12 +82,16 @@ export const useModuleStore = defineStore('module', {
                   const fields_ = {};
                   fields_[item2.name] = item2.default_value == null ? "" : item2.default_value ;
                   this.form = Object.assign(this.form,fields_);
+
+                  if(item2.type == 'relation'){
+                    const relation_field = {};
+                    relation_field[item2.name] = "";
+                    this.relation_field = Object.assign(this.relation_field,relation_field);
+                    this.set_single_item(item2.id,item2.name);
+                }
               })
             })
           },
-        get_required_field(field){
-            this.required_field = Object.assign(this.required_field,field);
-        },
         async get_edit_form(id,option = 'save'){
            try {
                 this.clear();
@@ -117,14 +134,19 @@ export const useModuleStore = defineStore('module', {
                         this.form[item] = data[item];
                     }
                 })
-                this.entityname = "";
-                const entityname_field = this.entityname_field.split(",");
-                entityname_field.map(item=>{
-                    this.entityname+=data[item]+" ";
-                })
+                //entity
+                this.entityname_func();
                this.loading = false;
            } catch (error) {
            }
+        },
+        entityname_func(){
+            this.entityname = "";
+            const entityname_field = this.entityname_field.split(",");
+            entityname_field.map(item=>{
+                const entity = this.form[item] == null ? "" : this.form[item];
+                this.entityname+=entity+" ";
+            })
         },
          async get_summary(){
             try {
@@ -160,7 +182,7 @@ export const useModuleStore = defineStore('module', {
                    const errors = Object.values(error_details.data.errors);
                    var error_value = "";
                     errors.map((item,index)=>{
-                        error_value=`<p class="text-red-500">${item[index]}</p>`;
+                        error_value+=`<p class="text-red-500">${item[0]}</p>`;
                     })
                     Swal.fire({
                         icon: "error",
@@ -175,7 +197,6 @@ export const useModuleStore = defineStore('module', {
                         html:error_details.data.message,
                     });
                 }
-                console.log(error_details)
                 this.loading = false;
             }
         },
@@ -218,6 +239,28 @@ export const useModuleStore = defineStore('module', {
                 this.loading = false;
             }
         },
+        async get_single_item(module,id,field){
+            try {
+                this.loading = true;
+                const response = await this.axios.get("module/get_single_item/"+module+"/"+id);
+                const data = response.data.data;
+                this.relation_field[field] = data.entityname;
+                this.form[field] = id;
+                this.loading = false;
+                list_store.modal = false;
+            } catch (error) {
+                
+            }
+        },
+        async set_single_item(fieldid,fieldname){
+            try {
+                const response = await this.axios.get("module/set_single_item/"+this.id+"/"+fieldid+"/"+fieldname);
+                const data = response.data.data;
+                this.relation_field[fieldname] = data.entityname;
+            } catch (error) {
+                
+            }
+        }
     },
     persist: true,
 })

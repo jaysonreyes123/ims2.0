@@ -55,6 +55,7 @@ const module_store = useModuleStore();
 const modules = ref("");
 const module_id = ref("");
 export default {
+    name:'Summary',
     props:{
         props_id:{
             type:String,

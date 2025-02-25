@@ -22,7 +22,7 @@
         </div>
         <vue-good-table :fixed-header="true" :isLoading.sync="loading" :columns="columns"
         v-on:selected-rows-change="selectionChanged"
-                styleClass=" vgt-table  lesspadding2 centered " :rows="rows" :pagination-options="{
+                styleClass=" vgt-table  lesspadding2 " :rows="rows" :pagination-options="{
                 enabled: true,
                 perPage:15
             }"   max-height="600px" :select-options="{

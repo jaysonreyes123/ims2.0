@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exports\ExportReport;
 use App\Helpers\Module;
+use App\Helpers\ReportHelper;
 use App\Http\Traits\HttpResponses;
 use App\Models\Field;
+use App\Models\RelatedField;
 use App\Models\Report;
 use App\Models\ReportChart;
 use App\Models\ReportColumn;
@@ -14,6 +16,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ReportController extends Controller
 {
@@ -36,9 +40,16 @@ class ReportController extends Controller
         $data = [];
         $module = $request->module;
         $related_modules = $request->related_module;
-       
         $module_ = Module::module_details($module);
         $data[$module_->label] = Field::where('module_id',$module_->id)->whereIn('display_type',[1,2,3])->get();
+        $related_field_modules = RelatedField::with('related_modules')->where('module',$module_->id)->get();
+        if(!$related_field_modules->isEmpty()){
+            foreach($related_field_modules as $related_field_module){
+                if(!in_array($related_field_module->related_modules->name,$related_modules)){
+                    $related_modules[] = $related_field_module->related_modules->name;
+                }
+            }
+        }
         if(!empty($related_modules)){
             foreach($related_modules as $related_module){
                 $related_module_ = Module::module_details($related_module);
@@ -87,28 +98,9 @@ class ReportController extends Controller
         $column_ = str_replace(".","_",$report_model->report_charts->groupby);
         $columns = array("$column as $column_",DB::raw("COUNT($column) as count"));
         $report_condition_model = $report_model->report_conditions;
-        $model = DB::table($report_model->modules)
-        ->select($columns);
-        $related_module = json_decode($report_model->related_module);
-        if(!empty($related_module)){
-            $model->leftJoin('related_entries',"$primary_table.id", '=', "related_entries.module_id" );
-            $related_module_id = [];
-            foreach($related_module as $related_table){
-                $related_module_id_ = Module::module_id($related_table);
-                $related_module_id[] = $related_module_id_;
-                $model->leftJoin($related_table,function($join) use ($related_table,$related_module_id_) {
-                    $join->on("related_entries.related_id","=","$related_table.id" );
-                    $join->on("related_entries.related_module","=",DB::raw('CAST('.$related_module_id_.' as int)'));
-                });
-            }
-            $primary_module_id = Module::module_id($report_model->modules);  
-            $model = $model->where("module",$primary_module_id); 
-            $model = $model->whereIn("related_module",$related_module_id);
-        }
-        foreach($report_condition_model as $report_condition){
-            $model = $model->where($report_condition->column,$report_condition->operator,$report_condition->value);
-        }
-        $model->where("$primary_table.deleted",0);
+        $model = DB::table($report_model->modules)->select($columns);
+        $model = ReportHelper::getRelation($model,$primary_table,$report_model->related_module,json_decode($report_model->related_module));
+        $model = ReportHelper::getCondition($model,$primary_table,$report_condition_model);
         $model->groupBy($column);
         $model->orderBy("$primary_table.id","asc");
         $output = [];
@@ -134,36 +126,21 @@ class ReportController extends Controller
         $report_column_model = $report_model->report_columns;
         $report_condition_model = $report_model->report_conditions;
         $get_assigned_to_column = "";
+        $primary_table = $report_model->modules;
+        $columns = ReportHelper::getColumn($report_column_model);
+        $column_table = [];
         foreach($report_column_model as $report_column){
             $parse_column = explode(".",$report_column->column);
-            $column__ = $report_column->column ." as ".str_replace(".","_",$report_column->column);
             if($parse_column[1] == 'assigned_to'){
                 $get_assigned_to_column = str_replace(".","_",$report_column->column);
             }
-            $columns[] = $column__;
-        }
-        $primary_table = $report_model->modules;
-        $model = DB::table($report_model->modules)
-        ->select($columns);
-        $related_module = json_decode($report_model->related_module);
-        if(!empty($related_module)){
-            $model->leftJoin('related_entries',"$primary_table.id", '=', "related_entries.module_id" );
-            $related_module_id = [];
-            foreach($related_module as $related_table){
-                $related_module_id_ = Module::module_id($related_table);
-                $related_module_id[] = $related_module_id_;
-                $model->leftJoin($related_table,function($join) use ($related_table,$related_module_id_) {
-                    $join->on("related_entries.related_id","=","$related_table.id" );
-                    $join->on("related_entries.related_module","=",DB::raw('CAST('.$related_module_id_.' as int)'));
-                });
+            if(!in_array($parse_column[0],$column_table) && $primary_table != $parse_column[0]){
+                $column_table[] = $parse_column[0];
             }
-            $primary_module_id = Module::module_id($report_model->modules);  
-            $model = $model->where("module",$primary_module_id); 
-            $model = $model->whereIn("related_module",$related_module_id);
         }
-        foreach($report_condition_model as $report_condition){
-            $model = $model->where($report_condition->column,$report_condition->operator,$report_condition->value);
-        }
+        $model = DB::table($report_model->modules)->select($columns);
+        $model = ReportHelper::getRelation($model,$primary_table,$report_model->related_module,$column_table);
+        $model = ReportHelper::getCondition($model,$primary_table,$report_condition_model);
         if(isset($request->limit)){
             $model = $model->limit($request->limit)->get();
         }

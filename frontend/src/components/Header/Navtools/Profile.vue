@@ -25,14 +25,13 @@
         </div>
       </div>
       </MenuItem>
-
-      <MenuItem v-if="authStore.user.role === 1">
-      <div type="button" @click="$router.push('/app/activity-logs')" class="inline-flex items-center space-x-2 rtl:space-x-reverse w-full px-4 py-2 first:rounded-t last:rounded-b font-normal cursor-pointer hover:bg-slate-100">
+      <MenuItem v-if="authStore.user.user_roles == 'Admin' ">
+      <div type="button" @click="$router.push('/app/login-history')" class="inline-flex items-center space-x-2 rtl:space-x-reverse w-full px-4 py-2 first:rounded-t last:rounded-b font-normal cursor-pointer hover:bg-slate-100">
         <div class="flex-none text-lg">
           <Icon icon="heroicons-outline:list-bullet" />
         </div>
         <div class="flex-1 text-sm">
-          Activity Logs
+          Login History
         </div>
       </div>
       </MenuItem>
