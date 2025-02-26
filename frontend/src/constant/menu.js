@@ -112,13 +112,13 @@ export const topMenu = [
         name:"users",
         admin:true,
       },
-      {
-        childtitle: "Workflow",
-        childlink: "/app/setting/workflow",
-        childicon: "solar:station-bold-duotone",
-        name:"workflow",
-        admin:true,
-      },
+      // {
+      //   childtitle: "Workflow",
+      //   childlink: "/app/setting/workflow",
+      //   childicon: "solar:station-bold-duotone",
+      //   name:"workflow",
+      //   admin:true,
+      // },
     ]
   },
 

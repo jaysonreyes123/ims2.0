@@ -18,7 +18,7 @@ class FieldSeeder extends Seeder
         
         $blocks = 
         [
-             "incidents"    => [ "Incident Details","Location Details","Report Details","Incident Resolution","Responder"],
+             "incidents"    => [ "Incident Details","Location Details","Report Details","Responder","Incident Resolution"],
              "resources"    => [ "Resources Information","Location Details"],
              "preplans"     => ["Incident Details","Response Procedure","Roles and Responsibilities","Resource Allocation"],
              "contacts"     => ["Basic information","Address Details"],
@@ -110,7 +110,9 @@ class FieldSeeder extends Seeder
                         "label" => "Coordinates",
                         "name"  => "coordinates",
                         "table" => "incidents",
-                        "type"  => "text",
+                        "type"  => "coordinates",
+                        "readonly" => 1,
+                        "required" => 1
                     ],
                 ],
             2 =>
@@ -137,18 +139,9 @@ class FieldSeeder extends Seeder
             3 => 
                 [
                     [
-                        "label" => "Incident Resolution",
-                        "name"  => "incident_resolution",
-                        "type"  => "textarea",
-                        "table" => "incidents",
-                    ], 
-                ],
-            4 => 
-                [
-                    [
                         "label" => "Responder Team",
                         "name"  => "responder_team",
-                        "type"  => "text",
+                        "type"  => "relation",
                         "table" => "incidents",
                     ], 
                     [
@@ -163,7 +156,16 @@ class FieldSeeder extends Seeder
                         "type"  => "text",
                         "table" => "incidents",
                     ],
-                ]
+                ],
+            4 => 
+                [
+                    [
+                        "label" => "Incident Resolution",
+                        "name"  => "incident_resolution",
+                        "type"  => "textarea",
+                        "table" => "incidents",
+                    ], 
+                ],
             ],
             "resources" => [
                 0 => [
@@ -177,7 +179,7 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Resource Category",
                         "name"  => "resources_categories",
-                        "type"  => "driodown",
+                        "type"  => "dropdown",
                         "table" => "resources",
                     ], 
                     [
@@ -241,8 +243,10 @@ class FieldSeeder extends Seeder
                     [
                         "label" => "Coordinates",
                         "name"  => "coordinates",
-                        "type"  => "text",
+                        "type"  => "coordinates",
                         "table" => "resources",
+                        "readonly" => 1,
+                        "required" => 1
                     ], 
                 ],
             ],
@@ -580,27 +584,31 @@ class FieldSeeder extends Seeder
                         "name"  => "name",
                         "type"  => "text",
                         "table" => "users",
-                        "column" => 1
+                        "column" => 1,
+                        "required" => 1
                     ], 
                     [
                         "label" => "Email",
                         "name"  => "email",
                         "type"  => "email",
                         "table" => "users",
-                        "column" => 1
+                        "column" => 1,
+                        "required" => 1
                     ], 
                     [
                         "label" => "Role",
                         "name"  => "user_roles",
                         "type"  => "dropdown",
                         "table" => "users",
-                        "column" => 1
+                        "column" => 1,
+                        "required" => 1
                     ],
                     [
                         "label" => "Password",
                         "name"  => "password",
                         "type"  => "text",
                         "table" => "users",
+                        "required" => 1
                     ],
                 ],
                 1 => [
@@ -609,54 +617,62 @@ class FieldSeeder extends Seeder
                         "name"  => "incidents",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ], 
                     [
                         "label" => "Resource",
                         "name"  => "resources",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ], 
                     [
                         "label" => "Pre Plan",
                         "name"  => "preplans",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ], 
                     [
                         "label" => "Contact",
                         "name"  => "contacts",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ],
                     [
                         "label" => "Agency",
                         "name"  => "agencies",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ],
                     [
                         "label" => "Responder",
                         "name"  => "responders",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ],
                     [
                         "label" => "Call Logs",
                         "name"  => "call_logs",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ],
-                    [
-                        "label" => "User",
-                        "name"  => "users",
-                        "type"  => "checkbox",
-                        "table" => "user_privileges",
-                    ],
+                    // [
+                    //     "label" => "User",
+                    //     "name"  => "users",
+                    //     "type"  => "checkbox",
+                    //     "table" => "user_privileges",
+                    // ],
                     [
                         "label" => "Report",
                         "name"  => "reports",
                         "type"  => "checkbox",
                         "table" => "user_privileges",
+                        "default" => true
                     ],
                 ],
             ],
@@ -758,6 +774,7 @@ class FieldSeeder extends Seeder
                     $field_model->label = $field['label'];
                     $field_model->type = $field['type'];
                     $field_model->readonly = $field['readonly'] ?? 0;
+                    $field_model->required = $field['required'] ?? 0;
                     $field_model->column = $field['column'] ?? 0;
                     $field_model->default_value = $field['default'] ?? null;
                     $field_model->display_type = $field['display_type'] ?? 1;

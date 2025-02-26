@@ -153,7 +153,7 @@
         <Card title="Module">
           <div class="lg:grid gap-x-12" style="grid-template-columns: 1fr 1fr;">
               <div v-for="(field,i) in auth.module" :key="i" :class="`custom-grid-${i%2}`" class="mt-4">
-                <div class="fromGroup relative" v-if="field.presence == 1">
+                <div class="fromGroup relative" v-if="field.presence == 1 || field.presence == 3">
                     <label>{{ field.label }}</label>
                     <Badge v-if="user_store.data.user_privileges[field.name] == 1" label="Active" badgeClass="bg-success-500 text-white" />
                     <Badge v-if="user_store.data.user_privileges[field.name] == 0" label="Inactive" badgeClass="bg-danger-500 text-white" />

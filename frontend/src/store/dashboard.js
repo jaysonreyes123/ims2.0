@@ -58,7 +58,6 @@ export const useDashboardStore = defineStore('dashboard', {
                 const response = await this.axios.get(url);
                 this.widgets[index] = {title:title,count:response.data.data}
                 this.widgets[index].loading = false;
-                console.log(this.widgets)
                 
             } catch (error) {
                 

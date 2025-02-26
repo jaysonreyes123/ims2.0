@@ -21,7 +21,7 @@ export const useModuleStore = defineStore('module', {
             summary:0,
             blocks:[],
             relation_field:{},
-            error:false
+            errors:[]
         }
     },
     actions: {
@@ -47,8 +47,11 @@ export const useModuleStore = defineStore('module', {
           fields.map(item=>{
             item.fields.map(item2=>{
                 const fields_ = {};
+                const field_error = {};
                 fields_[item2.name] = item2.default_value == null ? "" : item2.default_value ;
+                field_error[item2.name] = "";
                 this.form = Object.assign(this.form,fields_);
+                this.errors = Object.assign(this.errors,field_error);
                 if(item2.type == 'dropdown'){
                     dropdown_store.get_dropdown(item2.name);
                 }
@@ -105,7 +108,7 @@ export const useModuleStore = defineStore('module', {
                 if(option == 'save'){
                     this.set_form(data.blocks)
                 }
-                else if(option == 'detail' || option == 'summary'){
+                else if(option == 'detail'){
                     this.view_set_form(data.blocks);
                 }
                 if(id != "" && id !== undefined){
@@ -179,22 +182,23 @@ export const useModuleStore = defineStore('module', {
             catch (error) {
                 const error_details = error.response;
                 if(error_details.status == 422){
-                   const errors = Object.values(error_details.data.errors);
+                    console.log(error_details.data.errors)
+                   const errors = Object.keys(error_details.data.errors);
                    var error_value = "";
                     errors.map((item,index)=>{
-                        error_value+=`<p class="text-red-500">${item[0]}</p>`;
+                        this.errors[item] = error_details.data.errors[item][0];
                     })
-                    Swal.fire({
-                        icon: "error",
-                        title: "Something wrong",
-                        html:error_value,
-                    });
+                    // Swal.fire({
+                    //     icon: "error",
+                    //     title: "Something wrong",
+                    //     html:error_value,
+                    // });
                 }
                 else if(error_details.status == 500){
                     Swal.fire({
                         icon: "error",
                         title: "Something wrong",
-                        html:error_details.data.message,
+                        // html:error_details.data.message,
                     });
                 }
                 this.loading = false;
@@ -254,9 +258,11 @@ export const useModuleStore = defineStore('module', {
         },
         async set_single_item(fieldid,fieldname){
             try {
-                const response = await this.axios.get("module/set_single_item/"+this.id+"/"+fieldid+"/"+fieldname);
-                const data = response.data.data;
-                this.relation_field[fieldname] = data.entityname;
+                if(this.id != ""){
+                    const response = await this.axios.get("module/set_single_item/"+this.id+"/"+fieldid+"/"+fieldname);
+                    const data = response.data.data;
+                    this.relation_field[fieldname] = data.entityname;
+                }
             } catch (error) {
                 
             }

@@ -18,25 +18,26 @@
             </Card>
         </div>
         <Card class="mt-4" :title="modules_.label" >
-            <br>
-            <div class="flex justify-end">
-                <div v-for="item in get_related_menu_action" :key="item">
-                    <Button
-                        v-if="item == 'add'"
-                        icon="heroicons-outline:plus"
-                        :text="`New ${modules_.label}`"
-                        btnClass="btn-danger mr-2 py-2"
-                        @click="this.$route.params.related_module == 'media' ? openMediaModal() : openSaveRelatedModal()"
-                    />
-                    <Button
-                        v-if="item == 'select'"
-                        icon="heroicons-outline:plus"
-                        :text="`Select ${modules_.label}`"
-                        btnClass="btn-danger mr-2 py-2"
-                        @click="openSelectRelatedModal"
-                    />
+            <template #header>
+                <div class="flex justify-end">
+                    <div v-for="item in get_related_menu_action" :key="item">
+                        <Button
+                            v-if="item == 'add'"
+                            icon="heroicons-outline:plus"
+                            :text="`New ${modules_.label}`"
+                            btnClass="btn-danger mr-2 py-2"
+                            @click="this.$route.params.related_module == 'media' ? openMediaModal() : openSaveRelatedModal()"
+                        />
+                        <Button
+                            v-if="item == 'select'"
+                            icon="heroicons-outline:plus"
+                            :text="`Select ${modules_.label}`"
+                            btnClass="btn-danger mr-2 py-2"
+                            @click="openSelectRelatedModal"
+                        />
+                    </div>
                 </div>
-            </div>
+            </template>
             <SelectListModal :module_id="parseInt(this.$route.params.id)" :module="this.$route.params.module" :related_module="this.$route.params.related_module" />
             <br>
             <Table 

@@ -35,7 +35,6 @@ export const useListStore = defineStore('list', {
                     column_header_cache[this.module].map(item=>{
                         this.columns.push(item.name);
                     })
-                    this.columns.push("id");
                     this.columns_header = column_header_cache[this.module];
                     this.list_function()
                 }
@@ -49,11 +48,12 @@ export const useListStore = defineStore('list', {
                         });
                         const data = response.data;
                         this.columns_header = data.data;
+                        if(this.module == 'incidents'){
+                            this.columns_header.push({field:"created_at",label:"Created Time"}); 
+                        }
                         this.columns_header.push({field:"action",label:"Action"});
-
                         var get_column_name = data.data.map(column => column.name)
-                        var get_column_name_  = [...get_column_name,"id"];
-                        this.columns = get_column_name_;
+                        this.columns = get_column_name;
                         
                         // cache
                         const cache = {};

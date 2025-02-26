@@ -106,7 +106,6 @@
 export default {
   name: 'Card',
   props: {
- 
     className: {
       type: String,
       default: '',

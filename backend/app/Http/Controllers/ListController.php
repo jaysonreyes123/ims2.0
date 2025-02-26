@@ -15,9 +15,10 @@ class ListController extends Controller
     //
     use HttpResponses;
     public function index(Request $request){
-
+        $add_column = array("id","created_at");
+        $columns = array_merge($request->columns,$add_column);
         $model = DB::table($request->module);
-        $model = $model->select($request->columns);
+        $model = $model->select($columns);
         if(!empty($request->filter)){
             foreach($request->filter as $filter){
                 $model = $model->where($filter['field'],"like",$filter['value']."%");

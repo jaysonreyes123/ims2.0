@@ -7,7 +7,8 @@ export const useDropdownStore = defineStore('dropdown', {
         return {
             dropdownlist_data:[],
             dropdownlist:[],
-            assigned_to:[]
+            assigned_to:[],
+            dropdownloading:[]
         }
     },
     getters:{
@@ -23,8 +24,10 @@ export const useDropdownStore = defineStore('dropdown', {
     actions: {
         async get_dropdown(field){
             try {
+                this.dropdownloading[field] = true;
                 const response = await this.axios.get("module/get_dropdown/"+field);
                 this.dropdownlist[field] = response.data.data;
+                this.dropdownloading[field] = false;
             } catch (error) {
                 
             }

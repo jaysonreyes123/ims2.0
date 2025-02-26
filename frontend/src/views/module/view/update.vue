@@ -1,7 +1,8 @@
 <template>
     <div>
       <Card title="Updates" class="mt-4">
-            <ul class="relative ltr:pl-2 rtl:pr-2">
+        <div v-if="SystemStore.logs.length > 0">
+          <ul class="relative ltr:pl-2 rtl:pr-2">
               <li
                 v-for="(item, i) in SystemStore.logs"
                 :key="i"
@@ -37,6 +38,12 @@
             <div class="w-full mt-4 flex justify-center" v-if="!SystemStore.is_last_page">
               <Button text="load more" @click="load_more" :isLoading="SystemStore.loading" btnClass="btn-sm btn-outline-white"/>
             </div>
+        </div>
+        <div v-else>
+          <div class="p-4 mt-4 border border-slate-400 rounded text-center">
+            <span>No Updates</span>
+          </div>
+        </div>
       </Card>
     </div>
   </template>

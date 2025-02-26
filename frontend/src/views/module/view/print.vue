@@ -72,6 +72,7 @@ export default {
     },
     mounted(){
         module_store.get(this.$route.params.id)
+        document.title = "Incident Report"
         this.$watch(
             ()=>module_store.loading,
             (loading) => {

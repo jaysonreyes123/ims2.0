@@ -40,8 +40,10 @@ class UserSeeder extends Seeder
             $user_privileges = new UserPrivilege();
             $user_privileges->user_id = $user->id;
             foreach($modules as $module){
-                $name = $module->name;
-                $user_privileges->$name = 1;
+                if($module->name != 'users'){
+                    $name = $module->name;
+                    $user_privileges->$name = 1;
+                }
             }
             $user_privileges->save();
         }

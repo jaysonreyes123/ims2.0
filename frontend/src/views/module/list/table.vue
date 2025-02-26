@@ -35,7 +35,7 @@
                     </span>
                 </span>
                 <span v-if="props.column.field == 'action'">
-                    <div class="flex space-x-3 justify-center rtl:space-x-reverse">
+                    <div class="flex space-x-3 rtl:space-x-reverse">
                         <Tooltip placement="top" arrow theme="dark" v-if="this.$route.params.module == 'reports' ">
                             <template #button>
                                 <router-link :to="`${this.$route.params.module}/generate/${props.row.id}`">

@@ -143,10 +143,23 @@ export default {
       ]
     }
   },
+  created(){
+    this.$watch(
+            ()=>this.openModal,
+            (modal) => {
+                if(modal){
+                  import_store.stepNumber = 0;
+                  import_store.duplicate_handling_option = 1;
+                  import_store.module = this.$route.params.module;
+                  import_store.get_fields();
+                }
+            }
+        )
+  },
   mounted(){
-    import_store.loading = false;
-    import_store.module = this.$route.params.module;
-    import_store.get_fields();
+    // import_store.loading = false;
+    // import_store.module = this.$route.params.module;
+    // import_store.get_fields();
   },
   computed:{
         modules_(){

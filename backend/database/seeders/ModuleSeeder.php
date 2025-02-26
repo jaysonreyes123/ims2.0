@@ -97,7 +97,7 @@ class ModuleSeeder extends Seeder
                 'entityname' => 'name',
                 "label" => "User",
                 "icon" => "carbon:dashboard",
-                "presence" => 3,
+                "presence" => 4,
                 "prefix" => "",
             ],
             [

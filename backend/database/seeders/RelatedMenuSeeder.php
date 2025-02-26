@@ -39,7 +39,7 @@ class RelatedMenuSeeder extends Seeder
                 "module" => 1,
                 "related_module" => 6,
                 "label" => "Responder",
-                "action" =>"add"
+                "action" =>null
             ],
             [
                 "module" => 1,

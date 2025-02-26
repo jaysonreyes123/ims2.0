@@ -9,15 +9,17 @@
                             Select Field
                         </label>
                         <Select @option:selected="picklist_event($event,i)" :reduce="(option) => option.value" placeholder="Select an option"
-                            :options="filter_store.getDropdownFilter" v-model="item.field" 
+                            :options="filter_store.getDropdownFilter" v-model="item.field"
                         />
                     </div>
-                    <div class="flex justify-between items-end space-x-5">
+                    <div class="flex justify-between items-end space-x-5 mt-[29px]">
                         <div class="flex-1">
                             <Textinput v-if="
                                 filter_store.filter_field[i].type == 'text' || 
                                 filter_store.filter_field[i].type == 'number' || 
-                                filter_store.filter_field[i].type == 'generate'
+                                filter_store.filter_field[i].type == 'generate' ||
+                                filter_store.filter_field[i].type == 'coordinates' ||
+                                filter_store.filter_field[i].type == 'email'
                                 " 
                                 placeholder=""
                                 class="flex-1" 
@@ -87,17 +89,19 @@ export default {
     },
     created(){
         this.$watch(
-            ()=>this.$route.params.module,
-            (modules) => {
-                this.ClearFilter();
-                filter_store.module = modules;
-                filter_store.get_fields();
+            ()=>this.openFilterModal,
+            (modal) => {
+                if(modal){
+                    this.ClearFilter();
+                    filter_store.module = this.$route.params.module;
+                    filter_store.get_fields();
+                }
             }
         )
     },
     mounted(){
-            filter_store.module = this.$route.params.module;
-            filter_store.get_fields();
+            // filter_store.module = this.$route.params.module;
+            // filter_store.get_fields();
     },
     props:{
         openFilterModal:{

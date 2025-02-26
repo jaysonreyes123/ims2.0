@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('agencies');
             $table->boolean('responders');
             $table->boolean('call_logs');
-            $table->boolean('users');
+            // $table->boolean('users');
             $table->boolean('reports');
             $table->timestamps();
         });

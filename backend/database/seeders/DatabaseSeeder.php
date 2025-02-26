@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             FieldSeeder::class,
             RelatedMenuSeeder::class,
             ResponderStatusSeeder::class,
-            ResponderTypeSeeder::class
+            ResponderTypeSeeder::class,
+            RelatedFieldSeeder::class
         ]);
     }
 }

@@ -107,7 +107,9 @@ import modal from "./modal.vue";
 import { ref } from 'vue';
 import Breadcrum from "../Breadcrum.vue";
 import { useAuthStore } from '@/store/auth';
+import { useImportStore } from "@/store/import";
 import Dropdown from "@/components/Dropdown"
+const import_store = useImportStore();
 const auth_store = useAuthStore();
 const list_store = useListStore();
 const modules = ref("");
@@ -182,9 +184,7 @@ export default {
         },
     },
     methods:{
-        
         filterModalBtn(){
-            console.log("test");
             this.openFilterModal = true;
         },
         closeFilterModal(value){

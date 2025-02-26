@@ -18,9 +18,9 @@
             </div>
         </div>
     </div>
-    <div class="flex gap-x-4 mt-4">
-        <div class="w-3/4">
-            <div class="grid grid-cols-2 gap-x-4">
+    <div class="md:flex gap-4 mt-4">
+        <div class="w-full md:w-3/4">
+            <div class="grid md:grid-cols-2 gap-4">
                 <SkeletonTable v-if="barchart_loading"/>
                 <Card title="# of Incidents, Trend over the 6 months" v-else>
                     <apexchart
@@ -48,8 +48,8 @@
                 </Card>  
             </div>
         </div>
-        <div class="w-1/4">
-            <Card title="System logs">
+        <div class="w-full md:w-1/4 mt-4 md:mt-0 ">
+            <Card title="Activity logs">
                 <ul class="relative ltr:pl-2 rtl:pr-2 overflow-y-auto max-h-[700px] h-[700px]">
                     <li
                         v-for="(item, i) in dashboard_store.logs"
@@ -133,7 +133,7 @@ export default {
         dashboard_store.logs = [];
         dashboard_store.logs_page.last = false;
         dashboard_store.logs_page.current = 1;
-        dashboard_store.get_widget("incidents",'Total Incident',0)
+        dashboard_store.get_widget("incidents",'Total Incidents',0)
         dashboard_store.get_widget("incidents",'Active Incidents',1,'incident_statuses','<>','Closed:Cancelled')
         dashboard_store.get_widget("incidents",'Closed Incidents',2,'incident_statuses','=','Closed')
         dashboard_store.system_logs();

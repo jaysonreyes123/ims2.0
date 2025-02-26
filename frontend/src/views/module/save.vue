@@ -12,12 +12,13 @@
                 <div v-if="block.block == 'Location Details' ">
                     <div class="lg:grid lg:grid-cols-2 gap-12"> 
                         <div>
-                            <Textinput 
-                                :isReadonly="field.readonly == 1 ? true :false" class="mt-4" 
-                                v-for="(field,i) in block.fields" :key="i" 
-                                v-model="module_store.form[field.name]" 
-                                :label="field.label" 
-                                :placeholder="`Enter ${field.label}`" />
+                            <div v-for="(field,i) in block.fields" :key="i" class="mt-4">
+                                <div class="fromGroup relative">
+                                    <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{field.label}} <span class="text-red-500" v-if="field.required">*</span></label>
+                                    <Textinput :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <Map :set_coordinates="module_store.form.coordinates" @updateCoordinate="updateCoordinates"  />
@@ -33,9 +34,11 @@
                                     <flat-pickr
                                         v-model="module_store.form[field.name]"
                                         class="form-control"
+                                        :class="module_store.errors[field.name] == '' ? '' : 'border border-red-500' "
                                         placeholder="HH:mm:00"
                                         :config="{ enableTime: true, noCalendar: true, dateFormat: 'H:i:00',time_24hr:true,minuteIncrement:1 }"
                                     />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                             <div v-else-if="field.type == 'date' ">
@@ -44,43 +47,56 @@
                                     <flat-pickr
                                         v-model="module_store.form[field.name]"
                                         class="form-control"
+                                        :class="module_store.errors[field.name] == '' ? '' : 'border border-red-500' "
                                         placeholder="yyyy-mm-dd"
                                         :config="{ dateFormat:'Y-m-d' }"
                                     />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                             <div v-else-if="field.type == 'phone'">
                                 <div class="fromGroup relative">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{field.label}} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <Textinput @input="phonevalidation(field.name)" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <Textinput :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" @input="phonevalidation(field.name,field.label)" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                             <div v-else-if="field.type == 'email'">
                                 <div class="fromGroup relative">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{field.label}} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <Textinput @input="emailvalidation(field.name,field.label)" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
-                                    <!-- <label class="text-xs text-red-500 d-none" :id="`${field.name}-validation`"></label> -->
+                                    <Textinput :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" @input="emailvalidation(field.name,field.label)" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
+                                </div>
+                            </div>
+                            <div v-else-if="field.type == 'number'">
+                                <div class="fromGroup relative">
+                                    <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{field.label}} <span class="text-red-500" v-if="field.required">*</span></label>
+                                    <Textinput :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" @input="numbervalidation(field.name,field.label)" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                             <div v-else-if="field.type == 'textarea'">
                                 <div class="fromGroup relative">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <Textarea :isReadonly="field.readonly == 1 ? true :false " :placeholder="`Enter ${field.label}`" v-model="module_store.form[field.name]" />
+                                    <Textarea :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" :isReadonly="field.readonly == 1 ? true :false " :placeholder="`Enter ${field.label}`" v-model="module_store.form[field.name]" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                             <div class="fromGroup relative" v-else-if="field.type == 'dropdown' ">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <Select :disabled="field.readonly == 1 ? true :false" placeholder="Select an option" :reduce="(option) => option.label" :options="dropdown_store.dropdownlist[field.name]" v-model="module_store.form[field.name]"/>
+                                    <Select :loading="dropdown_store.dropdownloading[field.name]" :class="module_store.errors[field.name] == '' ? '' : 'border border-red-500'":disabled="field.readonly == 1 ? true :false" placeholder="Select an option" :reduce="(option) => option.label" :options="dropdown_store.dropdownlist[field.name]" v-model="module_store.form[field.name]"/>
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !='' ">{{module_store.errors[field.name]}}</label>    
                             </div>
                             <div class="fromGroup relative" v-else-if="field.type == 'checkbox' ">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
                                     <Switch v-if="module_store.form[field.name] == 1" v-model="module_store.form[field.name]" :active="true" class="mb-5" />
                                     <Switch v-if="module_store.form[field.name] == 0" v-model="module_store.form[field.name]" :active="false" class="mb-5" />
+                                    
                             </div>
                             <div class="fromGroup relative" v-else-if="field.type == 'relation' ">
                                 
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{ field.label }} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <InputGroup  type="text" isReadonly :modelValue="module_store.relation_field[field.name]" placeholder="">
+                                    <InputGroup :error="module_store.errors[field.name] == '' ? '' : module_store.errors[field.name] "  type="text" isReadonly :modelValue="module_store.relation_field[field.name]" :placeholder="`Enter ${field.label}`">
                                         <template v-slot:append>
                                             <Button 
                                                 v-if="field.related_fields"
@@ -104,7 +120,8 @@
                             <div v-else>
                                 <div class="fromGroup relative">
                                     <label class="flex-0 mr-6 break-words ltr:inline-block rtl:block input-label">{{field.label}} <span class="text-red-500" v-if="field.required">*</span></label>
-                                    <Textinput :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <Textinput :classInput="module_store.errors[field.name] == '' ? '' : 'border border-red-500'" :isReadonly="field.readonly == 1 ? true :false " v-model="module_store.form[field.name]" :placeholder="`Enter ${field.label}`" />
+                                    <label class="validation-label" v-if="module_store.errors[field.name] !=''" >{{module_store.errors[field.name]}}</label>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +188,7 @@ export default {
     mounted(){
         const id = this.$route.params.id;
         errors.value = [];
+        module_store.errors = [];
         module_store.module = modules.value;
         module_store.get_edit_form(id);
         module_store.id = id;
@@ -189,68 +207,52 @@ export default {
         }
     },
     methods:{
+        assign_error_object(field,message){
+            let sub_array = {};
+            sub_array[field] = message;
+            return Object.assign(errors.value,sub_array);
+        },
+        numbervalidation(field,label){
+            module_store.form[field] = module_store.form[field].replace(/\D/g,"");
+        },
         emailvalidation(field,label){
             var email = module_store.form[field].match(/^\S+@\S+\.\S+$/);
             if(email){
-                errors.value = errors.value.filter(v => !Object.keys(v).includes(label));
+                errors.value[field] = "";
             }
             else{
-                if(errors.value.find(v => v[label]) === undefined){
-                    let sub_array = {};
-                    sub_array[label] = "Must be valid email";
-                    errors.value.push(sub_array)   
-                }
+                const message = label+" must be valid email";
+                errors.value = this.assign_error_object(field,message);
             }
         },
-        phonevalidation(field){
+        phonevalidation(field,label){
             module_store.form[field] = module_store.form[field].replace(/[^0-9+]/g, '');
             let maxlength = 0;
-            if(module_store.form[field].length >= 4){
-                if(module_store.form[field][0] == 0 && module_store.form[field][1] == 9){
-                    maxlength = 11;
-                }
-                else if(module_store.form[field][0] == 6 && module_store.form[field][1] == 3 && module_store.form[field][2] == 9){
-                    maxlength = 12;
-                }
-                else if(module_store.form[field][0] == "+" && module_store.form[field][1] == 6 && module_store.form[field][2] == 3 && module_store.form[field][3] == 9){
-                    maxlength = 13;
+            if(module_store.form[field][0] == 0 && module_store.form[field][1] == 9){
+                maxlength = 11;
+            }
+            else if(module_store.form[field][0] == 6 && module_store.form[field][1] == 3 && module_store.form[field][2] == 9){
+                maxlength = 12;
+            }
+            else if(module_store.form[field][0] == "+" && module_store.form[field][1] == 6 && module_store.form[field][2] == 3 && module_store.form[field][3] == 9){
+                maxlength = 13;
+            }
+            else{
+                maxlength = 0
+                const message = label+" must be valid phone";
+                errors.value = this.assign_error_object(field,message)
+            }
+            if(maxlength != 0){
+                console.log(module_store.form[field].length,maxlength)
+                if(module_store.form[field].length >= maxlength){
+                    module_store.form[field] = module_store.form[field].slice(0,maxlength);
+                    errors.value[field] = ""; 
                 }
                 else{
-                    maxlength = 0
-                    module_store.form[field] = "";
-                }
-
-
-                if(maxlength != 0){
-                    module_store.form[field] = module_store.form[field].slice(0,maxlength);
-                }
+                    const message = label+" must be valid phone";
+                    errors.value = this.assign_error_object(field,message)
+                }   
             }
-            
-
-            // if(x[0].length == 2){
-            //     if(x[0] == "09"){
-            //         if(module_store.form[field].length < 12){
-            //             module_store.form[field] = x.input;
-            //         }
-            //         else{
-            //             module_store.form[field] = module_store.form[field].slice(0,11);
-            //         }
-            //     }
-            //     if(x[0] == "+63" || x[0] == "63"){
-            //         if(module_store.form[field].length < 14){
-            //             module_store.form[field] = x.input;
-            //         }
-            //         else{
-            //             module_store.form[field] = module_store.form[field].slice(0,13);
-            //         }
-            //     }
-            //     else{
-            //         module_store.form[field] = "";
-            //     }
-            // }
-            // else{
-            //     module_store.form[field] = x.input;  
-            // }
         },
         moduleDetails(moduleid){
             const current_module = moduleid;
@@ -258,22 +260,29 @@ export default {
             return module_info;
         },
         save(){
-            var error = "";
+            var error = false;
             const required_keys = Object.keys(module_store.required_field)
+            const validation_keys = Object.keys(errors.value);
+            const errors_keys = Object.keys(module_store.errors);
             required_keys.map(item=>{
                 if(module_store.form[item] == ""){
-                    error+=`<span class="text-red-500"><b>${module_store.required_field[item]}</b> is required field</span><br>`;
+                    module_store.errors[item] = module_store.required_field[item] + " is required field";
+                }
+                else{
+                    module_store.errors[item] = "";
                 }
             })
-            errors.value.map(item=>{
-                error+=`<span class="text-red-500"><b>${Object.keys(item)}</b> ${Object.values(item)}<br>`;
+            validation_keys.map(item=>{
+                module_store.errors[item] = errors.value[item];
             })
-            if(error != ""){
-            Swal.fire({
-                icon: "error",
-                title: "Something Wrong",
-                html:error,
-            });
+            //check if there's an error message
+            errors_keys.map(item =>{
+                if(module_store.errors[item] != ""){
+                    error = true;
+                }
+            })
+            if(error){
+                window.scrollTo(0,0);
                 return false;
            }
            module_store.save();
@@ -308,5 +317,8 @@ export default {
    /* background-color: rgb(226 232 240) !important; */
    background-color: #ffffff !important;
     color:black !important; 
+}
+.validation-label{
+    @apply text-danger-500 block text-sm mt-2
 }
 </style>

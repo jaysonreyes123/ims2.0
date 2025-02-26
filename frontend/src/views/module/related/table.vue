@@ -36,7 +36,7 @@
             }">
             <template v-slot:table-row="props">
                 <span v-if="props.column.field == 'action' && action == 1 ">
-                    <div class="flex space-x-3 justify-center rtl:space-x-reverse">
+                    <div class="flex space-x-3 rtl:space-x-reverse">
                         <Tooltip placement="top" arrow theme="dark" v-if="props.row.view != '' && this.$route.params.related_module == 'media' ">
                             <template #button>
                                 <a @click="preview(props.row.filename,props.row.path,props.row.filetype)">

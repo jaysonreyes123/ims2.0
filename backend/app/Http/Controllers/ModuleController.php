@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -36,22 +37,22 @@ class ModuleController extends Controller
         return $this->success($model);
     }
     public function edit_form(string $module,string $option){
-        if($option == "summary"){
-            $model = Module::with(['blocks'=>function($query){
-                return $query
-                ->withCount(['fields'=>function($query_field){
-                    $query_field->select('id');
-                    $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
-                }])
-                ->with(['fields'=>function($query_field){
-                    $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
-                }])
-                ->having('fields_count','<>',0);
-            }])
-            ->where('name',$module)
-            ->first();
-        }
-        else{
+        // if($option == "summary"){
+        //     $model = Module::with(['blocks'=>function($query){
+        //         return $query
+        //         ->withCount(['fields'=>function($query_field){
+        //             $query_field->select('id');
+        //             $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
+        //         }])
+        //         ->with(['fields'=>function($query_field){
+        //             $query_field->where('summary',1)->whereIn('display_type',[1,2,3]);
+        //         }])
+        //         ->having('fields_count','<>',0);
+        //     }])
+        //     ->where('name',$module)
+        //     ->first();
+        // }
+        // else{
             $model = Module::with(['blocks'=>function($query){
                 return $query->with(['fields'=>function($query_field){
                     $query_field->with('related_fields');
@@ -60,7 +61,7 @@ class ModuleController extends Controller
             }])
             ->where('name',$module)
             ->first();
-        }
+        //}
         return $this->success($model);
     }
 
@@ -80,9 +81,12 @@ class ModuleController extends Controller
         $rules = [];
         foreach($fields as $field){
             $sub_rule = [];
-            if($field->type == 'number'){
-                $sub_rule[] = "numeric";
-            }
+            // if($field->type == 'number'){
+            //     $sub_rule[] = "numeric";
+            // }
+            // if($field->type == 'email'){
+            //     $sub_rule[] = 'email';
+            // }
             if($field->unique == 1){
                 $sub_rule[] = Rule::unique($request->module);
             }
@@ -151,12 +155,12 @@ class ModuleController extends Controller
         $label = [];
         foreach($fields as $field){
             $sub_rule = [];
-            if($field->type == 'number'){
-                $sub_rule[] = "numeric";
-            }
-            if($field->type == 'email'){
-                $sub_rule[] = 'email';
-            }
+            // if($field->type == 'number'){
+            //     $sub_rule[] = "numeric";
+            // }
+            // if($field->type == 'email'){
+            //     $sub_rule[] = 'email';
+            // }
             if($field->unique == 1){
                 $id = (int) $id;
                 $sub_rule[] = Rule::unique($request->module)->ignore($id,'id');
@@ -185,10 +189,12 @@ class ModuleController extends Controller
     {
         $ids = $request->ids;
         $model = DB::table($module)->whereIn("id",$ids)->update(["deleted" => 1]);
-        // if($model){
-        //     $module_id = HelpersModule::module_id($request->module);
-        //     ActivityLogs::log($id,$module_id,$status = 3);
-        // }
+        if($model){
+            $module_id = HelpersModule::module_id($request->module);
+            foreach($ids as $id){
+                ActivityLogs::log($id,$module_id,$status = 3);
+            }
+        }
         return $this->success($model);
     }
     public function save($request,$id = ""){
@@ -260,7 +266,7 @@ class ModuleController extends Controller
         $user_model->password = Hash::make($request->password);
         $user_model->save();
 
-        $modules = Module::where("presence",1)->get();
+        $modules = Module::whereIn("presence",[1,3])->get();
         $module_data = [];
         $module_data["user_id"] = $user_model->id;
         foreach($modules as $module){
@@ -275,11 +281,17 @@ class ModuleController extends Controller
     }
 
     public function get_dropdown(String $field){
-        if($field == 'modules'){
-            $model = DB::table($field)->whereIn('presence',[1,2])->get();
+        if(Cache::has($field)){
+            $model = Cache::get($field);
         }
         else{
-            $model = DB::table($field)->get();
+            if($field == 'modules'){
+                $model = DB::table($field)->whereIn('presence',[1,2])->get();
+            }
+            else{
+                $model = DB::table($field)->get();
+            }
+            Cache::add($field,$model);
         }
         return $this->success($model);
     }
